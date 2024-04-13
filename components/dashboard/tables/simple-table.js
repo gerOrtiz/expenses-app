@@ -1,10 +1,22 @@
 'use client';
-import { Card, CardBody, Typography } from '@material-tailwind/react';
+import { Button, Card, CardBody, CardFooter, Checkbox, Typography } from '@material-tailwind/react';
+import { useState } from 'react';
+import ExpensesForm from '../expenses/expenses-form';
 
-const TABLE_HEAD = ["Descripción", "Monto", "Método pago", "Pendiente"];
+const TABLE_HEAD = ["Descripción", "Monto", "Método pago", "Fecha", "Gasto previsto"];
 
-export default function SimpleTable() {
-  const table_rows = [];
+function typeFilter(type) {
+  return type == 'cash' ? 'Efectivo' : 'Tarjeta';
+}
+
+function dateFilter(date) {
+  return new Date(date).toLocaleDateString();
+}
+
+export default function SimpleTable({ expenses, tableId, dataCallback }) {
+  const [isOpen, setOpen] = useState();
+  const handleOpen = () => setOpen((cur) => !cur);
+
   return (<>
     <Card className="mb-1 w-full overflow-x-hidden overflow-y-auto">
       <CardBody>
@@ -25,8 +37,8 @@ export default function SimpleTable() {
             </tr>
           </thead>
           <tbody>
-            {table_rows.map((expense, index) => (
-              <tr key={expense} className="even:bg-blue-gray-50/50">
+            {expenses.map((expense, index) => (
+              <tr key={index} className="even:bg-blue-gray-50/50">
                 <td className="p-4">
                   <Typography variant="small" color="blue-gray" className="font-normal">
                     {expense.description}
@@ -39,20 +51,28 @@ export default function SimpleTable() {
                 </td>
                 <td className="p-4">
                   <Typography variant="small" color="blue-gray" className="font-normal">
-                    {expense.type}
+                    {typeFilter(expense.type)}
                   </Typography>
                 </td>
                 <td className="p-4">
                   <Typography variant="small" color="blue-gray" className="font-normal">
-                    Is pending
+                    {dateFilter(expense.date)}
                   </Typography>
+                </td>
+                <td className="p-4">
+                  <div className="ml-3">
+                    <Checkbox disabled={true} defaultChecked={expense.isPending} />
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </CardBody>
-
+      <CardFooter>
+        <Button onClick={handleOpen}>Agregar gasto</Button>
+        {isOpen && <ExpensesForm isPending={false} tableId={tableId} currentExpenses={expenses} callback={dataCallback} />}
+      </CardFooter>
     </Card>
 
   </>);
