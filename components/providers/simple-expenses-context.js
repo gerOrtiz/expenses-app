@@ -1,9 +1,11 @@
+import { getCurrentExpenses } from "@/services/simple-expenses.service";
 import { createContext, useState } from "react";
 
 
 const SimpleExpensesContext = createContext({
   expensesTable: null, //whole expenses object
-  updateExpensesTable: function (expensesData) { }
+  updateExpensesTable: function (expensesData) { },
+  getCurrentExpenses: function () { }
 });
 
 export function SimpleExpensesContextProvider(props) {

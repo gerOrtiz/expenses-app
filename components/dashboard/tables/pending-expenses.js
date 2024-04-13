@@ -16,12 +16,8 @@ function typeFilter(type) {
 }
 
 export default function PendingExpenses({ pending, tableId, dataCallback }) {
-  let [tableRows, setTableRows] = useState(pending);
-  //const [tableData, setTableData] = useState(null);
   const [isOpen, setOpen] = useState();
   const handleOpen = () => setOpen((cur) => !cur);
-
-
   return (<>
     <Card className="mb-1 w-full overflow-y-auto overflow-x-hidden ">
       <CardBody>
@@ -44,21 +40,21 @@ export default function PendingExpenses({ pending, tableId, dataCallback }) {
               </tr>
             </thead>
             <tbody>
-              {tableRows.map((pending, index) => (
-                <tr key={index} className="even:bg-blue-gray-50/50">
+              {pending.map((p, index) => (
+                <tr key={p.id} className="even:bg-blue-gray-50/50">
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {pending.description}
+                      {p.description}
                     </Typography>
                   </td>
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {'$' + pending.amount}
+                      {'$' + p.amount}
                     </Typography>
                   </td>
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {typeFilter(pending.type)}
+                      {typeFilter(p.type)}
                     </Typography>
                   </td>
                 </tr>
