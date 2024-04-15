@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Button,
   Card,
@@ -18,6 +19,7 @@ function typeFilter(type) {
 export default function PendingExpenses({ pending, tableId, dataCallback }) {
   const [isOpen, setOpen] = useState();
   const handleOpen = () => setOpen((cur) => !cur);
+
   return (<>
     <Card className="mb-1 w-full overflow-y-auto overflow-x-hidden ">
       <CardBody>

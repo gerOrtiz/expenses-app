@@ -1,6 +1,6 @@
 'use client';
 import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
-import { addExpense, addPendingExpense } from "@/lib/user/simple-expenses";
+import { updateExpenses, addPendingExpense } from "@/lib/user/simple-expenses";
 import { Button, Card, Dialog, Input, Typography, Select, Option, Checkbox } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
 
@@ -38,7 +38,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
         currentExpenses[currentExpenses.length - 1].isPending = true;
         currentExpenses[currentExpenses.length - 1].pending_id = pending_id;
       }
-      newData = await addExpense(tableId, currentExpenses);
+      newData = await updateExpenses(tableId, currentExpenses);
     }
     setOpen(false);
     if (newData && callback) callback(newData);

@@ -10,15 +10,6 @@ export function setCurrentExpenses(expensesObj) {
 
 /**
  * 
- * @returns The whole simple expenses object currently showing
- */
-export function getCurrentExpenses() {
-	if (!currentExpenses) return null;
-	return currentExpenses;
-}
-
-/**
- * 
  * @param {*} pendingArray The whole pending array returned from db
  */
 export function setPending(pendingArray) {
@@ -34,15 +25,6 @@ export function setPending(pendingArray) {
 	}
 	setTotals('pending_remain', totalPending);
 	return currentExpenses;
-}
-
-/**
- * 
- * @returns The current pending expenses array
- */
-export function getPending() {
-	if (currentExpenses && currentExpenses.pending) return currentExpenses.pending;
-	return [];
 }
 
 export function setExpenses(expensesArray, existingTable) {
@@ -70,6 +52,23 @@ export function setExpenses(expensesArray, existingTable) {
 	existingTable.remaining = setRemaining(existingTable.income, existingTable.totals.expenses);
 	existingTable.pending = currentExpenses.pending;
 	return existingTable;
+}
+
+
+export function updateRemaining(newIncomeData, existingTable) {
+	if (!currentExpenses.added) currentExpenses.added = [newIncomeData];
+	else if (Array.isArray(currentExpenses.added)) currentExpenses.added.push(newIncomeData);
+	let totalAdded = { cash: 0, card: 0 };
+	currentExpenses.added.forEach(element => {
+		totalAdded.cash += element.cash;
+		totalAdded.card += element.card;
+	});
+	const totalIncome = {
+		cash: currentExpenses.income.cash + totalAdded.cash,
+		card: currentExpenses.income.card + totalAdded.card
+	}
+	currentExpenses.remaining = setRemaining(totalIncome, currentExpenses.totals.expenses);
+	return currentExpenses;
 }
 
 export async function setTotals(type, totalObj) {
