@@ -1,4 +1,3 @@
-import { getCurrentExpenses } from "@/services/simple-expenses.service";
 import { createContext, useState } from "react";
 
 
