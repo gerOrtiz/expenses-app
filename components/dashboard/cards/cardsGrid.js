@@ -15,15 +15,15 @@ export default function DasboardCards() {
         <Card className="border border-blue-gray-100 shadow-sm">
           <CardBody>
             <Typography variant="h5" color="blue-gray" className="mb-2">
-              Simple expenses table
+              Control de gastos
             </Typography>
             <Typography>
-              Review your day to day expenses in a simple way
+              Lleva el control de tus gastos comunes
             </Typography>
           </CardBody>
           <CardFooter className="border-t border-blue-gray-50 p-4">
             <Link href="/dashboard/simple-table">
-              <Button>Start</Button>
+              <Button>Comenzar</Button>
             </Link>
           </CardFooter>
         </Card>

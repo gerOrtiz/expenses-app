@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardBody,
-  Dialog,
   Typography
 } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";

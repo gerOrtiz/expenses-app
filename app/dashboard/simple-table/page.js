@@ -2,9 +2,10 @@
 import TableWrapper from "@/components/dashboard/tables/simpleTableWrapper";
 import TableView from "@/components/dashboard/tables/createNewTable";
 import TSpinner from "@/components/ui/spinner";
+import DashboardHeader from "@/components/dashboard/header";
 import { createNewTable, getActiveTable } from "@/lib/user/simple-expenses";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, } from "react";
 
 let currentTable;
 
@@ -14,26 +15,50 @@ async function createTable(rawFormData) {
   if (!response.error) redirect('/dashboard/simple-table');
 }
 
+async function TablePage() {
+  currentTable = await getActiveTable();
+
+  const tableWrapper = (<>
+    <DashboardHeader hasCurrentData={true} />
+    <main className="flex min-h-max flex-col py-2">
+      <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
+        <section>
+          <TableWrapper data={currentTable} />
+        </section>
+      </div>
+    </main>
+  </>);
+
+  const createTableView = (<>
+    <DashboardHeader hasCurrentData={false} />
+    <main className="flex min-h-max flex-col py-2">
+      <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
+        <section>
+          <TableView submitHandler={createTable} />
+        </section>
+      </div>
+    </main>
+  </>);
+
+  if (!currentTable.error) { return tableWrapper; }
+  return createTableView;
+}
+
 export default function SimpleExpensesTable() {
 
-  async function TablePage() {
-    currentTable = await getActiveTable();
-    if (!currentTable.error) return <TableWrapper data={currentTable} />
-    return <TableView submitHandler={createTable} />
-  }
-  return (<>
-    <div className="flex min-h-max flex-col py-2">
-      <main className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
+  const wrapper = (
+    <main className="flex min-h-max flex-col py-2">
+      <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
         <section>
-          <p>Header here</p>
+          <div className="flex flex-col"><TSpinner /><p>Fetching data...</p></div>
         </section>
-        <section>
+      </div>
+    </main>
+  );
 
-          <Suspense fallback={<div className="flex flex-col"><TSpinner /><p>Fetching data...</p></div>}>
-            <TablePage />
-          </Suspense>
-        </section>
-      </main>
-    </div>
+  return (<>
+    <Suspense fallback={wrapper}>
+      <TablePage />
+    </Suspense>
   </>);
 }
