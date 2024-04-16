@@ -54,6 +54,7 @@ export default function IncomeForm({ tableId, dataCallback }) {
               id="cash" name="cash"
               type="number"
               min={0}
+              step={0.1}
               value={cashRef}
               onChange={event => setCashRef(event.target.value)}
               size="lg" />
@@ -66,6 +67,7 @@ export default function IncomeForm({ tableId, dataCallback }) {
               name="card"
               type="number"
               min={0}
+              step={0.1}
               value={cardRef}
               onChange={event => setCardRef(event.target.value)}
               size="lg" />
