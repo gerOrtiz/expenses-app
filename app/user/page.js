@@ -19,7 +19,7 @@ export default function UserFormPage() {
     <>
       <header className={classes.header}>
         <h1>
-          Let's begin by signing up
+          Comienza por crear una cuenta
         </h1>
         <p>{isSigningUp ? 'Already have an account?' : ''} <span className={classesNames} onClick={setSigningHandler}>{isSigningUp ? 'Log In' : 'Sign up'}</span></p>
       </header>
