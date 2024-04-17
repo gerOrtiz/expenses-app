@@ -7,7 +7,7 @@ import { Button, Card, CardBody, CardFooter, Dialog, Navbar, Spinner, Typography
 import { useRouter } from "next/navigation";
 
 import { useContext, useState } from "react";
-import SimpleExpensesContext from "../providers/simple-expenses-context";
+import SimpleExpensesContext from "../../providers/simple-expenses-context";
 
 function DialogContent({ handleOpen, currentExpenses, expensesContext }) {
   const [isFetching, setIsFetching] = useState(false);

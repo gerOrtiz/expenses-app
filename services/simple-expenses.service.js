@@ -49,15 +49,13 @@ export function setExpenses(expensesArray, existingTable) {
 	addPaymentsToPending(expensesArray, existingTable.pending);
 	existingTable.expenses = currentExpenses.expenses;
 	existingTable.totals = currentExpenses.totals;
-	existingTable.remaining = setRemaining(existingTable.income, existingTable.totals.expenses);
+	if (currentExpenses.expenses.length > 0) existingTable.remaining = processRemaining();
+	else existingTable.remaining = setRemaining(existingTable.income, existingTable.totals.expenses);
 	existingTable.pending = currentExpenses.pending;
 	return existingTable;
 }
 
-
-export function updateRemaining(newIncomeData, existingTable) {
-	if (!currentExpenses.added) currentExpenses.added = [newIncomeData];
-	else if (Array.isArray(currentExpenses.added)) currentExpenses.added.push(newIncomeData);
+function processRemaining() {
 	let totalAdded = { cash: 0, card: 0 };
 	currentExpenses.added.forEach(element => {
 		totalAdded.cash += element.cash;
@@ -68,6 +66,23 @@ export function updateRemaining(newIncomeData, existingTable) {
 		card: currentExpenses.income.card + totalAdded.card
 	}
 	currentExpenses.remaining = setRemaining(totalIncome, currentExpenses.totals.expenses);
+	return currentExpenses.remaining;
+}
+
+export function updateRemaining(newIncomeData, existingTable) {
+	if (!currentExpenses.added) currentExpenses.added = [newIncomeData];
+	else if (Array.isArray(currentExpenses.added)) currentExpenses.added.push(newIncomeData);
+	// let totalAdded = { cash: 0, card: 0 };
+	// currentExpenses.added.forEach(element => {
+	// 	totalAdded.cash += element.cash;
+	// 	totalAdded.card += element.card;
+	// });
+	// const totalIncome = {
+	// 	cash: currentExpenses.income.cash + totalAdded.cash,
+	// 	card: currentExpenses.income.card + totalAdded.card
+	// }
+	// currentExpenses.remaining = setRemaining(totalIncome, currentExpenses.totals.expenses);
+	processRemaining();
 	return currentExpenses;
 }
 
