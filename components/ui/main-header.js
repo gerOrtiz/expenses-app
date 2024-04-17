@@ -27,12 +27,13 @@ export default function MainHeader() {
               <Link href="/user">Register/login</Link>
             </li>)}
 
-            <li>
-              <Link href="/">Contact</Link>
-            </li>
-            {session && status != 'loading' && (<li>
-              <button onClick={logoutHandler}>Logout</button>
-            </li>)}
+            {session && status != 'loading' && (<>
+              <li>
+                <Link href="/dashboard">Dashboard</Link>
+              </li><li>
+                <button onClick={logoutHandler}>Logout</button>
+              </li>
+            </>)}
           </ul>
         </nav>
       </header>

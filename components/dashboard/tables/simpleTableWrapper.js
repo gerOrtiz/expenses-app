@@ -25,8 +25,7 @@ export default function TableWrapper(props) {
 
   useEffect(() => {
     tableCtx.updateExpensesTable(tableData);
-    console.log(tableData.remaining);
-  }, [tableData]);
+  }, [tableData, tableCtx]);
 
   return (<>
     <section className="grid grid-flow-row mb-4 gap-x-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">

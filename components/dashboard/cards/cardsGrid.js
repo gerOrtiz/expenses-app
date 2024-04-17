@@ -27,7 +27,21 @@ export default function DasboardCards() {
             </Link>
           </CardFooter>
         </Card>
-
+        <Card className="border border-blue-gray-100 shadow-sm">
+          <CardBody>
+            <Typography variant="h5" color="blue-gray" className="mb-2">
+              Cuenta personal
+            </Typography>
+            <Typography>
+              Lleva un mejor manejo de tu cuenta bancaria
+            </Typography>
+          </CardBody>
+          <CardFooter className="border-t border-blue-gray-50 p-4">
+            <Link href="/dashboard/bank-account">
+              <Button>Comenzar</Button>
+            </Link>
+          </CardFooter>
+        </Card>
       </section>
     </>
   );

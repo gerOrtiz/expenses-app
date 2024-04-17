@@ -2,7 +2,7 @@
 import TableWrapper from "@/components/dashboard/tables/simpleTableWrapper";
 import TableView from "@/components/dashboard/tables/createNewTable";
 import TSpinner from "@/components/ui/spinner";
-import DashboardHeader from "@/components/dashboard/header";
+import DashboardHeader from "@/components/dashboard/tables/header";
 import { createNewTable, getActiveTable } from "@/lib/user/simple-expenses";
 import { redirect } from "next/navigation";
 import { Suspense, } from "react";
