@@ -47,7 +47,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
   useEffect(() => {
     const expensesTable = tableCtx.getCurrentExpenses();
     setPendingArray(expensesTable.pending);
-  }, [isPending])
+  }, [isPending, tableCtx])
 
   return (<>
     <Dialog

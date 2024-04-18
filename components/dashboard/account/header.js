@@ -2,9 +2,13 @@
 
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Dialog, Navbar, Typography } from "@material-tailwind/react";
+import { Button, Navbar, Typography } from "@material-tailwind/react";
+import { useState } from "react";
+import CategoriesDialog from "../categories/categories-dialog";
+
 
 export default function AccountHeader() {
+  const [showCategoriesDialog, setShowCategoriesDialog] = useState(false);
   return (
     <Navbar className="mx-auto max-w-screen-xl px-6 py-3">
       <div className="flex items-center justify-between text-blue-gray-900">
@@ -19,7 +23,8 @@ export default function AccountHeader() {
         </Typography>
         <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
           <li className="p-1 font-medium">
-            <Button variant="text">Categorías</Button>
+            <Button variant="text" onClick={() => setShowCategoriesDialog((cur) => !cur)}>Categorías</Button>
+            {showCategoriesDialog && <CategoriesDialog />}
           </li>
           <li className="p-1 font-medium">
             <Button variant="text">Cerrar periodo</Button>
