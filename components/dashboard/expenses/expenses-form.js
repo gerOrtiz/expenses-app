@@ -5,19 +5,26 @@ import { Button, Card, Dialog, Input, Typography, Select, Option, Checkbox } fro
 import { useContext, useEffect, useState } from "react";
 
 
-export default function ExpensesForm({ isPending, tableId, currentExpenses, callback }) {
+function filterPendingByType(typeSelected, pendingArray) {
+  const newArray = pendingArray.filter((pendingExpense) => pendingExpense.type == typeSelected);
+  return newArray;
+}
+
+export default function ExpensesForm({ isPending, tableId, currentExpenses, callback, updateTableHandler }) {
   const message = isPending ? 'Ingresa un gasto pendiente por pagar' : 'Ingresa un gasto para agregarlo a la tabla';
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState(1);
   const [type, setType] = useState('cash');
   const [open, setOpen] = useState(true);
   const [pendingArray, setPendingArray] = useState([]);
+  const [filteredPending, setFilteredArray] = useState([]);
   const [isPendingPayment, setIsPendingPayment] = useState(false);
-  const [pending_id, setPendingId] = useState();
+  const [pending_id, setPendingId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const tableCtx = useContext(SimpleExpensesContext);
   const handleOpen = () => setOpen((cur) => !cur);
   const handlePendingFlag = () => setIsPendingPayment((val) => !val);
+
   async function submitHandler(event) {
     event.preventDefault();
     setIsSubmitting(true);
@@ -41,13 +48,24 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
       newData = await updateExpenses(tableId, currentExpenses);
     }
     setOpen(false);
+    setPendingId('');
+    setIsPendingPayment(false);
     if (newData && callback) callback(newData);
+    if (newData && updateTableHandler) updateTableHandler(newData.expenses);
+  }
+
+  function selectType(val) {
+    const pendingyByType = filterPendingByType(val, pendingArray);
+    setFilteredArray(pendingyByType);
+    setPendingId(val);
   }
 
   useEffect(() => {
     const expensesTable = tableCtx.getCurrentExpenses();
     setPendingArray(expensesTable.pending);
-  }, [isPending, tableCtx])
+    const pendingyByType = filterPendingByType(type, expensesTable.pending);
+    setFilteredArray(pendingyByType);
+  }, [isPending, tableCtx, type])
 
   return (<>
     <Dialog
@@ -87,9 +105,11 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
             </Select>
             {!isPending && <Checkbox label="¿Es gasto previsto?" defaultChecked={isPendingPayment} onChange={handlePendingFlag} />}
             {isPendingPayment &&
-              <Select label="Gasto previsto" value={pending_id} onChange={(val) => setPendingId(val)}>
-                {pendingArray.map(pending => (
-                  <Option key={pending.id} value={pending.id + ''}>{pending.description}</Option>
+              <Select label="Gasto previsto" value={pending_id} onChange={(val) => selectType(val)}>
+                {filteredPending.map(pending => (
+                  <Option key={pending.id} value={pending.id + ''}>
+                    <span>{pending.description}: </span><span>${pending.amount} </span><span>({pending.type == 'cash' ? 'Efectivo' : 'Tarjeta'})</span>
+                  </Option>
                 ))}
               </Select>}
           </div>
