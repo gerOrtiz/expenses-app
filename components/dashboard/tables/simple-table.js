@@ -169,7 +169,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
       </CardBody>
       <CardFooter>
         <Button onClick={handleOpen}>Agregar gasto</Button>
-        {isOpen && <ExpensesForm isPending={false} tableId={tableId} currentExpenses={expenses} callback={dataCallback} />}
+        {isOpen && <ExpensesForm isPending={false} tableId={tableId} currentExpenses={expenses} callback={dataCallback} updateTableHandler={setExpensesList} />}
       </CardFooter>
     </Card>
     {isDeleting && <DeleteDialog
