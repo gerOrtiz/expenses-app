@@ -1,7 +1,7 @@
 'use client';
 import { ThemeProvider } from "@material-tailwind/react";
 import { SessionProvider } from "next-auth/react";
-import { AccountCategoriesCotextProvider } from "./account-categories-context";
+import { AccountDataContextProvider } from "./account-recurrent-context";
 import { SimpleExpensesContextProvider } from "./simple-expenses-context";
 
 
@@ -9,9 +9,9 @@ export default function Providers({ children }) {
   return (
     <ThemeProvider>
       <SimpleExpensesContextProvider>
-        <AccountCategoriesCotextProvider>
+        <AccountDataContextProvider>
           <SessionProvider>{children}</SessionProvider>
-        </AccountCategoriesCotextProvider>
+        </AccountDataContextProvider>
       </SimpleExpensesContextProvider>
     </ThemeProvider>
   );

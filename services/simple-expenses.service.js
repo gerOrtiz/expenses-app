@@ -104,6 +104,8 @@ function setRemaining(currentRemaining, totals) {
 
 
 function addPaymentsToPending(expensesArray, pendingArray) {
+	const newPayment = expensesArray[expensesArray.length - 1]; //Make sure only the latest entry is the one that changes pending payments
+	if (!newPayment.pending_id) return; // No need to change pending data
 	let findCoincidence = (pending_id) => {
 		let index = pendingArray.findIndex((e) => {
 			return pending_id == e.id;
@@ -111,14 +113,10 @@ function addPaymentsToPending(expensesArray, pendingArray) {
 		if (!isNaN(index)) return index;
 		else return null;
 	};
-	expensesArray.forEach(expense => {
-		if (expense.isPending) {
-			const pending_index = findCoincidence(expense.pending_id);
-			if (pending_index != null) {
-				if (pendingArray[pending_index].amount - expense.amount >= 0) pendingArray[pending_index].amount -= expense.amount;
-				else pendingArray[pending_index].amount = 0;
-			}
-		}
-	});
+	const pending_index = findCoincidence(newPayment.pending_id);
+	if (pending_index != null) {
+		if (pendingArray[pending_index].amount - newPayment.amount >= 0) pendingArray[pending_index].amount -= newPayment.amount;
+		else pendingArray[pending_index].amount = 0;
+	}
 	setPending(pendingArray);
 }

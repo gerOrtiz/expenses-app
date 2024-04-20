@@ -1,13 +1,15 @@
 import AccountLayout from "@/components/dashboard/account/layout";
 import TSpinner from "@/components/ui/spinner";
+import { getAccountData } from "@/lib/user/bank-account";
 import { Suspense } from "react";
 
 async function AccountView() {
-  return <AccountLayout />
+  const accountObject = await getAccountData();
+  return <AccountLayout data={accountObject} />
 }
 
 export default function AccountPage() {
-  const wrapper = (
+  const fallbackWrapper = (
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
         <section>
@@ -18,7 +20,7 @@ export default function AccountPage() {
   );
 
   return (<>
-    <Suspense fallback={wrapper}>
+    <Suspense fallback={fallbackWrapper}>
       <AccountView />
     </Suspense>
   </>);
