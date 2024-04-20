@@ -1,11 +1,17 @@
 'use client';
 
 import { Card, CardBody, Typography } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function BalanceView({ accountData, dataHandler }) {
+export default function BalanceView({ accountData }) {
   const [totalExpenses, setTotalExpenses] = useState(accountData ? accountData.total_expenses : null);
-  const [remainingIncome, setRemainingIncome] = useState(accountData ? accountData.remaining : null);
+  const [remainingIncome, setRemainingIncome] = useState(accountData.remaining);
+
+  useEffect(() => {
+    if (accountData.remaining != remainingIncome) setRemainingIncome(accountData.remaining);
+    if (accountData.total_expenses && accountData.total_expenses != totalExpenses) setTotalExpenses(accountData.total_expenses);
+  }, [accountData, totalExpenses, remainingIncome])
+
   return (<>
     <div className="grid grid-cols-2 gap-10 flex m-4 p-4">
       <div className="flex flex-col ">

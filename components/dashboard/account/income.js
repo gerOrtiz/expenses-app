@@ -8,18 +8,21 @@ import { useEffect, useState } from "react";
 
 async function updateAccountIncomes(list, account) {
   const response = await updateIncomeList(list, account);
-  console.log(response);
   return response;
 }
 
-function IncomeTable({ incomeList, setListHandler }) {
+function IncomeTable({ incomeList, setListHandler, dataHandler, accountData }) {
   const table_head = ['Tipo', 'Fecha', 'Monto', ''];
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const deleteIncome = (index) => {
+  const deleteIncome = async (index) => {
+    setIsDeleting(true);
     const newIncomeArray = [...incomeList];
-    newIncomeArray.splice(index);
+    newIncomeArray.splice(index, 1);
+    const res = await updateAccountIncomes(newIncomeArray, accountData);
+    if (dataHandler) dataHandler(res);
     setListHandler(newIncomeArray);
+    setIsDeleting(false);
   };
 
   return (
@@ -90,8 +93,8 @@ function IncomeTable({ incomeList, setListHandler }) {
   );
 }
 
-export default function IncomeView({ incomeData, accountData, dataHandler }) {
-  const [incomeList, setIncomeList] = useState(incomeData);
+export default function IncomeView({ accountData, dataHandler }) {
+  const [incomeList, setIncomeList] = useState(accountData.incomes);
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [descriptionRef, setDescriptionRef] = useState('');
@@ -99,14 +102,14 @@ export default function IncomeView({ incomeData, accountData, dataHandler }) {
   const [isUpdatingList, setIsUpdatingList] = useState(false);
 
   useEffect(() => {
-    if (incomeData && incomeData.length > 0) {
+    if (accountData.incomes && accountData.incomes.length > 0) {
       let total = 0;
-      incomeData.forEach(income => {
+      accountData.incomes.forEach(income => {
         total += income.amount;
       });
       setIncomeTotal(total);
-    }
-  }, [incomeData]);
+    } else if (accountData.incomes.length == 0) setIncomeTotal(0);
+  }, [accountData]);
 
   const cancelEdition = () => {
     setDescriptionRef('');
@@ -122,6 +125,7 @@ export default function IncomeView({ incomeData, accountData, dataHandler }) {
     newIncomeArray.push(newIncomeObj);
     const res = await updateAccountIncomes(newIncomeArray, accountData);
     setIncomeList(newIncomeArray);
+    if (dataHandler) dataHandler(res);
     cancelEdition();
   };
 
@@ -149,12 +153,12 @@ export default function IncomeView({ incomeData, accountData, dataHandler }) {
                     <FontAwesomeIcon icon={faTimes} />
                   </IconButton>
                 </>}
-                {isUpdatingList && <Spinner className="h-4 w-4" />}
+                {isUpdatingList && <Spinner className="h-6 w-6" />}
               </div>
             }
           </div>
           <div className="gap-3">
-            <IncomeTable incomeList={incomeList} setListHandler={setIncomeList} />
+            <IncomeTable incomeList={incomeList} setListHandler={setIncomeList} dataHandler={dataHandler} accountData={accountData} />
           </div>
         </CardBody>
       </Card>
