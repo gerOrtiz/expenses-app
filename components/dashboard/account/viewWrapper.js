@@ -4,14 +4,14 @@ import ExpensesView from "./expenses";
 import IncomeView from "./income";
 import SavingPotsView from "./saving-pots";
 
-export default function AccountWrapper() {
+export default function AccountWrapper(props) {
   return (
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
         <div className="grid grid-cols-3 grid-flow-col">
           <section className="flex flex-col col-span-2">
-            <BalanceView />
-            <IncomeView />
+            <BalanceView accountData={props.accountMovements} dataHandler={props.setAccountHandler} />
+            <IncomeView incomeData={props.accountMovements.incomes} accountData={props.accountMovements} dataHandler={props.setAccountHandler} />
             <ExpensesView />
           </section>
           <section className="flex flex-col">

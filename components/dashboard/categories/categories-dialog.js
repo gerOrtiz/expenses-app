@@ -1,8 +1,8 @@
 'use client';
 
-import AccountCategoriesContext from "@/components/providers/account-categories-context";
+import AccountDataContext from "@/components/providers/account-recurrent-context";
 import { createCategories } from "@/lib/user/bank-account";
-import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faL, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
@@ -10,21 +10,31 @@ import {
   DialogHeader, IconButton, Input, List, ListItem,
   ListItemSuffix, Typography
 } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 
 export default function CategoriesDialog() {
   const [isOpen, setIsOpen] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const handleOpen = () => setIsOpen((cur) => !cur);
-  const categoriesListCtx = useContext(AccountCategoriesContext);
+  const accountRecurrentCtx = useContext(AccountDataContext);
+
+  useEffect(() => {
+    const recurrentData = accountRecurrentCtx.getAccountData();
+    if (recurrentData) setCategoryList(recurrentData.categories);
+  }, [accountRecurrentCtx]);
 
   async function saveCategories() {
     //Verify if no categories first
+    setIsSaving(true);
     const response = await createCategories(categoryList);
-    console.log(response);
-    categoriesListCtx.updateCategoriesList(categoryList);
+    let newAccountData = {};
+    if (accountRecurrentCtx.getAccountData() != null) newAccountData = { ...accountRecurrentCtx.getAccountData() };
+    newAccountData.categories = categoryList;
+    accountRecurrentCtx.updateAccountData(newAccountData);
+    setIsSaving(false);
     handleOpen();
   }
 
@@ -107,6 +117,7 @@ export default function CategoriesDialog() {
           variant="gradient"
           color="green"
           onClick={saveCategories}
+          loading={isSaving}
         >
           <span>Guardar</span>
         </Button>
