@@ -29,7 +29,7 @@ export default function AccountLayout({ data }) {
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
 
-        {account && <section> <AccountWrapper accountMovements={account} setAccountHandler={setAccount} /></section>}
+        {account && <section> <AccountWrapper accountMovements={account} /></section>}
         {!account &&
           <section className="flex items-center justify-center">
             <Card className="w-96">
