@@ -33,7 +33,7 @@ export default function AccountLayout({ data }) {
         {!account &&
           <section className="flex items-center justify-center">
             <Card className="w-96">
-              <CardBody>
+              <CardBody className="flex flex-col gap-4">
                 No cuentas con saldo anterior. Ingresa saldo inicial para poder continuar
                 <Input label="Saldo inicial" type="number" step={0.01} value={initialAmount} onChange={(event) => setInitialAmount(event.target.value)} />
               </CardBody>

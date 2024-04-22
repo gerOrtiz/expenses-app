@@ -58,7 +58,7 @@ export default function SavingPotsView({ accountData, dataHandler }) {
             <form className="flex flex-row gap-4 justify-center" onSubmit={addSavingPot}>
               <Input type="text" label="Nombre" containerProps={{ className: "min-w-[24px] max-w-[160px] flex" }}
                 value={name} onChange={(ev) => setName(ev.target.value)} />
-              <Input type="number" label="Monto" min={0.1} step={0.1} containerProps={{ className: "min-w-[24px] max-w-[100px] flex" }}
+              <Input type="number" label="Monto" min={0.01} step={0.01} containerProps={{ className: "min-w-[24px] max-w-[100px] flex" }}
                 value={amount} onChange={(ev) => setAmount(ev.target.value)} />
               {!isSubmitting && <IconButton variant="outlined" type="submit" disabled={amount <= 0 || !name}>
                 <FontAwesomeIcon icon={faPlus} />

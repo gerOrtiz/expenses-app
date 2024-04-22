@@ -68,7 +68,7 @@ export default function TableView({ submitHandler }) {
               onChange={event => setCardRef(event.target.value)}
               size="lg" />
           </CardBody>
-          <CardFooter className="pt-0">
+          <CardFooter className="pt-0 flex justify-center">
             <Button variant="gradient" loading={pending} type="submit">
               Aceptar
             </Button>

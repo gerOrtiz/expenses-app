@@ -29,7 +29,7 @@ export default function TableWrapper(props) {
 
   return (<>
     <section className="grid grid-flow-row mb-4 gap-x-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-      {(tableData.pending.length > 0 || tableData.expenses.length > 0) && <TotalsTables data={tableData.totals} />}
+      {tableData.totals && <TotalsTables data={tableData.totals} />}
       <RemainingIncome remaining={tableData.remaining} totals={tableData.totals} tableId={tableData.id} added={tableData.added} dataCallback={setTableData} />
     </section>
     <section className="grid grid-flow-row gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3">

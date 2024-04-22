@@ -73,6 +73,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
   return (<>
     <Card className="mb-1 w-full overflow-x-hidden overflow-y-auto">
       <CardBody>
+        <Typography variant="lead">Gastos del período</Typography>
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -113,6 +114,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
                       className={`max-w-20 font-sans ${classes.control}`}
                       type="number"
                       min={1}
+                      step={0.01}
                       value={amountRef}
                       onChange={event => setAmountRef(event.target.value)}
                     />}
