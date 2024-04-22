@@ -4,17 +4,35 @@ import AccountDataContext from "@/components/providers/account-recurrent-context
 import { setNewAccount } from "@/lib/user/account-movements";
 import { Button, Card, CardBody, CardFooter, Input } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
+import Joyride from "react-joyride";
 import AccountHeader from "./header";
 import AccountWrapper from "./viewWrapper";
+
 
 export default function AccountLayout({ data }) {
   const accountRecurrentCtx = useContext(AccountDataContext);
   const [account, setAccount] = useState(data.accountMovements);
   const [initialAmount, setInitialAmount] = useState(0);
   const [isPosting, setIsPosting] = useState(false);
+  const [run, setRun] = useState(false);
+
+  const steps = [
+    {
+      target: '#init-card',
+      content: 'Ingresa un saldo inicial de tu cuenta aquí',
+      disableBeacon: true,
+      title: 'Aún no cuentas con datos para comenzar'
+    },
+    {
+      target: '#add-categories',
+      content: 'No olvides ingresar también categorías para llevar mejor control en futuros reportes',
+      disableBeacon: true
+    }
+  ];
 
   useEffect(() => {
     if (data.recurrentData) accountRecurrentCtx.updateAccountData(data.recurrentData);
+    if (!data.recurrentData && !data.accountMovements) setRun(true);
   }, [data, accountRecurrentCtx]);
 
   async function initilizeAccount() {
@@ -25,6 +43,7 @@ export default function AccountLayout({ data }) {
   }
 
   return (<>
+    <Joyride steps={steps} run={run} locale={{ back: 'Atrás', close: 'Cerrar', last: 'Ir a último', next: 'Siguiente' }} />
     <AccountHeader />
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
@@ -32,7 +51,7 @@ export default function AccountLayout({ data }) {
         {account && <section> <AccountWrapper accountMovements={account} /></section>}
         {!account &&
           <section className="flex items-center justify-center">
-            <Card className="w-96">
+            <Card id="init-card" className="w-96">
               <CardBody className="flex flex-col gap-4">
                 No cuentas con saldo anterior. Ingresa saldo inicial para poder continuar
                 <Input label="Saldo inicial" type="number" step={0.01} value={initialAmount} onChange={(event) => setInitialAmount(event.target.value)} />
