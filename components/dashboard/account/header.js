@@ -23,11 +23,11 @@ export default function AccountHeader() {
         </Typography>
         <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
           <li className="p-1 font-medium">
-            <Button variant="text" onClick={() => setShowCategoriesDialog((cur) => !cur)}>Categorías</Button>
+            <Button id="add-categories" variant="text" onClick={() => setShowCategoriesDialog((cur) => !cur)}>Categorías</Button>
             {showCategoriesDialog && <CategoriesDialog />}
           </li>
           <li className="p-1 font-medium">
-            <Button variant="text">Cerrar periodo</Button>
+            <Button variant="text" disabled>Cerrar periodo</Button>
           </li>
         </ul>
       </div>
