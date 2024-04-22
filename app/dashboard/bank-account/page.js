@@ -1,6 +1,6 @@
 import AccountLayout from "@/components/dashboard/account/layout";
 import TSpinner from "@/components/ui/spinner";
-import { getAccountData } from "@/lib/user/bank-account";
+import { getAccountData } from "@/lib/user/account-movements";
 import { Suspense } from "react";
 
 async function AccountView() {

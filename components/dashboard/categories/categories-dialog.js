@@ -1,7 +1,7 @@
 'use client';
 
 import AccountDataContext from "@/components/providers/account-recurrent-context";
-import { createCategories } from "@/lib/user/bank-account";
+import { createCategories } from "@/lib/user/account-movements";
 import { faCheck, faL, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

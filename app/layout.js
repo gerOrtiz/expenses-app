@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html className="min-h-screen" lang="en">
       <script async src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
       <body className={inter.className}>
         <Providers>

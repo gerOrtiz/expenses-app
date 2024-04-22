@@ -24,14 +24,14 @@ export default function MainHeader() {
         <nav className={classes.nav}>
           <ul>
             {!session && !status != 'loading' && (<li>
-              <Link href="/user">Register/login</Link>
+              <Link href="/user">Registrate / Inicia sesión</Link>
             </li>)}
 
             {session && status != 'loading' && (<>
               <li>
                 <Link href="/dashboard">Dashboard</Link>
               </li><li>
-                <button onClick={logoutHandler}>Logout</button>
+                <button onClick={logoutHandler}>Cierra sesión</button>
               </li>
             </>)}
           </ul>

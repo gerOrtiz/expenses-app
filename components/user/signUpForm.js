@@ -31,21 +31,21 @@ export default function SignUpForm() {
   return (<>
     <form className={classes.form} action={formAction}>
       <p>
-        <label htmlFor="name">Your name</label>
+        <label htmlFor="name">Nombre</label>
         <input type="text" id="name" name="name" required />
       </p>
       <p>
-        <label htmlFor="email">Your email</label>
+        <label htmlFor="email">Correo electrónico</label>
         <input type="email" id="email" name="email" required />
       </p>
       <p>
-        <label htmlFor="title">Passsword</label>
+        <label htmlFor="title">Contraseña</label>
         <input type="password" id="title" name="password" minLength={7} required />
       </p>
 
       {state.message && <p>{state.message}</p>}
       <p className={classes.actions}>
-        <SubmitButton text="Sign up" />
+        <SubmitButton text="Registrate" />
       </p>
     </form>
   </>);
