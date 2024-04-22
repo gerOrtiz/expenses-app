@@ -53,7 +53,7 @@ export default function WithdrawalsView({ accountData, dataHandler }) {
         <CardBody className="flex flex-col">
           <div className="flex-col mb-4">
             <form className="flex flex-row gap-4 justify-center" onSubmit={addWithdrawal}>
-              <Input type="number" label="Monto" min={0.1} step={0.1} containerProps={{ className: "min-w-[24px] max-w-[100px] flex" }}
+              <Input type="number" label="Monto" min={0.1} step={0.01} containerProps={{ className: "min-w-[24px] max-w-[100px] flex" }}
                 value={amount} onChange={(ev) => setAmount(ev.target.value)} />
               {!isSubmitting && <IconButton variant="outlined" type="submit" disabled={amount <= 0} >
                 <FontAwesomeIcon icon={faPlus} />

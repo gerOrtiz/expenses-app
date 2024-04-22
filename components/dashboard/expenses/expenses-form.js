@@ -92,7 +92,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
               label="Monto"
               type="number"
               min={1}
-              step={0.1}
+              step={0.01}
               value={amount}
               onChange={event => setAmount(event.target.value)}
             />

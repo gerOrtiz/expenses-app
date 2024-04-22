@@ -15,7 +15,8 @@ import IncomeForm from "../income/income-form";
 
 export default function RemainingIncome({ remaining, totals, added, tableId, dataCallback }) {
   const totalPending = totals.pending_remain.cash + totals.pending_remain.card;
-  const positiveBalance = (remaining.cash + remaining.card) - totalPending;
+  let positiveBalance = (remaining.cash + remaining.card) - totalPending;
+  positiveBalance = positiveBalance.toFixed(2);
   const [lastAdded, setLastAdded] = useState('');
   const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
 
@@ -47,7 +48,7 @@ export default function RemainingIncome({ remaining, totals, added, tableId, dat
             <Typography variant="paragraph" color="blue-gray" className="mb-2 text-right">
               Tarjeta:
             </Typography>
-            <Typography variant="h6" color={remaining.cash > 1 ? "green" : "red"} className="mb-2 text-left">
+            <Typography variant="h6" color={remaining.card > 1 ? "green" : "red"} className="mb-2 text-left">
               ${remaining.card}
             </Typography>
           </div>
