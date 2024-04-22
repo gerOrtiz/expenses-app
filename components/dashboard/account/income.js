@@ -1,6 +1,6 @@
 'use client';
 
-import { updateIncomeList } from "@/lib/user/bank-account";
+import { updateIncomeList } from "@/lib/user/account-movements";
 import { faCheck, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, CardBody, CardHeader, IconButton, Input, Spinner, Typography } from "@material-tailwind/react";
@@ -134,11 +134,11 @@ export default function IncomeView({ accountData, dataHandler }) {
     <section className="flex mb-4">
       <Card className="relative w-full">
         <CardHeader className="m-0 text-right " color="lime">
-          <Typography variant="h5">Ingresos</Typography>
+          <Typography variant="h5" className="mr-5">Ingresos</Typography>
         </CardHeader>
         <CardBody className="grid grid-cols-3">
           <div className="flex flex-col mt-3 items-center col-span-2 gap-3">
-            <Typography variant="h4">Total ${incomeTotal}</Typography>
+            <Typography variant="h4" >Total ${incomeTotal}</Typography>
             {!showIncomeForm && <Button variant="outlined" className="flex" onClick={() => setShowIncomeForm(true)}>
               Nuevo ingreso
             </Button>}

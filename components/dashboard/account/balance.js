@@ -4,12 +4,14 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
 export default function BalanceView({ accountData }) {
-  const [totalExpenses, setTotalExpenses] = useState(accountData ? accountData.total_expenses : null);
+  const [totalExpenses, setTotalExpenses] = useState(accountData ? accountData.total_expenditure : 0);
   const [remainingIncome, setRemainingIncome] = useState(accountData.remaining);
 
   useEffect(() => {
     if (accountData.remaining != remainingIncome) setRemainingIncome(accountData.remaining);
-    if (accountData.total_expenses && accountData.total_expenses != totalExpenses) setTotalExpenses(accountData.total_expenses);
+    if (accountData.total_expenditure || accountData.total_expenditure != totalExpenses) {
+      setTotalExpenses(accountData.total_expenditure);
+    }
   }, [accountData, totalExpenses, remainingIncome])
 
   return (<>

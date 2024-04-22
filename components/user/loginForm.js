@@ -32,18 +32,18 @@ export default function LoginForm() {
   return (<>
     <form className={classes.form} onSubmit={submitHandler}>
       <p>
-        <label htmlFor="email">Your email</label>
+        <label htmlFor="email">Correo electrónico</label>
         <input type="email" id="email" name="email" ref={emailRef} required />
       </p>
       <p>
-        <label htmlFor="title">Passsword</label>
+        <label htmlFor="title">Contraseña</label>
         <input type="password" id="title" name="password" minLength={7} ref={passwordRef} required />
       </p>
 
       {state.message && <p>{state.message}</p>}
       <p className={classes.actions}>
         <button disabled={submitting}>
-          {submitting ? 'Signing in...' : 'Log In'}
+          {submitting ? 'Iniciando sesión...' : 'Inicia sesión'}
         </button>
       </p>
     </form>

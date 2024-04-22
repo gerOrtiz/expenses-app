@@ -1,7 +1,7 @@
 'use client';
 
 import AccountDataContext from "@/components/providers/account-recurrent-context";
-import { setNewAccount } from "@/lib/user/bank-account";
+import { setNewAccount } from "@/lib/user/account-movements";
 import { Button, Card, CardBody, CardFooter, Input } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
 import AccountHeader from "./header";

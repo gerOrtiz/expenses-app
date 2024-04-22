@@ -18,10 +18,10 @@ export default function UserFormPage() {
   return (
     <>
       <header className={classes.header}>
-        <h1>
-          Comienza por crear una cuenta
+        <h1 className="text-5xl mb-4 text-blue-900">
+          Registrate o incia sesión
         </h1>
-        <p>{isSigningUp ? 'Already have an account?' : ''} <span className={classesNames} onClick={setSigningHandler}>{isSigningUp ? 'Log In' : 'Sign up'}</span></p>
+        <p className="text-blue-950">{isSigningUp ? '¿Ya tienes una cuenta?' : '¿Aún no tienes una cuenta?'} <span className={classesNames} onClick={setSigningHandler}>{isSigningUp ? 'Inicia sesión' : 'Registrate'}</span></p>
       </header>
       <main className={classes.main}>
         {isSigningUp && <SignUpForm></SignUpForm>}
