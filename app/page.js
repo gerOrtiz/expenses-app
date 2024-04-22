@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <div className="flex flex-col py-2">
         <main className="relative flex-1 container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
-          <section className="flex grid xl:grid-cols-3 sm:grid-cols-2 w-full">
+          <section className="flex grid xl:grid-cols-3 sm:grid-cols-2 w-full mb-6 mt-6 p-4">
             <Image src={logoImage} alt="Logo" className="w-full object-cover" priority />
             <div className="flex flex-col gap-6 xl:col-span-2">
               <Typography variant="h1" color="blue" textGradient className="uppercase font-bold text-6xl">
