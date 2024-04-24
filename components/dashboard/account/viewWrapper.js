@@ -1,4 +1,5 @@
 'use client';
+import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import BalanceView from "./balance";
 import ExpensesView from "./expenses";
@@ -19,6 +20,9 @@ export default function AccountWrapper({ accountMovements }) {
             <ExpensesView accountData={account} dataHandler={setAccount} />
           </section>
           <section className="flex flex-col">
+            <Typography variant="h6" className="text-right mb-3" >
+              Fecha de inicio: {new Date(account.sDate).toLocaleDateString()}
+            </Typography>
             <SavingPotsView accountData={account} dataHandler={setAccount} />
             <WithdrawalsView accountData={account} dataHandler={setAccount} />
           </section>

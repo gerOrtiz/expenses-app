@@ -13,7 +13,7 @@ export default function AccountPage() {
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
         <section>
-          <div className="flex flex-col"><TSpinner /><p>Fetching data...</p></div>
+          <div className="flex flex-col"><TSpinner /><p>Cargando..</p></div>
         </section>
       </div>
     </main>

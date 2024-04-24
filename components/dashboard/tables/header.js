@@ -23,8 +23,8 @@ function DialogContent({ handleOpen, currentExpenses, expensesContext }) {
       setMessage(response.message);
       expensesContext.updateExpensesTable(null);
       setTimeout(async () => {
-        await throwCache();
         router.replace('/dashboard');
+        await throwCache();
       }, 2000);
     }
     else if (response && response.error) { setErrorMessage(response.error); }
