@@ -27,6 +27,11 @@ export default function AccountLayout({ data }) {
       target: '#add-categories',
       content: 'No olvides ingresar también categorías para llevar mejor control en futuros reportes',
       disableBeacon: true
+    },
+    {
+      target: '#close-period',
+      content: 'Cierra el período aquí una vez que se haya concluido',
+      disableBeacon: true
     }
   ];
 
@@ -43,7 +48,8 @@ export default function AccountLayout({ data }) {
   }
 
   return (<>
-    <Joyride steps={steps} run={run} locale={{ back: 'Atrás', close: 'Cerrar', last: 'Ir a último', next: 'Siguiente' }} />
+    {!data.recurrentData && !data.accountMovements &&
+      <Joyride steps={steps} run={run} continuous showProgress showSkipButton locale={{ back: 'Atrás', close: 'Cerrar', last: 'Cerrar', next: 'Siguiente' }} />}
     <AccountHeader />
     <main className="flex min-h-max flex-col py-2">
       <div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">

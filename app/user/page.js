@@ -1,5 +1,4 @@
 'use client';
-import SubmitButton from '@/components/ui/submitButton';
 import LoginForm from '@/components/user/loginForm';
 import SignUpForm from '@/components/user/signUpForm';
 import { useState } from 'react';

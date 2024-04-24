@@ -2,7 +2,7 @@
 
 import AccountDataContext from "@/components/providers/account-recurrent-context";
 import { createCategories } from "@/lib/user/account-movements";
-import { faCheck, faL, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
@@ -13,12 +13,15 @@ import {
 import { useContext, useEffect, useState } from "react";
 
 
-export default function CategoriesDialog() {
+export default function CategoriesDialog({ closeHandler }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const handleOpen = () => setIsOpen((cur) => !cur);
+  const handleOpen = () => {
+    if (closeHandler) closeHandler(false);
+    setIsOpen((cur) => !cur);
+  };
   const accountRecurrentCtx = useContext(AccountDataContext);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ export default function CategoriesDialog() {
     accountRecurrentCtx.updateAccountData(newAccountData);
     setIsSaving(false);
     handleOpen();
+    if (closeHandler) closeHandler(false);
   }
 
   function addNewCategory(newCategory) {
