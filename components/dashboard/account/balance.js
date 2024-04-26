@@ -4,7 +4,7 @@ import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
 export default function BalanceView({ accountData }) {
-  const [totalExpenses, setTotalExpenses] = useState(accountData ? accountData.total_expenditure : 0);
+  const [totalExpenses, setTotalExpenses] = useState(accountData.total_expenditure);
   const [remainingIncome, setRemainingIncome] = useState(accountData.remaining);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function BalanceView({ accountData }) {
               Saldo Disponible
             </Typography>
             <Typography variant="h3" color="blue-gray">
-              ${remainingIncome}
+              ${remainingIncome.toFixed(2)}
             </Typography>
           </CardBody>
         </Card>
