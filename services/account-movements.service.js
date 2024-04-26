@@ -51,7 +51,6 @@ function calculateTotal(dataArray) {
 export function setRemaining() {
   if (!account.remaining) return null;
   let totalRemaining = account.initBalance;
-  console.log('remaining: ', totalRemaining);
   let totalIncomes, totalWithdrawals, totalSavingPots, totalExpenses, totalExpenditure;
   totalIncomes = calculateTotal(account.incomes);
   totalWithdrawals = calculateTotal(account.withdrawals);
@@ -61,7 +60,6 @@ export function setRemaining() {
   totalRemaining += totalIncomes;
   totalRemaining -= totalExpenditure;
   account.total_expenditure = totalExpenditure;
-  console.log('total: ', totalRemaining);
   account.remaining = totalRemaining;
   return { remaining: account.remaining, total_expenditure: account.total_expenditure };
 }

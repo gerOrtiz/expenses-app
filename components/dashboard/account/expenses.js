@@ -104,7 +104,7 @@ export default function ExpensesView({ accountData, dataHandler }) {
   </>)
 }
 
-function ExpenseForm({ expensesData, setExpensesData, accountData, dataHandler }) {
+function ExpenseForm({ expensesData, setExpensesData, setTotalExpenses, accountData, dataHandler }) {
   const categoriesCtx = useContext(AccountDataContext);
   const [categoriesData, setCategoriesData] = useState([]);
   const [subcategoriesData, setSubcategoriesData] = useState([]);
