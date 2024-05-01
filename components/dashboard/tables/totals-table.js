@@ -49,7 +49,7 @@ function SingleTable({ tableTitle, data }) {
                 </td>
                 <td className="p-4">
                   <Typography variant="small" color="blue-gray" className="font-normal">
-                    {'$' + data.card}
+                    {'$' + data.card.toFixed(2)}
                   </Typography>
                 </td>
               </tr>

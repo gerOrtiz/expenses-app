@@ -10,7 +10,7 @@ function filterPendingByType(typeSelected, pendingArray) {
   return newArray;
 }
 
-export default function ExpensesForm({ isPending, tableId, currentExpenses, callback, updateTableHandler }) {
+export default function ExpensesForm({ isPending, tableId, currentExpenses, callback, updateTableHandler, setParentOpen }) {
   const message = isPending ? 'Ingresa un gasto pendiente por pagar' : 'Ingresa un gasto para agregarlo a la tabla';
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState(1);
@@ -22,7 +22,10 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
   const [pending_id, setPendingId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const tableCtx = useContext(SimpleExpensesContext);
-  const handleOpen = () => setOpen((cur) => !cur);
+  const handleOpen = () => {
+    setOpen((cur) => !cur);
+    if (setParentOpen) setParentOpen(false);
+  };
   const handlePendingFlag = () => setIsPendingPayment((val) => !val);
 
   async function submitHandler(event) {
@@ -52,6 +55,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
     setIsPendingPayment(false);
     if (newData && callback) callback(newData);
     if (newData && updateTableHandler) updateTableHandler(newData.expenses);
+    if (setParentOpen) setParentOpen(false);
   }
 
   function selectType(val) {

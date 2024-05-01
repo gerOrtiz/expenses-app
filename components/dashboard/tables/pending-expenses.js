@@ -51,7 +51,7 @@ export default function PendingExpenses({ pending, tableId, dataCallback }) {
                   </td>
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {'$' + p.amount}
+                      {'$' + p.amount.toFixed(2)}
                     </Typography>
                   </td>
                   <td className="p-4">
@@ -67,7 +67,7 @@ export default function PendingExpenses({ pending, tableId, dataCallback }) {
       </CardBody>
       <CardFooter>
         <Button onClick={handleOpen}>Agregar gasto previsto</Button>
-        {isOpen && <ExpensesForm isPending={true} tableId={tableId} currentExpenses={pending} callback={dataCallback} />}
+        {isOpen && <ExpensesForm isPending={true} tableId={tableId} currentExpenses={pending} callback={dataCallback} setParentOpen={setOpen} />}
       </CardFooter>
     </Card>
   </>);
