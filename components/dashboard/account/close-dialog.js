@@ -11,7 +11,7 @@ import { useState, useContext } from "react";
 
 export default function CloseAccountPeriod({ closeHandler }) {
   const [openDialog, setOpenDialog] = useState(true);
-  const [isSubmtting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [successClose, setSuccessClose] = useState(false);
   const router = useRouter();
   const accountRecurrentCtx = useContext(AccountDataContext);
@@ -45,21 +45,21 @@ export default function CloseAccountPeriod({ closeHandler }) {
         </Typography>
       </DialogHeader>
       <DialogBody >
-        {!isSubmtting && successClose &&
+        {!isSubmitting && successClose &&
           <div className="flex flex-col text-center">
             <Typography variant="h1" color="green">
               <FontAwesomeIcon icon={faCheckCircle} />
             </Typography>
             <Typography variant="lead" color="green">Periodo cerrado</Typography>
           </div>}
-        {isSubmtting &&
+        {isSubmitting &&
           <div className="flex flex-col text-center items-center">
             <Spinner className="h-12 w-12" />
             <Typography variant="lead" >Cerrando periodo...</Typography>
           </div>}
       </DialogBody>
       <DialogFooter>
-        <Button variant="outlined" color="green" disabled={isSubmtting || successClose} onClick={closePeriod}>Continuar</Button>
+        <Button variant="outlined" color="green" disabled={isSubmitting || successClose} onClick={closePeriod}>Continuar</Button>
       </DialogFooter>
     </Dialog>
   </>);
