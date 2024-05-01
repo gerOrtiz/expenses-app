@@ -34,7 +34,8 @@ export default function IncomeForm({ tableId, dataCallback }) {
     const newIncome = {
       cash: parseFloat(cashRef),
       card: parseFloat(cardRef),
-      isWithdrawal: isWithdrawalView
+      isWithdrawal: isWithdrawalView,
+      date: new Date().getTime()
     };
 
     const newData = await addNewIncome(tableId, newIncome);

@@ -24,7 +24,9 @@ export default function RemainingIncome({ remaining, totals, added, tableId, dat
     if (added) {
       const cash = added[added.length - 1].cash > 0 ? `Efectivo: $${added[added.length - 1].cash} ` : '';
       const card = added[added.length - 1].card > 0 ? `Tarjeta: $${added[added.length - 1].card}` : '';
-      setLastAdded(cash + card);
+      const date = added[added.length - 1].date ? new Date(added[added.length - 1].date).toLocaleDateString() : '';
+      const lastAddedString = date ? date + ' - ' + cash + card : cash + card;
+      setLastAdded(lastAddedString);
     }
   }, [added]);
 
