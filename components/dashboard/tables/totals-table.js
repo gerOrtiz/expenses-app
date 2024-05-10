@@ -63,7 +63,7 @@ function SingleTable({ tableTitle, data }) {
                 </td>
                 <td className="p-4">
                   <Typography variant="small" color="black" className="font-normal">
-                    $ {data.card + data.cash}
+                    $ {(data.card + data.cash).toFixed(2)}
                   </Typography>
                 </td>
               </tr>
