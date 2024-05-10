@@ -47,7 +47,7 @@ export default function SavingPotsView({ accountData, dataHandler }) {
         <CardHeader className="m-0 text-right" color="amber">
           <Typography variant="h6" className="mr-2">
             Apartados
-            <Tooltip content="Los apartados se descuentan del saldo disponible">
+            <Tooltip content="Apartados de dinero, manten parte de tus ingresos fuera del saldo disponible. Al ingresar un apartado, se descuenta del saldo actual">
               <FontAwesomeIcon className="ml-2 cursor-pointer" icon={faInfoCircle} />
             </Tooltip>
           </Typography>
