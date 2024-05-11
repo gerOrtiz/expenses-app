@@ -3,7 +3,7 @@ import classes from './tables.module.css'
 import { faCheck, faPencil, faTrash, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardBody, CardFooter, Checkbox, IconButton, Input, Option, Select, Typography } from '@material-tailwind/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import ExpensesForm from '../expenses/expenses-form';
 import DeleteDialog from '../expenses/delete-dialog';
 import { updateExpenses } from '@/lib/user/simple-expenses';
