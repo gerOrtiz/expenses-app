@@ -1,0 +1,9 @@
+input.amount {
+  max-width: 55px;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #263238;
+  border-radius: 0.25rem;
+  border: 2px solid #00acc1;
+  text-align: center;
+}
