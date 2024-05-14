@@ -63,3 +63,8 @@ export function setRemaining() {
   account.remaining = totalRemaining;
   return { remaining: account.remaining, total_expenditure: account.total_expenditure };
 }
+
+export function setCumulative(cumulativeArray) {
+  account.cumulative_section = cumulativeArray;
+  return account;
+}

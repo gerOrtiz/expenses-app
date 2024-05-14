@@ -2,6 +2,7 @@
 import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import BalanceView from "./balance";
+import CummulativeView from "./cumulative";
 import ExpensesView from "./expenses";
 import IncomeView from "./income";
 import SavingPotsView from "./saving-pots";
@@ -25,6 +26,7 @@ export default function AccountWrapper({ accountMovements }) {
             </Typography>
             <SavingPotsView accountData={account} dataHandler={setAccount} />
             <WithdrawalsView accountData={account} dataHandler={setAccount} />
+            <CummulativeView accountData={account} />
           </section>
         </div>
       </div>
