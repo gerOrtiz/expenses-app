@@ -57,11 +57,13 @@ export function setExpenses(expensesArray, existingTable) {
 
 function processRemaining() {
 	let totalAdded = { cash: 0, card: 0, withdrawal: 0 };
-	currentExpenses.added.forEach(element => {
-		totalAdded.cash += element.cash;
-		totalAdded.card += element.card;
-		if (element.isWithdrawal) totalAdded.withdrawal += element.cash;
-	});
+	if (currentExpenses.added) {
+		currentExpenses.added.forEach(element => {
+			totalAdded.cash += element.cash;
+			totalAdded.card += element.card;
+			if (element.isWithdrawal) totalAdded.withdrawal += element.cash;
+		});
+	}
 	const totalIncome = {
 		cash: currentExpenses.income.cash + totalAdded.cash,
 		card: (currentExpenses.income.card + totalAdded.card) - totalAdded.withdrawal
