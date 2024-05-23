@@ -68,3 +68,11 @@ export function setCumulative(cumulativeArray) {
   account.cumulative_section = cumulativeArray;
   return account;
 }
+
+export function restartCumulativeMovements(cumulative_section) {
+  if (!cumulative_section || cumulative_section.length <= 0) return [];
+  cumulative_section.forEach(element => {
+    element.movements = 0;
+  });
+  return cumulative_section;
+}
