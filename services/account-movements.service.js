@@ -63,3 +63,11 @@ export function setRemaining() {
   account.remaining = totalRemaining;
   return { remaining: account.remaining, total_expenditure: account.total_expenditure };
 }
+
+export function restartCumulativeMovements(cumulative_section) {
+  if (!cumulative_section || cumulative_section.length <= 0) return [];
+  cumulative_section.forEach(element => {
+    element.movements = 0;
+  });
+  return cumulative_section;
+}
