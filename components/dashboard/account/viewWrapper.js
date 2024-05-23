@@ -1,6 +1,7 @@
 'use client';
+import { getUser } from "@/lib/user/user";
 import { Typography } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BalanceView from "./balance";
 import CummulativeView from "./cumulative";
 import ExpensesView from "./expenses";
@@ -10,6 +11,17 @@ import WithdrawalsView from "./withdrawals";
 
 export default function AccountWrapper({ accountMovements }) {
   const [account, setAccount] = useState(accountMovements);
+  const [showCumulative, setShowCumulative] = useState(false);
+
+  async function retrieveSession() {
+    const session = await getUser();
+    if (!session) return;
+    if (session.user.email == 'gerson.ortiz@t1paginas.com') setShowCumulative(true);
+  };
+
+  useEffect(() => {
+    retrieveSession();
+  }, []);
 
   return (
     <main className="flex min-h-max flex-col py-2">
@@ -26,7 +38,7 @@ export default function AccountWrapper({ accountMovements }) {
             </Typography>
             <SavingPotsView accountData={account} dataHandler={setAccount} />
             <WithdrawalsView accountData={account} dataHandler={setAccount} />
-            <CummulativeView accountData={account} />
+            {showCumulative && <CummulativeView accountData={account} />}
           </section>
         </div>
       </div>

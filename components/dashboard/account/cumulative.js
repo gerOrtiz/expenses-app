@@ -35,7 +35,7 @@ export default function CumulativeView(props) {
     ev.preventDefault();
     setIsSubmitting(true);
     const cumulativeObj = {
-      name, amount: parseFloat(amount), suggestedAmount: parseFloat(amount), movements: 0
+      name, amount: parseFloat(amount), suggestedAmount: parseFloat(amount), movements: parseFloat(amount)
     };
     let newCumulativeArray = [...cumulativeArray];
     newCumulativeArray.push(cumulativeObj);
