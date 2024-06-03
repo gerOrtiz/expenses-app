@@ -81,7 +81,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
                 <th key={title} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
                   <Typography
                     variant="small"
-                    color="blue-gray"
+                    color="black"
                     className="font-normal leading-none opacity-70"
                   >
                     {title}
@@ -94,7 +94,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
             {expensesList.map((expense, index) => (
               <tr key={index} className="even:bg-blue-gray-50/50">
                 <td className="p-4">
-                  {indexBeingEdited != index && <Typography variant="small" color="blue-gray" className="font-normal">
+                  {indexBeingEdited != index && <Typography variant="small" color="black" className="font-normal">
                     {expense.description}
                   </Typography>}
                   {isEditing && indexBeingEdited == index &&
@@ -106,7 +106,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
                     />}
                 </td>
                 <td className="p-4">
-                  {indexBeingEdited != index && <Typography variant="small" color="blue-gray" className="font-normal">
+                  {indexBeingEdited != index && <Typography variant="small" color="black" className="font-normal">
                     {'$' + expense.amount}
                   </Typography>}
                   {isEditing && indexBeingEdited == index &&
@@ -120,7 +120,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
                     />}
                 </td>
                 <td className="p-4">
-                  {indexBeingEdited != index && <Typography variant="small" color="blue-gray" className="font-normal">
+                  {indexBeingEdited != index && <Typography variant="small" color="black" className="font-normal">
                     {typeFilter(expense.type)}
                   </Typography>}
                   {isEditing && indexBeingEdited == index &&
@@ -135,7 +135,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
                   }
                 </td>
                 <td className="p-4">
-                  <Typography variant="small" color="blue-gray" className="font-normal">
+                  <Typography variant="small" color="black" className="font-normal">
                     {dateFilter(expense.date)}
                   </Typography>
                 </td>
