@@ -46,7 +46,7 @@ export default function ExpensesView({ accountData, dataHandler }) {
                     <th key={head} className="border-b p-3 border-orange-600 bg-orange-200">
                       <Typography
                         variant="small"
-                        color="blue-gray"
+                        color="black"
                         className="font-bold leading-none opacity-70"
                       >
                         {head}
@@ -59,27 +59,27 @@ export default function ExpensesView({ accountData, dataHandler }) {
                 {expensesData.map((expense, index) => (
                   <tr key={index} className="even:bg-blue-gray-50/50">
                     <td className="border-b p-4 border-blue-gray-50">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography variant="small" color="black" className="font-normal">
                         {expense.category || 'N/A'}
                       </Typography>
                     </td>
                     <td className="border-b p-4 border-blue-gray-50">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography variant="small" color="black" className="font-normal">
                         {expense.subcategory || 'N/A'}
                       </Typography>
                     </td>
                     <td className="border-b p-4 border-blue-gray-50">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography variant="small" color="black" className="font-normal">
                         ${expense.amount}
                       </Typography>
                     </td>
                     <td className="border-b p-4 border-blue-gray-50">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography variant="small" color="black" className="font-normal">
                         {expense.description}
                       </Typography>
                     </td>
                     <td className="border-b p-4 border-blue-gray-50">
-                      <Typography variant="small" color="blue-gray" className="font-normal">
+                      <Typography variant="small" color="black" className="font-normal">
                         {new Date(expense.date).toLocaleDateString()}
                       </Typography>
                     </td>
@@ -95,8 +95,8 @@ export default function ExpensesView({ accountData, dataHandler }) {
           </div>
         </CardBody>
         <CardFooter className="p-0 mb-3">
-          <Typography variant="paragraph" color="blue-gray" className="font-bold text-center" >
-            Total de gastos: ${totalExpenses}
+          <Typography variant="paragraph" color="black" className="font-bold text-center" >
+            Total de gastos: ${totalExpenses.toFixed(2)}
           </Typography>
         </CardFooter>
       </Card>
@@ -187,7 +187,9 @@ function ExpenseForm({ expensesData, setExpensesData, setTotalExpenses, accountD
         {!isPosting && <IconButton className="flex-none" variant="outlined" type="submit" disabled={amount <= 0 || !description}>
           <FontAwesomeIcon icon={faPlus} />
         </IconButton>}
-        {isPosting && <Spinner className="h-6 w-6" />}
+        {isPosting && <div className="flex items-center">
+          <Spinner className="h-6 w-6" />
+        </div>}
       </form>
     </div>
   );

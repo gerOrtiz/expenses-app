@@ -35,7 +35,7 @@ export default function BalanceView({ accountData }) {
               Egresos del periodo
             </Typography>
             <Typography variant="h3" color="blue-gray">
-              $ {totalExpenses ? totalExpenses : 0}
+              $ {totalExpenses ? totalExpenses.toFixed(2) : 0}
             </Typography>
           </CardBody>
         </Card>
