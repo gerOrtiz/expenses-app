@@ -51,7 +51,7 @@ export default function RemainingIncome({ remaining, totals, added, tableId, dat
               Tarjeta:
             </Typography>
             <Typography variant="h6" color={remaining.card > 1 ? "green" : "red"} className="mb-2 text-left">
-              ${remaining.card}
+              ${remaining.card.toFixed(2)}
             </Typography>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function RemainingIncome({ remaining, totals, added, tableId, dat
               Saldo total:
             </Typography>
             <Typography variant="h6" color="blue-gray" className="mb-2 text-left">
-              ${remaining.cash + remaining.card}
+              ${(remaining.cash + remaining.card).toFixed(2)}
             </Typography>
           </div>
         </div>
