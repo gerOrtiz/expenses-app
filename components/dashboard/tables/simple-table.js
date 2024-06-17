@@ -73,7 +73,7 @@ export default function SimpleTable({ expenses, tableId, dataCallback }) {
   return (<>
     <Card className="mb-1 w-full overflow-x-hidden overflow-y-auto">
       <CardBody>
-        <Typography variant="lead">Gastos del período</Typography>
+        <Typography color="black" variant="lead">Gastos del período</Typography>
         <table className="w-full min-w-max table-auto text-left">
           <thead>
             <tr>
