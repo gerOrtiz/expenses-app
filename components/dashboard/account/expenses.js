@@ -163,17 +163,17 @@ function ExpenseForm({ expensesData, setExpensesData, setTotalExpenses, accountD
     <div className="flex-col mb-4">
       <form className="flex flex-row gap-4 justify-center" onSubmit={submitHandler}>
         {categoriesData.length > 0 &&
-          <Select label="Categoría" containerProps={{ className: "min-w-[24px] max-w-[160px]" }} value={selectedCategory} onChange={(val) => selectCategory(val)} >
+          <Select className="text-black" label="Categoría" containerProps={{ className: "min-w-[24px] max-w-[160px]" }} value={selectedCategory} onChange={(val) => selectCategory(val)} >
             {categoriesData.map((category) => (
-              <Option key={category.name} value={category.name}>{category.name}</Option>
+              <Option className="text-black hover:bg-orange-200 bg-transparent" key={category.name} value={category.name}>{category.name}</Option>
             ))}
           </Select>
         }
         {subcategoriesData.length > 0 &&
-          <Select label="Subcategoría" containerProps={{ className: "min-w-[24px] max-w-[160px]" }}
+          <Select className="text-black" label="Subcategoría" containerProps={{ className: "min-w-[24px] max-w-[160px]" }}
             disabled={subcategoriesData.length == 0} value={selectedSubcategory} onChange={(val) => setSelectedSubcategory(val)}>
             {subcategoriesData.map((subcategory, index) => (
-              <Option key={index} value={subcategory.name}>{subcategory.name}</Option>
+              <Option className="text-black" key={index} value={subcategory.name}>{subcategory.name}</Option>
             ))}
           </Select>
         }
@@ -182,8 +182,9 @@ function ExpenseForm({ expensesData, setExpensesData, setTotalExpenses, accountD
           type="number"
           min={0.1}
           step={0.01}
+          className="text-black"
           containerProps={{ className: "min-w-[24px] max-w-[100px] flex" }} value={amount} onChange={(ev) => setAmount(ev.target.value)} />
-        <Input label="Detalle" type="text" containerProps={{ className: "flex-none max-w-[180px]" }} value={description} onChange={(ev) => setDescription(ev.target.value)} />
+        <Input className="text-black" label="Detalle" type="text" containerProps={{ className: "flex-none max-w-[180px]" }} value={description} onChange={(ev) => setDescription(ev.target.value)} />
         {!isPosting && <IconButton className="flex-none" variant="outlined" type="submit" disabled={amount <= 0 || !description}>
           <FontAwesomeIcon icon={faPlus} />
         </IconButton>}
