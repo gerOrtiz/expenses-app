@@ -55,18 +55,24 @@ export default function DasboardCards() {
           </CardBody>
         </Card>
         <Card className="border border-blue-gray-100 shadow-sm w-full flex-row">
-          <CardHeader shadow={false} floated={false} className="m-0 w-2/5 shrink-0 rounded-r-none">
+          <CardHeader shadow={true} floated={false} className="m-0 w-2/5 shrink-0 rounded-r-none">
             <Image className="h-full w-full object-cover" src={reports} alt="Cuenta" priority />
           </CardHeader>
           <CardBody className="flex flex-col gap-10 w-full">
             <div >
-              <Typography variant="h6" color="gray" className="mb-4 uppercase">
+              <Typography variant="h4" color="blue-gray" className="mb-2">
                 Reportes
               </Typography>
-              <Typography variant="h3" color="blue-gray" className="mb-2">
-                Próximamente
+              <Typography color="gray" className="mb-8 font-normal">
+                Genera estadisticas con la información de tus gastos
               </Typography>
+              {/* <Typography variant="h3" color="blue-gray" className="mb-2">
+                Próximamente
+              </Typography> */}
             </div>
+            <Link href="/dashboard/reports">
+              <Button variant="outlined" color="blue">Comenzar</Button>
+            </Link>
           </CardBody>
         </Card>
       </section>

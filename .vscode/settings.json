@@ -1,0 +1,9 @@
+{
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"files.eol": "\n",
+	"editor.detectIndentation": false,
+	"files.insertFinalNewline": true,
+	"editor.formatOnSave": true,
+	"typescript.tsdk": "node_modules/typescript/lib"
+}
