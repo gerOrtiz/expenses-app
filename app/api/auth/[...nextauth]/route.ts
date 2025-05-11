@@ -28,7 +28,7 @@ export const authOptions = {
 					throw new Error("No user found");
 				}
 				const isValid = await verifyPassword(password, user.password || '');
-				if (!isValid) { client.close(); throw new Error('Invalid password'); }
+				if (!isValid) { client.close(); throw new Error('Email or password invalid'); }
 				client.close();
 				return {
 					id: user._id?.toString() || user.id || '',

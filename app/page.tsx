@@ -3,7 +3,7 @@
 // import { Button, Card, CardBody, CardFooter, CardHeader, Typography } from "@material-tailwind/react";
 // import Link from "next/link";
 
-import LandingpPage from "@/components/landingPage/ladingPage";
+import LandingpPage from "@/components/landingPage/landingPage";
 
 export default function Home() {
 	return (
