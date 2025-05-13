@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Expense Tracker
 
-## Getting Started
+A personal expense tracking application built with Next.js, TypeScript, and Tailwind CSS. This project allows users to track daily expenses, monitor account balances, and visualize spending patterns.
 
-First, run the development server:
+## Project Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This application is designed to help users maintain better financial awareness by:
+- Tracking individual expenses across different categories
+- Monitoring account balances and available funds
+- Planning for upcoming payments and expenses
+- Visualizing spending patterns over time (in development)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technology Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Frontend Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Context API with custom hooks
+- **Data Storage**: MongoDB 
+- **Authentication**: NextAuth.js 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Current Status
 
-## Learn More
+This is a work in progress and personal portfolio project that demonstrates my approach to:
+- Component architecture and reusability
+- State management in React applications
+- TypeScript type safety and organization
+- Responsive design principles
 
-To learn more about Next.js, take a look at the following resources:
+## Roadmap
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Features currently in development:
+- Data visualization with charts and reports
+- Google authentication integration
+- Data export/import functionality
+- Mobile-responsive enhancements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Note for Viewers
 
-## Deploy on Vercel
+This is a personal portfolio project and is not currently accepting external contributions. Feel free to review the code and architecture as a demonstration of my development approach and coding style.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For questions about this project, please reach out to me at ger.ortiz7@gmail.com or connect with me on [LinkedIn]https://www.linkedin.com/in/gersonortizv/.
