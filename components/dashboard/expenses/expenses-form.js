@@ -112,7 +112,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, call
               <Select label="Gasto previsto" value={pending_id} onChange={(val) => setPendingId(val)}>
                 {filteredPending.map(pending => (
                   <Option key={pending.id} value={pending.id + ''}>
-                    <span>{pending.description}: </span><span>${pending.amount} </span><span>({pending.type == 'cash' ? 'Efectivo' : 'Tarjeta'})</span>
+                    <span>{pending.description}: </span><span>${pending.amount.toFixed(2)} </span><span>({pending.type == 'cash' ? 'Efectivo' : 'Tarjeta'})</span>
                   </Option>
                 ))}
               </Select>}

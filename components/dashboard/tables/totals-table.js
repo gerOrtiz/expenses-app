@@ -11,7 +11,7 @@ function SingleTable({ tableTitle, data }) {
     <Card className="mb-1 w-full overflow-hidden">
       <CardBody>
         <section className="relative flex flex-col">
-          <Typography variant="h6" color="blue-gray" className="font-normal">{tableTitle}</Typography>
+          <Typography variant="h6" color="black" className="font-normal">{tableTitle}</Typography>
           <table className="w-full min-w-max table-auto text-left">
             <thead>
               <tr>
@@ -36,7 +36,7 @@ function SingleTable({ tableTitle, data }) {
                   </Typography>
                 </td>
                 <td className="p-4">
-                  <Typography variant="small" color="blue-gray" className="font-normal">
+                  <Typography variant="small" color="black" className="font-normal">
                     {'$' + data.cash}
                   </Typography>
                 </td>
@@ -48,7 +48,7 @@ function SingleTable({ tableTitle, data }) {
                   </Typography>
                 </td>
                 <td className="p-4">
-                  <Typography variant="small" color="blue-gray" className="font-normal">
+                  <Typography variant="small" color="black" className="font-normal">
                     {'$' + data.card.toFixed(2)}
                   </Typography>
                 </td>
