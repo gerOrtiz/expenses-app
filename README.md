@@ -27,6 +27,15 @@ This is a work in progress and personal portfolio project that demonstrates my a
 - TypeScript type safety and organization
 - Responsive design principles
 
+## Development Branches
+
+The repository is organized into the following branches:
+
+- **master**: Stable version of the application with core functionality (currently working on js)
+- **cumulative-table**: Latest development branch with recent changes and enhancements (not fully integrated)
+
+For the most recent work and features in development, please check the `cumulative-table` branch.
+
 ## Roadmap
 
 Features currently in development:
@@ -41,4 +50,4 @@ This is a personal portfolio project and is not currently accepting external con
 
 ## Contact
 
-For questions about this project, please reach out to me at ger.ortiz7@gmail.com or connect with me on [LinkedIn]https://www.linkedin.com/in/gersonortizv/.
+For questions about this project, please reach out to me at ger.ortiz7@gmail.com or connect with me on [LinkedIn] https://www.linkedin.com/in/gersonortizv/.
