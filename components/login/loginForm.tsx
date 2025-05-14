@@ -80,8 +80,8 @@ export default function LoginForm({ onChangeView }: LoginFormPropsI) {
 							</button>
 						</p> */}
 						<div className={classes.actions} >
-							<Button type="submit" variant="filled" color="blue" className="hover:bg-blue-600" disabled={!emailValue || !isEmailValid || !isValidPassword || submitting}>
-								{!submitting && `Log in`}
+							<Button type="submit" variant="filled" color="blue" className="flex min-w-[100px] justify-center hover:bg-blue-600" disabled={!emailValue || !isEmailValid || !isValidPassword || submitting}>
+								{!submitting && `Sign in`}
 								{submitting && (<Spinner />)}
 							</Button>
 						</div>

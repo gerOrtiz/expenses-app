@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface ExpensesTableI {
 	user_id: string;
 	income: IncomeI;
@@ -9,6 +11,8 @@ export interface ExpensesTableI {
 	totals: TotalsI;
 	remaining: TotalsType;
 	added: TotalsType[];
+	id?: string;
+	_id?: ObjectId | string;
 }
 
 export interface IncomeI {

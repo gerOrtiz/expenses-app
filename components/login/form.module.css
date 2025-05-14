@@ -48,9 +48,9 @@
 }
 
 .actions {
-	text-align: right;
+	display: flex;
 	margin-top: 15px;
-
+	justify-content: right;
 }
 
 /* .actions button {

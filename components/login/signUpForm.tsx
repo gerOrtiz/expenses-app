@@ -103,7 +103,7 @@ export default function SignUpForm({ onChangeView }: SignUpFormPropsI) {
 							<SubmitButton text="Registrate" />
 						</p> */}
 						<div className={classes.actions}>
-							<Button variant="filled" color="blue" className="hover:bg-blue-600" disabled={pending || validateForm()}>
+							<Button variant="filled" color="blue" className="hover:bg-blue-600 min-w-[100px]" disabled={pending || validateForm()}>
 								{!pending && `Sign up`}
 								{pending && <Spinner />}
 							</Button>
