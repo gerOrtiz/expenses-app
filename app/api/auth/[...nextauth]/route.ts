@@ -24,14 +24,14 @@ export const authOptions = {
 				const usersCollection = db.collection('users');
 				const user = await usersCollection.findOne({ email: credentials.email }) as UserI | null;
 				if (!user) {
-					// client.close();
-					await disconnectFromDB();
+					await client.close();
+					// await disconnectFromDB();
 					throw new Error("No user found");
 				}
 				const isValid = await verifyPassword(password, user.password || '');
 				if (!isValid) { client.close(); throw new Error('Email or password invalid'); }
-				// client.close();
-				await disconnectFromDB();
+				await client.close();
+				// await disconnectFromDB();
 				return {
 					id: user._id?.toString() || user.id || '',
 					email: user.email,

@@ -9,12 +9,18 @@ export async function connectToDB(): Promise<{ client: MongoClient, db: Db }> {
 	if (cachedClient && cachedDb) {
 		return { client: cachedClient, db: cachedDb };
 	}
-	const client = await MongoClient.connect(uri);
-	const db = client.db('expensesApp');
-	cachedClient = client;
-	cachedDb = db;
+	try {
+		const client = await MongoClient.connect(uri);
+		const db = client.db('expensesApp');
+		// cachedClient = client;
+		// cachedDb = db;
 
-	return { client, db };
+		return { client, db };
+	} catch (error) {
+		console.error('Could not connect to Mongo: ');
+		throw new Error(error);
+	}
+
 }
 
 export async function disconnectFromDB(): Promise<void> {

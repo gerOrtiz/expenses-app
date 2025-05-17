@@ -1,18 +1,16 @@
-'use client';
-import LoginForm from '@/components/login/loginForm';
-import SignUpForm from '@/components/login/signUpForm';
-import { useState } from 'react';
+import LoginLayout from '@/components/login/loginLayout';
+import { getServerSession } from 'next-auth';
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from 'next/navigation';
 
-import classes from './page.module.css';
-export default function UserFormPage() {
-	const [isSigningUp, setIsSigningUp] = useState(false);
+async function retrieveSession() {
+	const session = await getServerSession(authOptions);
+	return session;
+}
 
-	function setSigningHandler() {
-		setIsSigningUp(!isSigningUp);
-	}
-
-	const classesNames = `${classes.highlight} ${classes.link}`;
-
+export default async function UserFormPage() {
+	const session = await retrieveSession();
+	if (session) redirect('/dashboard');
 	return (
 		<>
 			{/* <header className={classes.header}>
@@ -27,8 +25,7 @@ export default function UserFormPage() {
       </main> */}
 			<main className="container flex py-2 justify-self-center justify-center">
 				<div className="lg:w-2/4 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
-					{isSigningUp && <SignUpForm onChangeView={setSigningHandler}></SignUpForm>}
-					{!isSigningUp && <LoginForm onChangeView={setSigningHandler} />}
+					<LoginLayout />
 				</div>
 			</main>
 		</>

@@ -10,7 +10,7 @@ export interface ExpensesTableI {
 	pending: PendingExpenseI[];
 	totals: TotalsI;
 	remaining: TotalsType;
-	added: TotalsType[];
+	added: AddedIncomeI[];
 	id?: string;
 	_id?: ObjectId | string;
 }
@@ -22,17 +22,19 @@ export interface IncomeI {
 
 export interface ExpenseItemI {
 	description: string;
-	type: 'cash' | 'card';
+	type: string;
 	date: number;
 	isPending: boolean;
-	pending_id?: string;
+	amount: number;
+	pending_id?: number;
 }
 
 export interface PendingExpenseI {
-	id: string;
+	id: number;
 	name: string;
-	type: 'cash' | 'card';
-	amount?: number;
+	// type: 'cash' | 'card';
+	type: string;
+	amount: number;
 	fulfilled?: boolean; // Flag to mark if this has been fulfilled
 }
 
@@ -46,4 +48,9 @@ export interface TotalsI {
 export type TotalsType = {
 	cash: number;
 	card: number;
+}
+
+export interface AddedIncomeI extends TotalsType {
+	date: number;
+	isWithdrawal: boolean;
 }

@@ -6,7 +6,7 @@ import DashboardHeader from "@/components/dashboard/tables/header";
 import { createNewTable, getActiveTable } from "@/lib/user/simple-expenses";
 import { redirect } from "next/navigation";
 import { Suspense, } from "react";
-import { IncomeI } from "@/interfaces/expenses";
+import { ExpensesTableI, IncomeI } from "@/interfaces/expenses";
 
 async function createTable(rawFormData: IncomeI) {
 	'use server';
@@ -14,22 +14,28 @@ async function createTable(rawFormData: IncomeI) {
 	if (response.success) redirect('/dashboard/simple-table');
 }
 
+
 async function TablePage() {
-	const currentTable = await getActiveTable();
+	const tableData = await getActiveTable();
 
 	const tableWrapper = (<>
-		<DashboardHeader hasCurrentData={true} />
+		<div className="sticky top-[90px] z-10 w-full">
+			<DashboardHeader hasCurrentData={true} />
+		</div>
+
 		<main className="flex min-h-max flex-col py-2">
 			<div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
 				<section>
-					<TableWrapper data={currentTable} />
+					<TableWrapper data={tableData as ExpensesTableI} />
 				</section>
 			</div>
 		</main>
 	</>);
 
 	const createTableView = (<>
-		<DashboardHeader hasCurrentData={false} />
+		<div>
+			<DashboardHeader hasCurrentData={false} />
+		</div>
 		<main className="flex min-h-max flex-col py-2">
 			<div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
 				<section>
@@ -39,8 +45,9 @@ async function TablePage() {
 		</main>
 	</>);
 
-	if ('error' in currentTable) { return createTableView; }
+	if ('error' in tableData) { return createTableView; }
 	return tableWrapper;
+
 }
 
 export default function SimpleExpensesTable() {
@@ -49,7 +56,7 @@ export default function SimpleExpensesTable() {
 		<main className="flex min-h-max flex-col py-2">
 			<div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
 				<section>
-					<div className="flex flex-col"><TSpinner /><p>Cargando...</p></div>
+					<div className="flex flex-col"><TSpinner /></div>
 				</section>
 			</div>
 		</main>

@@ -4,11 +4,11 @@ import { Typography } from "@material-tailwind/react";
 import DasboardCards from "../cards/cardsGrid";
 import SummaryCard from "../cards/summaryCard";
 
-interface DashboardlayoutPropsI {
+interface DashboardLayoutPropsI {
 	username: string
 }
 
-export default function Dashboardlayout({ username }: DashboardlayoutPropsI) {
+export default function Dashboardlayout({ username }: DashboardLayoutPropsI) {
 
 	return (<>
 		<section className="w-full flex flex-col gap-6 mt-8 border border-solid border-gray-400 rounded-lg p-8">
