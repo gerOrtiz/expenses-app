@@ -1,26 +1,25 @@
 'use client';
 import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
 import { ExpenseItemI, ExpensesTableI, PendingExpenseI } from "@/interfaces/expenses";
-import { updateExpenses, addPendingExpense } from "@/lib/user/simple-expenses";
+import { addExpense, addPendingExpense } from "@/lib/user/simple-expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Dialog, Input, Typography, Select, Option, Checkbox, DialogBody, IconButton } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { FormEventHandler, useContext, useEffect, useState } from "react";
 
 
 interface ExpensesFormPropsI {
 	isPending: boolean;
 	tableId: string;
-	currentExpenses: PendingExpenseI[] | ExpenseItemI[];
-	updateTableHandler: (data: ExpensesTableI) => void;
+	updateTableHandler?: (data: ExpensesTableI) => void;
 	isOpen: boolean;
 	handleOpen: () => void;
 }
 
-export default function ExpensesForm({ isPending, tableId, currentExpenses, updateTableHandler, isOpen, handleOpen }: ExpensesFormPropsI) {
+export default function ExpensesForm({ isPending, tableId, isOpen, handleOpen }: ExpensesFormPropsI) {
 	const message = isPending ? `Enter a pending to pay expense` : `Enter a new expense to add it to the table`;
 	const [description, setDescription] = useState('');
-	const [amount, setAmount] = useState(1);
+	const [amount, setAmount] = useState<string>('');
 	const [type, setType] = useState<string>('cash');
 	// const [open, setOpen] = useState(true);
 	// const [pendingArray, setPendingArray] = useState<PendingExpenseI[]>([]);
@@ -30,14 +29,16 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, upda
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [hasPendingExpenses, setHasPendingExpenses] = useState<boolean>(false);
 	const tableCtx = useContext(SimpleExpensesContext);
+	const expensesTable = tableCtx.expensesTable;
 	// const handleOpen = () => {
 	// 	setOpen((cur) => !cur);
 	// };
 	const handlePendingFlag = () => setIsPendingPayment((val) => !val);
 
 	const hanldeAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-		const value = ev.target.value as string;
-		setAmount(parseFloat(value));
+		const value = ev.target.value;
+		if (!isNaN(parseFloat(value))) setAmount(value);
+		else setAmount('');
 	};
 
 	const filterPendingByType = (typeSelected: string, pendingArray: PendingExpenseI[]): PendingExpenseI[] => {
@@ -45,39 +46,36 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, upda
 		return newArray;
 	}
 
-	async function submitHandler(event) {
+	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		setIsSubmitting(true);
 		let newData: any;
 
-		// expenseObj.amount = expenseObj.amount;
-		// currentExpenses.push(expenseObj);
-
 		if (isPending) {
-			const currentPending: PendingExpenseI[] = [...currentExpenses as PendingExpenseI[]];
+			// const currentPending: PendingExpenseI[] = expensesTable ? [...expensesTable.pending] : [];
 			// currentExpenses[currentExpenses.length - 1].id = currentExpenses.length + 1;
-			const newExpenseObj = { name: description, amount, type, id: currentExpenses.length + 1, fulfilled: false };
-			currentPending.push(newExpenseObj);
+			// const newID = currentPending.length > 0 ? currentPending[currentPending.length - 1].id + 1 : 1;
+			const newExpenseObj = { name: description, amount: parseFloat(amount), type, fulfilled: false };
+			// currentPending.push(newExpenseObj);
 			newData = await addPendingExpense(tableId, newExpenseObj);
 		} else {
-			//add simple expense to bd 
-			// const expensesCopy = [...currentExpenses as ExpenseItemI[]];
 			let expenseObj = {
-				description, amount, type, date: new Date().getTime(), isPending: false, pending_id: undefined
+				description, amount: parseFloat(amount), type, date: new Date().getTime(), isPending: false, pending_id: undefined
 			};
 			if (isPendingPayment && pending_id) {
 				expenseObj.isPending = true;
 				expenseObj.pending_id = pending_id;
 			}
 			// expensesCopy.push(expenseObj);
-			newData = await updateExpenses(tableId, expenseObj);
+			newData = await addExpense(tableId, expenseObj);
 		}
+		setIsSubmitting(false);
 		handleOpen();
 		setPendingId('');
 		setIsPendingPayment(false);
-		// if (newData && callback) callback(newData);
-		if (newData && updateTableHandler) updateTableHandler(newData);
-		// if (setParentOpen) setParentOpen(false);
+		// if (newData && updateTableHandler) updateTableHandler(newData);
+		if (newData) tableCtx.updateExpensesTable(newData);
+
 	}
 
 	// function selectType(val) {
@@ -87,15 +85,14 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, upda
 	// }
 
 	useEffect(() => {
-		const expensesTable = tableCtx.getCurrentExpenses();
-		// setPendingArray(expensesTable.pending);
+		if (!expensesTable) return;
 		if (expensesTable.pending && expensesTable.pending.length > 0) {
 			setHasPendingExpenses(true);
 			const pendingyByType = filterPendingByType(type, expensesTable.pending);
 			setFilteredArray(pendingyByType);
 		}
 
-	}, [tableCtx, type])
+	}, [expensesTable])
 
 	return (<>
 		<Dialog
@@ -141,7 +138,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, upda
 									color="blue"
 									labelProps={{ className: 'hidden' }}
 									type="number"
-									min={1}
+									min={0.1}
 									step={0.01}
 									value={amount}
 									onChange={hanldeAmountChange} crossOrigin={undefined} />
@@ -180,7 +177,7 @@ export default function ExpensesForm({ isPending, tableId, currentExpenses, upda
 								</div>
 							</>)}
 						</div>
-						<Button variant="filled" color="blue" className="mt-6 hover:bg-blue-600" fullWidth type="submit" disabled={(!type && !amount && !description) || isSubmitting} loading={isSubmitting}>
+						<Button variant="filled" color="blue" className="mt-6 hover:bg-blue-600" fullWidth type="submit" disabled={(!type || !amount || !description) || isSubmitting} loading={isSubmitting}>
 							{`Add`}
 						</Button>
 					</form>

@@ -8,7 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
 import ExpensesForm from "../expenses/expenses-form";
-import PendingExpenses from "./pending-expenses";
+import PendingExpensesTable from "./pending-expenses";
 import RemainingIncome from "./remaining-income";
 import SimpleTable from "./simple-table";
 import TotalsTables from "./totals-table";
@@ -25,14 +25,19 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 	//const { remaining } = data;
 	const [pendingDialogOpen, setPendingDialogOpen] = useState(false);
 	const [expenseDialogOpen, setExpenseDilogOpen] = useState(false);
-	const [tableData, setTableData] = useState<ExpensesTableI>(data);
+	const [tableData, setTableData] = useState<ExpensesTableI | null>(data);
 	const tableCtx = useContext(SimpleExpensesContext);
 	const handlePendingOpen = () => setPendingDialogOpen((cur) => !cur);
 	const handleExpenseOpen = () => setExpenseDilogOpen((cur) => !cur);
 
 	useEffect(() => {
-		tableCtx.updateExpensesTable(tableData);
-	}, [tableData, tableCtx]);
+		if (data) tableCtx.updateExpensesTable(data);
+	}, [data]);
+
+	useEffect(() => {
+		if (tableCtx.expensesTable) setTableData(tableCtx.expensesTable);
+	}, [tableCtx]);
+
 
 	const handleTableDataChange = (data: ExpensesTableI) => {
 		setTableData(data);
@@ -50,7 +55,7 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 		</section>
 		<section className="grid grid-flow-row gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3">
 			<section className="flex flex-col overflow-hidden gap-6 md:col-span-2 xl:col-span-2">
-				{tableData.expenses && tableData.expenses.length > 0 && <SimpleTable expenses={tableData.expenses} tableId={tableData.id} dataCallback={setTableData} />}
+				{tableData.expenses && tableData.expenses.length > 0 && <SimpleTable expenses={tableData.expenses} tableId={tableData.id} />}
 				{(!tableData.expenses || tableData.expenses.length <= 0) && (
 					<section className="p-3 mt-2">
 						<Card className="mb-1 w-full">
@@ -62,15 +67,14 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 								</div>
 								<Typography color="blue-gray" variant="paragraph" className="mb-3">{`You still haven't add any new expenses. Try adding a new one to start taking control of your finances`}</Typography>
 								<Button color="blue" variant="filled" onClick={handleExpenseOpen}>{`Add new expense`}</Button>
-								{expenseDialogOpen && <ExpensesForm isPending={false} tableId={tableData.id}
-									currentExpenses={[]} updateTableHandler={handleTableDataChange} isOpen={expenseDialogOpen} handleOpen={handleExpenseOpen} />}
+								{expenseDialogOpen && <ExpensesForm isPending={false} tableId={tableData.id} isOpen={expenseDialogOpen} handleOpen={handleExpenseOpen} />}
 							</CardBody>
 						</Card>
 					</section>
 				)}
 			</section>
 			<section className="flex-col overflow-hidden gap-6 md:col-span-1 xl:col-span-1 p-3 mt-2">
-				{tableData.pending && tableData.pending.length > 0 && <PendingExpenses tableId={tableData.id} pending={tableData.pending} dataCallback={setTableData} />}
+				{tableData.pending && tableData.pending.length > 0 && <PendingExpensesTable tableId={tableData.id} pendingArray={tableData.pending} />}
 				{(!tableData.pending || tableData.pending.length <= 0) && (
 					<Card className="mb-1 w-full">
 						<CardBody>
@@ -79,11 +83,7 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 								<FontAwesomeIcon icon={faClockRotateLeft} size="3x" />
 							</div>
 							<Button color="blue" variant="filled" onClick={handlePendingOpen}>{`Add pending expense`}</Button>
-							{pendingDialogOpen && <ExpensesForm isPending={true} tableId={tableData.id} currentExpenses={[]}
-								updateTableHandler={handleTableDataChange}
-								isOpen={pendingDialogOpen}
-								handleOpen={handlePendingOpen}
-							/>}
+							{pendingDialogOpen && <ExpensesForm isPending={true} tableId={tableData.id} isOpen={pendingDialogOpen} handleOpen={handlePendingOpen} />}
 						</CardBody>
 					</Card>
 				)}

@@ -18,17 +18,29 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import ExpensesForm from "../expenses/expenses-form";
+import { PendingExpenseI } from "@/interfaces/expenses";
 
-const TABLE_HEAD = ["Descripción", "Monto", "Método pago", ""];
-
-function typeFilter(type) {
-	return type == 'cash' ? 'Efectivo' : 'Tarjeta';
+interface PendingExpensesTablePropsI {
+	pendingArray: PendingExpenseI[];
+	tableId: string;
+	dataCallback?: () => void;
 }
 
-export default function PendingExpenses({ pending, tableId, dataCallback }) {
-	const [isOpen, setOpen] = useState();
-	const [selectedExpense, setSelectedExpense] = useState(null);
+export default function PendingExpensesTable({ pendingArray, tableId, dataCallback }: PendingExpensesTablePropsI) {
+	const [isOpen, setOpen] = useState<boolean>(false);
+	const [selectedExpense, setSelectedExpense] = useState<PendingExpenseI | null>(null);
 	const handleOpen = () => setOpen((cur) => !cur);
+
+	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ""];
+
+	const typeFilter = (type: string) => {
+		return type == 'cash' ? `Cash` : `Card`;
+	}
+
+	const handleCancelResetAmount = () => {
+		setSelectedExpense(null);
+
+	};
 
 	return (<>
 		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden ">
@@ -52,7 +64,7 @@ export default function PendingExpenses({ pending, tableId, dataCallback }) {
 							</tr>
 						</thead>
 						<tbody>
-							{pending.map((p, index) => (
+							{pendingArray.map((p, index) => (
 								<tr key={p.id} className="even:bg-blue-gray-50/50">
 									<td className="p-4">
 										<Typography variant="small" color="blue-gray" className="font-normal">
@@ -85,33 +97,40 @@ export default function PendingExpenses({ pending, tableId, dataCallback }) {
 			</CardBody>
 			<CardFooter>
 				<Button onClick={handleOpen}>Agregar gasto previsto</Button>
-				{isOpen && <ExpensesForm isPending={true} tableId={tableId} currentExpenses={pending} callback={dataCallback} setParentOpen={setOpen} />}
+				{isOpen && <ExpensesForm isPending={true} tableId={tableId} isOpen handleOpen={handleOpen} />}
 				{selectedExpense &&
-					<ResetAmountDialog tableId={tableId} pending={pending} dataCallback={dataCallback} expense={selectedExpense} setSelectedExpense={setSelectedExpense} />}
+					<ResetAmountDialog tableId={tableId} pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
 			</CardFooter>
 		</Card>
 	</>);
 }
 
-function ResetAmountDialog({ pending, tableId, dataCallback, expense, setSelectedExpense }) {
+interface ResetAmountDialogPropsI {
+	pendingArray: PendingExpenseI[];
+	tableId: string;
+	selectedItem: PendingExpenseI;
+	onCancel: () => void;
+}
+
+const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, tableId, selectedItem, onCancel }) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const handleOpen = () => {
 		setIsOpen(false);
-		if (setSelectedExpense) setSelectedExpense(null);
+		if (onCancel) onCancel();
 	};
 
 	async function editPendingTable() {
 		setIsSubmitting(true);
-		let newPendingArray = [...pending];
-		const index = newPendingArray.findIndex(e => e.id == expense.id);
+		let newPendingArray = [...pendingArray];
+		const index = newPendingArray.findIndex(e => e.id == selectedItem.id);
 		if (index == -1) return;
 		newPendingArray[index].amount = 0;
-		const response = await addPendingExpense(tableId, newPendingArray);
-		if (response) {
-			if (dataCallback) dataCallback(response);
-			setIsSubmitting(false);
-		}
+		// const response = await addPendingExpense(tableId, newPendingArray);
+		// if (response) {
+		// 	if (dataCallback) dataCallback(response);
+		// 	setIsSubmitting(false);
+		// }
 		handleOpen();
 
 	}
@@ -125,14 +144,14 @@ function ResetAmountDialog({ pending, tableId, dataCallback, expense, setSelecte
 			</DialogHeader>
 			<DialogBody>
 				<Typography variant="lead" className=" flex flex-row justify-center gap-6" >
-					<span>{expense.description}</span>
-					<span>${expense.amount.toFixed(2)}</span>
-					<span>{expense.type == 'cash' ? 'Efectivo' : 'Tarjeta'}</span>
+					<span>{selectedItem.name}</span>
+					<span>${selectedItem.amount.toFixed(2)}</span>
+					<span>{selectedItem.type == 'cash' ? `Cash` : `Card`}</span>
 				</Typography>
 			</DialogBody>
 			<DialogFooter className="flex flex-row justify-center gap-4">
-				<Button variant="outlined" color="red" onClick={handleOpen} disabled={isSubmitting}>Cancelar</Button>
-				<Button variant="outlined" onClick={editPendingTable} loading={isSubmitting}>Continuar</Button>
+				<Button variant="outlined" color="red" onClick={handleOpen} disabled={isSubmitting}>{`Cancel`}</Button>
+				<Button variant="outlined" onClick={editPendingTable} loading={isSubmitting}>{`Confirm`}</Button>
 			</DialogFooter>
 		</Dialog>
 	</>);

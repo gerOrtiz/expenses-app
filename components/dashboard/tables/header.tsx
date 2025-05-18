@@ -37,7 +37,7 @@ const DialogContent: React.FC<DialogPropsI> = ({ handleOpen, currentExpenses, ex
 			expensesContext.updateExpensesTable(null);
 			setTimeout(async () => {
 				router.replace('/dashboard');
-				await throwCache();
+				// await throwCache();
 			}, 2000);
 		}
 		else if (response && response.error) { setErrorMessage(response.error); }

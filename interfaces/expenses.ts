@@ -21,6 +21,7 @@ export interface IncomeI {
 }
 
 export interface ExpenseItemI {
+	id?: number;
 	description: string;
 	type: string;
 	date: number;
@@ -30,7 +31,7 @@ export interface ExpenseItemI {
 }
 
 export interface PendingExpenseI {
-	id: number;
+	id?: number;
 	name: string;
 	// type: 'cash' | 'card';
 	type: string;
