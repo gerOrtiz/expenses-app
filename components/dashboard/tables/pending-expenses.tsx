@@ -39,23 +39,46 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 
 	const handleCancelResetAmount = () => {
 		setSelectedExpense(null);
+	};
 
+	const moneyFilter = (value: number) => {
+		const formattedValue = value.toLocaleString('en-US', {
+			style: 'currency',
+			currency: 'USD'
+		});
+		return formattedValue;
 	};
 
 	return (<>
-		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden ">
+		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-blue-100 border border-blue-gray-100">
 			<CardBody>
-				<section className="relative flex flex-col">
-					<Typography variant="lead">Gastos previstos</Typography>
+				<div className="relative flex flex-col">
+					<div className="w-full flex justify-between items-center mb-3">
+						<Typography color="blue-gray" variant="lead" className="text-lg lg:text-xl">{`Pending expenses`}</Typography>
+						<Button variant="filled" color="blue" className="hidden lg:block hover:bg-blue-600" size="sm" onClick={handleOpen}>
+							{`Add pendig expense`}
+						</Button>
+						<Button className="lg:hidden block text-[11px] hover:bg-blue-500 hover:text-white" variant="text" color="blue" size="sm" onClick={handleOpen}>
+							{`Add pending expense`}
+						</Button>
+					</div>
+					{/* <Typography variant="lead">Gastos previstos</Typography> */}
 					<table className="w-full min-w-max table-auto text-left">
-						<thead>
+						<thead className="rounded-lg  bg-blue-50">
 							<tr>
-								{TABLE_HEAD.map(title => (
-									<th key={title} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+								{TABLE_HEAD.map((title, index) => (
+									<th key={title} className={`p-2 lg:p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
 										<Typography
 											variant="small"
 											color="blue-gray"
-											className="font-normal leading-none opacity-70"
+											className="hidden lg:block font-normal leading-none opacity-70"
+										>
+											{title}
+										</Typography>
+										<Typography
+											variant="small"
+											color="blue-gray"
+											className="lg:hidden font-normal leading-none opacity-70 text-xs "
 										>
 											{title}
 										</Typography>
@@ -65,25 +88,25 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 						</thead>
 						<tbody>
 							{pendingArray.map((p, index) => (
-								<tr key={p.id} className="even:bg-blue-gray-50/50">
-									<td className="p-4">
-										<Typography variant="small" color="blue-gray" className="font-normal">
+								<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80">
+									<td className="p-2 lg:p-4">
+										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
 											{p.name}
 										</Typography>
 									</td>
-									<td className="p-4">
-										<Typography variant="small" color="blue-gray" className="font-normal">
-											{'$' + p.amount.toFixed(2)}
+									<td className="p-2 lg:p-4">
+										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
+											{moneyFilter(p.amount)}
 										</Typography>
 									</td>
-									<td className="p-4">
-										<Typography variant="small" color="blue-gray" className="font-normal">
+									<td className="p-2 lg:p-4">
+										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
 											{typeFilter(p.type)}
 										</Typography>
 									</td>
-									<td className="p-4">
-										<Tooltip content="Edita el valor de este gasto">
-											<IconButton variant="text" onClick={() => setSelectedExpense(p)}>
+									<td className="p-2 lg:p-4">
+										<Tooltip content={`Clear this expense amount`}>
+											<IconButton variant="text" color="blue" size="sm" onClick={() => setSelectedExpense(p)}>
 												<FontAwesomeIcon icon={faPencil} />
 											</IconButton>
 										</Tooltip>
@@ -93,15 +116,16 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 							))}
 						</tbody>
 					</table>
-				</section>
+				</div>
 			</CardBody>
-			<CardFooter>
+			{/* <CardFooter>
 				<Button onClick={handleOpen}>Agregar gasto previsto</Button>
-				{isOpen && <ExpensesForm isPending={true} tableId={tableId} isOpen handleOpen={handleOpen} />}
-				{selectedExpense &&
-					<ResetAmountDialog tableId={tableId} pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
-			</CardFooter>
+
+			</CardFooter> */}
 		</Card>
+		{isOpen && <ExpensesForm isPending={true} tableId={tableId} isOpen handleOpen={handleOpen} />}
+		{selectedExpense &&
+			<ResetAmountDialog tableId={tableId} pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
 	</>);
 }
 

@@ -1,7 +1,9 @@
 'use client';
 
-import logoImage from "@/assets/logo-big.png";
-import calculatorImage from "@/assets/calculator.jpg";
+import accountingImage from "@/assets/accounting.jpg";
+import calculatorImg from "@/assets/calculator.jpg";
+import moneyImg from "@/assets/money.jpg";
+import reports from "@/assets/reports.jpg";
 import { Button, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,28 +30,28 @@ function LandingpPage() {
 
 			</div>
 			<div className="w-full flex justify-center">
-				<Image src={logoImage} alt="Logo" width={300} priority />
+				<Image src={accountingImage} alt="Accounting" width={400} priority />
 			</div>
 		</section>
 		<section className="w-full flex flex-col mt-6">
 			<div className="lg:w-3/5 sm:w-full flex flex-col gap-4 self-center">
-				<Typography variant="h2" color="black"  >{`The all expenses platform`}</Typography>
+				<Typography variant="h2" color="black"  >{`Take Control of Your Personal Finances`}</Typography>
 				<Typography variant="h6" color="gray"  >
-					{`Experience the convenience of managing your money on the go with Expenses App. Whether is paying bills, send money or shopping, we've got you covered.`}
+					{`Track expenses, manage your money, and make informed financial decisions with our comprehensive expense tracking platform.`}
 				</Typography>
 			</div>
 			<div className="w-full grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-1 mt-7">
 				<div className="col-span-1">
 					<Card className="mt-6">
 						<CardHeader color="blue-gray" className=" h-56"  >
-							<Image src={calculatorImage} alt="Calculator" className="w-full" />
+							<Image src={calculatorImg} alt="Calculator" className="w-full" />
 						</CardHeader>
 						<CardBody  >
 							<Typography color="blue-gray" variant="h5"  >
-								{`Lorem ipsum est`}
+								{`Smart Expense Management`}
 							</Typography>
 							<Typography  >
-								{`Lorem ipsum dolor sit amet consectetur adipiscing elit lectus phasellus odio massa, condimentum est habitant in et iaculis vehicula ultricies dui ornare nibh`}
+								{`Easily record and categorize all your daily expenses. Track cash and card payments, manage pending expenses, and see where your money goes in real-time`}
 							</Typography>
 						</CardBody>
 					</Card>
@@ -57,14 +59,14 @@ function LandingpPage() {
 				<div className="col-span-1">
 					<Card className="mt-6"  >
 						<CardHeader color="blue-gray" className="relative h-56"  >
-							<Image src={calculatorImage} alt="Calculator" className="w-full" />
+							<Image src={moneyImg} alt="money" className="w-full" />
 						</CardHeader>
 						<CardBody  >
 							<Typography color="blue-gray" variant="h5"  >
-								{`Lorem ipsum est`}
+								{`Complete Financial Picture`}
 							</Typography>
 							<Typography  >
-								{`Lorem ipsum dolor sit amet consectetur adipiscing elit lectus phasellus odio massa, condimentum est habitant in et iaculis vehicula ultricies dui ornare nibh`}
+								{`Monitor your account balances, track income additions, and withdrawals. Get a clear view of your financial health with automated balance calculations.`}
 							</Typography>
 						</CardBody>
 					</Card>
@@ -72,14 +74,14 @@ function LandingpPage() {
 				<div className="col-span-1">
 					<Card className="mt-6"  >
 						<CardHeader color="blue-gray" className="relative h-56"  >
-							<Image src={calculatorImage} alt="Calculator" className="w-full" />
+							<Image src={reports} alt="reports" className="w-full" />
 						</CardHeader>
 						<CardBody  >
 							<Typography color="blue-gray" variant="h5"  >
-								{`Lorem ipsum est`}
+								{`Insights & Analytics`}
 							</Typography>
 							<Typography  >
-								{`Lorem ipsum dolor sit amet consectetur adipiscing elit lectus phasellus odio massa, condimentum est habitant in et iaculis vehicula ultricies dui ornare nibh`}
+								{`Generate detailed reports and visualizations of your spending patterns. Identify trends, set budgets, and make data-driven financial decisions.`}
 							</Typography>
 						</CardBody>
 					</Card>

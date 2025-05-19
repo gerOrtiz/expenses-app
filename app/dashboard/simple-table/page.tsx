@@ -7,6 +7,7 @@ import { createNewTable, getActiveTable } from "@/lib/user/simple-expenses";
 import { redirect } from "next/navigation";
 import { Suspense, } from "react";
 import { ExpensesTableI, IncomeI } from "@/interfaces/expenses";
+import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkeleton";
 
 async function createTable(rawFormData: IncomeI) {
 	'use server';
@@ -55,9 +56,10 @@ export default function SimpleExpensesTable() {
 	const wrapper = (
 		<main className="flex min-h-max flex-col py-2">
 			<div className="relative flex-1 lg:container text-center p-0 mx-auto overflow-x-hidden overflow-auto">
-				<section>
+				{/* <section>
 					<div className="flex flex-col"><TSpinner /></div>
-				</section>
+				</section> */}
+				<ExpensesPageSkeleton />
 			</div>
 		</main>
 	);

@@ -39,21 +39,21 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 	}, [tableCtx]);
 
 
-	const handleTableDataChange = (data: ExpensesTableI) => {
-		setTableData(data);
-	};
+	// const handleTableDataChange = (data: ExpensesTableI) => {
+	// 	setTableData(data);
+	// };
 
 	return (<>
-		<section className="flex flex-col w-full items-center mt-3 p-4 lg:p-1">
-			<Typography variant="h3" color="blue-gray" >{`Summary`}</Typography>
-			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} tableId={tableData.id} added={tableData.added} dataCallback={handleTableDataChange} />
-			{Boolean((tableData.expenses && tableData.expenses.length > 0) || (tableData.pending && tableData.pending.length > 0)) && (
+		<section className="flex flex-col w-full items-center mt-3 mb-3 p-4 lg:p-1">
+			{/* <Typography variant="h3" color="blue-gray" >{`Summary`}</Typography> */}
+			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} tableId={tableData.id} added={tableData.added} />
+			{/* {Boolean((tableData.expenses && tableData.expenses.length > 0) || (tableData.pending && tableData.pending.length > 0)) && (
 				<section className="lg:w-[80%] w-full grid grid-flow-row grid-cols-1 lg:grid-cols-3 mb-4 gap-x-6">
 					{tableData.totals && <TotalsTables data={tableData.totals} />}
 				</section>
-			)}
+			)} */}
 		</section>
-		<section className="grid grid-flow-row gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3">
+		<section className="grid grid-flow-row gap-y-3 lg:gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3">
 			<section className="flex flex-col overflow-hidden gap-6 md:col-span-2 xl:col-span-2">
 				{tableData.expenses && tableData.expenses.length > 0 && <SimpleTable expenses={tableData.expenses} tableId={tableData.id} />}
 				{(!tableData.expenses || tableData.expenses.length <= 0) && (
@@ -73,7 +73,12 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 					</section>
 				)}
 			</section>
-			<section className="flex-col overflow-hidden gap-6 md:col-span-1 xl:col-span-1 p-3 mt-2">
+			<section className="flex flex-col overflow-hidden gap-6 md:col-span-1 xl:col-span-1 p-3 mt-0 lg:mt-2">
+				{Boolean((tableData.expenses && tableData.expenses.length > 0) || (tableData.pending && tableData.pending.length > 0)) && (
+					<div className="w-full">
+						{tableData.totals && <TotalsTables data={tableData.totals} />}
+					</div>
+				)}
 				{tableData.pending && tableData.pending.length > 0 && <PendingExpensesTable tableId={tableData.id} pendingArray={tableData.pending} />}
 				{(!tableData.pending || tableData.pending.length <= 0) && (
 					<Card className="mb-1 w-full">

@@ -3,7 +3,7 @@
 import { closeExpensesTable, throwCache } from "@/lib/user/simple-expenses";
 import { faArrowLeft, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, CardBody, CardFooter, Dialog, IconButton, Navbar, Spinner, Typography } from "@material-tailwind/react";
+import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, IconButton, Navbar, Spinner, Typography } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 
 import { Context, useContext, useState } from "react";
@@ -85,16 +85,18 @@ const DialogContent: React.FC<DialogPropsI> = ({ handleOpen, currentExpenses, ex
 export default function DashboardHeader({ hasCurrentData }: DashboardHeaderPropsI) {
 	const expensesTableCtx: ExpensesContextValuesI = useContext(SimpleExpensesContext);
 	const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+	const [showInstructions, setShowInstructions] = useState(false);
 	let currentExpenses: ExpensesTableI = null;
 	if (hasCurrentData) currentExpenses = expensesTableCtx.getCurrentExpenses();
 	const handleOpen = () => setOpenConfirmationDialog((op) => !op);
+	const handleInstructionsOpen = () => setShowInstructions(!showInstructions);
 	return (<>
 		<div className="lg:hidden flex justify-between px-4 py-3 items-center bg-white">
 			<Link href="/dashboard" >
 				<FontAwesomeIcon icon={faArrowLeft} size="lg" />
 			</Link>
 			{hasCurrentData && (<Button variant="outlined" color="blue" size="sm" onClick={handleOpen}>{`Close period`}</Button>)}
-			<IconButton variant="text">
+			<IconButton variant="text" onClick={handleInstructionsOpen}>
 				<FontAwesomeIcon size="lg" icon={faCircleQuestion} />
 			</IconButton>
 		</div>
@@ -105,6 +107,7 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 					as="a"
 					href="/dashboard"
 					variant="lead"
+					color="blue"
 					className="flex gap-2 items-center font-bold cursor-pointer py-1.5 "
 				>
 					<FontAwesomeIcon icon={faArrowLeft} size="lg" />
@@ -112,14 +115,14 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 				</Typography>
 				<ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
 					{hasCurrentData && <li className="p-1 font-medium">
-						<Button variant="text" onClick={handleOpen}>
-							<span className="text-sm/[13px] mt-0.5">{`Close period`}</span>
+						<Button variant="text" color="blue" onClick={handleOpen}>
+							<span className="text[13px] mt-0.5">{`Close period`}</span>
 						</Button>
 
 					</li>}
 					<li className="p-1 font-medium">
-						<Button variant="text" className="flex items-center gap-2">
-							<span className="text-sm/[13px] mt-0.5">{`How this works`}</span>
+						<Button variant="text" color="blue" className="flex items-center gap-2" onClick={handleInstructionsOpen}>
+							<span className="text[13px] mt-0.5">{`How this works`}</span>
 							<FontAwesomeIcon size="lg" icon={faCircleQuestion} />
 						</Button>
 					</li>
@@ -134,7 +137,31 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 		>
 			<DialogContent handleOpen={handleOpen} currentExpenses={currentExpenses} expensesContext={expensesTableCtx} />
 		</Dialog>
+		<Dialog open={showInstructions} handler={handleInstructionsOpen} size="md">
+			<DialogBody className="p-6">
+				<div className="flex flex-col gap-4">
+					<Typography variant="h4" color="blue-gray">How This Works</Typography>
+					<Typography color="gray">
+						This expense tracker helps you manage your finances by:
+					</Typography>
+					<ul className="list-disc list-inside space-y-2 text-gray-700">
+						<li>Track income from different sources (cash and card)</li>
+						<li>Record expenses and categorize by payment method</li>
+						<li>Manage pending expenses that need to be paid</li>
+						<li>View your remaining balance in real-time</li>
+						<li>Close periods to start fresh tracking</li>
+					</ul>
+					<Typography variant="small" color="gray" className="mt-4">
+						More detailed tutorials coming soon!
+					</Typography>
+					<Button color="blue" variant="filled" onClick={handleInstructionsOpen} className="mt-4">
+						Got it
+					</Button>
+				</div>
+			</DialogBody>
+		</Dialog>
 	</>
 
 	);
 }
+
