@@ -1,7 +1,8 @@
 import DasboardCards from "@/components/dashboard/cards/cardsGrid";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+// import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import Dashboardlayout from "@/components/dashboard/layout/dashboardLayout";
 import { Suspense } from "react";
 import TSpinner from "@/components/ui/spinner";
