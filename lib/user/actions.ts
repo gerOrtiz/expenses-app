@@ -5,16 +5,15 @@ import { signIn } from "next-auth/react";
 import { hashPassword } from "../auth/password";
 import { UserAuthInfoI, UserI } from "@/interfaces/users";
 import { connectToDB } from "../db";
+import { SignupCredentials } from "@/interfaces/auth";
 
 interface SignUpResult {
 	message: string;
 	user?: UserAuthInfoI;
 }
 
-export async function signUpUser(prevState: any, formData: FormData): Promise<SignUpResult> {
-	const name = formData.get('name') as string;
-	const email = formData.get('email') as string;
-	const password = formData.get('password') as string;
+export async function signUpUser(formData: SignupCredentials): Promise<SignUpResult> {
+	const { name, email, password } = formData;
 
 
 	if (!email?.includes('@') ||

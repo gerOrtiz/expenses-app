@@ -31,9 +31,10 @@ export default function TotalsTables({ data }: TotalsTablePropsI) {
 }
 
 const SingleTable: React.FC<{ tableTitle: string, data: TotalsType }> = ({ tableTitle, data }) => {
-	const total = useMoneyFilter(data.card + data.cash);
-	const cashFormatted = useMoneyFilter(data.cash);
-	const cardFormatted = useMoneyFilter(data.card);
+	const { formatValue } = useMoneyFilter();
+	const total = formatValue(data.card + data.cash);
+	const cashFormatted = formatValue(data.cash);
+	const cardFormatted = formatValue(data.card);
 	const [openAccordion, setOpenAccordion] = useState(false);
 
 	const handleOpenAccordion = () => {

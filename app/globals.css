@@ -34,7 +34,6 @@ body {
 .not-found,
 .error {
 	margin-top: 5rem;
-	text-align: center;
 }
 
 .not-found h1,
@@ -45,6 +44,7 @@ body {
 	color: #262626;
 	text-transform: uppercase;
 	background: linear-gradient(90deg, #2a3ff9, #bae9f1);
+	background-clip: text;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-size: cover;
@@ -57,6 +57,58 @@ body {
 	font-size: 1.5rem;
 	font-weight: 500;
 	color: #ddd8d8;
+}
+
+/* Buttons */
+button.filled {
+	background-color: #1976d2;
+	color: #ffffff;
+}
+
+button.filled:hover {
+	background-color: rgb(30 58 138);
+	color: #ffffff;
+}
+
+button.outlined {
+	border-color: rgb(29 78 216);
+	color: rgb(29 78 216);
+}
+
+button.outlined:hover {
+	background-color: rgb(30 64 175);
+	color: #ffffff;
+}
+
+/* labels & Inputs */
+label.formLabel {
+	display: block;
+	font-size: 13px;
+	font-family: 'Montserrat', sans-serif;
+	text-transform: uppercase;
+	color: #3f3f3f;
+	font-weight: 600;
+}
+
+input.formInput,
+textarea.formTextArea {
+	display: block;
+	width: 100%;
+	padding: 0.5rem 1rem;
+	border-radius: 10px;
+	border: 1px solid #e3e0fc;
+	background: linear-gradient(90deg, #c3effe, #ffffff);
+	font-size: 1rem;
+	font-family: 'Montserrat', sans-serif;
+	color: #000000;
+
+	&.inputError {
+		border: 1px solid red;
+	}
+
+	&:focus {
+		outline-color: #2a84f9;
+	}
 }
 
 @layer utilities {

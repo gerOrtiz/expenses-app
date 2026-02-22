@@ -18,7 +18,7 @@ export default function Dashboardlayout({ username, expensesTable }: DashboardLa
 	useEffect(() => {
 		if ('error' in expensesTable) return;
 		tableContext.updateExpensesTable(expensesTable);
-	}, [expensesTable]);
+	}, [expensesTable, tableContext]);
 
 	return (<>
 		<section className="w-full flex flex-col gap-6 mt-8  p-8">

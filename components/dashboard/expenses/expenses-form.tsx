@@ -92,7 +92,7 @@ export default function ExpensesForm({ isPending, tableId, isOpen, handleOpen }:
 			setFilteredArray(pendingyByType);
 		}
 
-	}, [expensesTable])
+	}, [expensesTable, type])
 
 	return (<>
 		<Dialog

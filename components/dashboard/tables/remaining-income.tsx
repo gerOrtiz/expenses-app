@@ -8,7 +8,7 @@ import {
 	Typography,
 
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import IncomeForm from "../income/income-form";
 import { AddedIncomeI, ExpensesTableI, TotalsI, TotalsType } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
@@ -28,36 +28,50 @@ interface RemainingIncomePropsI {
 export default function RemainingIncome({ remaining, totals, added, tableId }: RemainingIncomePropsI) {
 	const totalPending = totals.total_pending.cash + totals.total_pending.card;
 	let positiveBalance = (remaining.cash + remaining.card) - totalPending;
-	const [lastAdded, setLastAdded] = useState('');
-	const [totalIncome, setTotalIncome] = useState<string>('');
+	// const [lastAdded, setLastAdded] = useState('');
+	// const [totalIncome, setTotalIncome] = useState<string>('');
 	const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
 	const [openAddedIncomeDialog, setOpenAddedIncomeDialog] = useState(false);
-	const cashAmountFormatted = useMoneyFilter(added[added.length - 1].cash);
-	const cardAmountFormatted = useMoneyFilter(added[added.length - 1].card);
+	const cashAmountFormat = useMoneyFilter();
+	// const cardAmountFormatted = useMoneyFilter(added[added.length - 1].card);
 
 	const handleOpenAddedDialog = () => {
 		setOpenAddedIncomeDialog(cur => !cur);
 	};
 
-	useEffect(() => {
-		if (added && added.length > 0) {
-			const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormatted} Cash` : '';
-			const card = added[added.length - 1].card > 0 ? `${cardAmountFormatted} Card` : '';
-			// const date = added[added.length - 1].date ? new Date(added[added.length - 1].date).toLocaleDateString() : '';
-			const lastAddedString = `${cash}  ${card} `;
-			let totalAdded = 0;
-			added.forEach(income => {
-				totalAdded += income.card;
-				totalAdded += income.cash;
-			});
-			const formattedValue = totalAdded.toLocaleString('en-US', {
-				style: 'currency',
-				currency: 'USD'
-			});
-			setLastAdded(lastAddedString);
-			setTotalIncome(formattedValue);
-		}
-	}, [added]);
+	// useEffect(() => {
+	// 	if (added && added.length > 0) {
+	// 		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} Cash` : '';
+	// 		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} Card` : '';
+	// 		// const date = added[added.length - 1].date ? new Date(added[added.length - 1].date).toLocaleDateString() : '';
+	// 		const lastAddedString = `${cash}  ${card} `;
+	// 		let totalAdded = 0;
+	// 		added.forEach(income => {
+	// 			totalAdded += income.card;
+	// 			totalAdded += income.cash;
+	// 		});
+	// 		setLastAdded(lastAddedString);
+	// 		setTotalIncome(cashAmountFormat.formatValue(totalAdded));
+	// 	}
+	// }, [added]);
+
+	const lastAdded: string = useMemo(() => {
+		if (!Array.isArray(added) || added.length == 0) return '';
+		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} Cash` : '';
+		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} Card` : '';
+		return `${cash}  ${card} `;
+	}, [added, cashAmountFormat]);
+
+	const totalIncome = useMemo(() => {
+		if (!Array.isArray(added) || added.length == 0) return '$0.00';
+		// let totalAdded = 0;
+		// added.forEach(income => {
+		// 			totalAdded += income.card;
+		// 			totalAdded += income.cash;
+		// 		});
+		const totalAdded = added.reduce((sum, income) => sum + income.card + income.cash, 0);
+		return cashAmountFormat.formatValue(totalAdded);
+	}, [added, cashAmountFormat]);
 
 	const summaryArray = [{ name: 'Cash', value: remaining.cash }, { name: 'Card', value: remaining.card },
 	{ name: 'Total', value: remaining.cash + remaining.card },
