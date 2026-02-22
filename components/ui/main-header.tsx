@@ -20,7 +20,7 @@ export default function MainHeader() {
 	const [backgroundClass, setBackgroundClass] = useState<string>(classes.filled);
 
 	useEffect(() => {
-		if (pathname !== '/') return;
+		if (pathname !== '/') return setBackgroundClass(classes.filled);
 		const heroHeight = window.innerHeight;
 		const handleScroll = () => {
 			if (window.scrollY <= heroHeight) {
@@ -41,7 +41,7 @@ export default function MainHeader() {
 	}
 	return (
 		<>
-			<header className={`w-11/12 lg:w-10/12 rounded-xl place-self-center  ${classes.header} ${backgroundClass}`}>
+			<header className={`w-11/12 lg:w-10/12 rounded-xl place-self-center ${pathname === '/' ? 'fixed' : 'sticky'}  ${classes.header} ${backgroundClass}`}>
 				<div className="lg:flex hidden w-full justify-between items-center">
 					<Link className={classes.logo} href="/" aria-label="Go to homepage">
 						<Image src={logoImg} alt="Expenses logo" width={280} priority />

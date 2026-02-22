@@ -18,7 +18,7 @@ export default function ReportViewer(props) {
 			setTableData(data);
 		}
 		retrieveData();
-	}, [dateFilter, retrieveData, props.reportType]);
+	}, [dateFilter, props.reportType]);
 
 
 

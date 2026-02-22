@@ -8,7 +8,7 @@ import LandingpPage from "@/components/landingPage/landingPage";
 export default function Home() {
 	return (
 		<>
-			<main className="flex justify-self-center justify-center">
+			<main className="flex justify-self-center justify-center mb-8 lg:mb-3">
 				<div className=" w-full text-center flex flex-col p-0  items-center overflow-auto">
 					<LandingpPage />
 					{/* <section className="flex">
