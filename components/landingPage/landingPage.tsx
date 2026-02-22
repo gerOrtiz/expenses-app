@@ -1,12 +1,9 @@
 'use client';
-
-import accountingImage from "@/assets/accounting.jpg";
 import calculatorImg from "@/assets/calculator.jpg";
 import moneyImg from "@/assets/money.jpg";
 import reports from "@/assets/reports.jpg";
 import tax from "@/assets/tax.jpg";
 import savings from "@/assets/savings.jpg";
-import charts from "@/assets/charts.jpg";
 import { Button, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,7 +55,7 @@ function LandingpPage() {
 		</section>
 
 
-		<section id="about" className="w-full flex flex-col mt-8 p-6 m-6">
+		<section id="about" className="max-w-full flex flex-col mt-8 p-6 m-6">
 			<div className="lg:w-3/5 sm:w-full flex flex-col gap-4 self-center">
 				<Typography variant="h2" color="black"  >{`Take Control of Your Personal Finances`}</Typography>
 				<Typography variant="paragraph" color="gray" className=" text-lg" >
