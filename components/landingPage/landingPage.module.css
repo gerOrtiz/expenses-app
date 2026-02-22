@@ -1,0 +1,17 @@
+section.hero {
+	div.callToAction {
+		/* margin-right: 1.25rem; */
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		/* padding: 2rem; */
+		border-radius: 20px;
+		/* background-color: rgba(255, 255, 255, 0.3); */
+		backdrop-filter: blur(5px);
+		--webkit-backdrop-filter: blur(5px);
+
+		p.description {
+			text-shadow: 0 0 black;
+		}
+	}
+}

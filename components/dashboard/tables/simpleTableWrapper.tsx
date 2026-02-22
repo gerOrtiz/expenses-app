@@ -32,7 +32,7 @@ export default function TableWrapper({ data }: TableWrapperPropsI) {
 
 	useEffect(() => {
 		if (data) tableCtx.updateExpensesTable(data);
-	}, [data]);
+	}, [data, tableCtx]);
 
 	useEffect(() => {
 		if (tableCtx.expensesTable) setTableData(tableCtx.expensesTable);

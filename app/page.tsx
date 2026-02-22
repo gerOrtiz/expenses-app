@@ -8,8 +8,8 @@ import LandingpPage from "@/components/landingPage/landingPage";
 export default function Home() {
 	return (
 		<>
-			<main className="container flex py-2 justify-self-center justify-center">
-				<div className="lg:w-[85%] w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
+			<main className="flex justify-self-center justify-center">
+				<div className=" w-full text-center flex flex-col p-0  items-center overflow-auto">
 					<LandingpPage />
 					{/* <section className="flex">
             <Card className="w-full flex p-4 m-4 flex-row">

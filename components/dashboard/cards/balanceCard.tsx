@@ -8,7 +8,7 @@ interface BalanceCardPropsI {
 	value: number;
 }
 const BalanceCard: React.FC<BalanceCardPropsI> = ({ text, value }) => {
-	const formattedAmount = useMoneyFilter(value);
+	const { moneyFilter } = useMoneyFilter(value);
 
 	return (<>
 		<div className="w-[48%] lg:w-1/4 flex">
@@ -19,7 +19,7 @@ const BalanceCard: React.FC<BalanceCardPropsI> = ({ text, value }) => {
 							{text}
 						</Typography>
 						<Typography variant="h4" className="p-2 lg:p-4 text-lg lg:text-2xl" color={value > 1 ? "green" : "red"} >
-							{formattedAmount}
+							{moneyFilter}
 						</Typography>
 					</div>
 				</CardBody>

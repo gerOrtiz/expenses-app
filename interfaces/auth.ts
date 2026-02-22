@@ -22,3 +22,10 @@ export interface PasswordChangeRequestI {
 	currentPassword: string;
 	newPassword: string;
 }
+
+export type SignupCredentials = {
+	name?: string
+	email: string
+	password: string
+	confirmPassword?: string
+}

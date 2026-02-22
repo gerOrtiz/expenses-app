@@ -25,6 +25,7 @@ export default async function UserFormPage() {
         {!isSigningUp && <LoginForm></LoginForm>}
       </main> */}
 			<main className="container flex py-2 justify-self-center justify-center">
+				<h1 className="sr-only">Login screen</h1>
 				<div className="lg:w-2/4 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
 					<LoginLayout />
 				</div>
