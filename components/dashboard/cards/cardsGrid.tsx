@@ -33,7 +33,7 @@ export default function DasboardCards() {
 							</Typography>
 						</div>
 						<Link href="/dashboard/simple-table">
-							<Button variant="filled" color="blue" fullWidth >{`Go there`}</Button>
+							<Button variant="filled" className="filled" fullWidth >{`Go there`}</Button>
 						</Link>
 					</CardBody>
 				</Card>

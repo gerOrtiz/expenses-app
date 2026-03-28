@@ -92,7 +92,7 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 	const handleInstructionsOpen = () => setShowInstructions(!showInstructions);
 	return (<>
 		<div className="lg:hidden flex justify-between px-4 py-3 items-center bg-white">
-			<Link href="/dashboard" >
+			<Link href="/dashboard" aria-label={`Return to dashboard`}>
 				<FontAwesomeIcon icon={faArrowLeft} size="lg" />
 			</Link>
 			{hasCurrentData && (<Button variant="outlined" color="blue" size="sm" onClick={handleOpen}>{`Close period`}</Button>)}
@@ -103,7 +103,11 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 
 		<Navbar className="relative mx-auto max-w-screen-xl px-6 py-3 lg:block hidden">
 			<div className="flex items-center justify-between text-blue-gray-900">
-				<Typography
+				<Link href="/dashboard" className="text-blue-500 font-bold flex gap-2 items-center py-1.5">
+					<FontAwesomeIcon icon={faArrowLeft} size="lg" />
+					{`Return`}
+				</Link>
+				{/* <Typography
 					as="a"
 					href="/dashboard"
 					variant="lead"
@@ -112,7 +116,7 @@ export default function DashboardHeader({ hasCurrentData }: DashboardHeaderProps
 				>
 					<FontAwesomeIcon icon={faArrowLeft} size="lg" />
 					{`Return`}
-				</Typography>
+				</Typography> */}
 				<ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
 					{hasCurrentData && <li className="p-1 font-medium">
 						<Button variant="text" color="blue" onClick={handleOpen}>

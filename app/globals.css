@@ -76,8 +76,10 @@ button.outlined {
 }
 
 button.outlined:hover {
-	background-color: rgb(30 64 175);
-	color: #ffffff;
+	/* background-color: rgb(30 64 175); */
+	/* color: #ffffff; */
+	border-color: rgb(0, 55, 207);
+	color: rgb(0, 55, 207);
 }
 
 /* labels & Inputs */

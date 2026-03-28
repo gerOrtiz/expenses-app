@@ -1,9 +1,10 @@
 'use client';
 
 import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
+import { useActiveTable } from "@/hooks/useActiveTable";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 interface SummaryObjectI {
 	periodExpenses: string;
@@ -13,8 +14,9 @@ interface SummaryObjectI {
 }
 
 export default function SummaryCard() {
-	const [summary, setSummary] = useState<SummaryObjectI>({ periodExpenses: '$0', percentageSpent: '0 %', transactionsNumber: 0, currentBalance: '$0' });
-	const tableContext = useContext(SimpleExpensesContext);
+	// const [summary, setSummary] = useState<SummaryObjectI>({ periodExpenses: '$0', percentageSpent: '0', transactionsNumber: 0, currentBalance: '$0' });
+	// const tableContext = useContext(SimpleExpensesContext);
+	const { data } = useActiveTable();
 
 	const moneyFilter = (value: number) => {
 		const formattedValue = value.toLocaleString('en-US', {
@@ -24,27 +26,48 @@ export default function SummaryCard() {
 		return formattedValue;
 	};
 
-	useEffect(() => {
-		if (tableContext.expensesTable) {
-			const totalSpent = tableContext.expensesTable.totals.total_expenses.card + tableContext.expensesTable.totals.total_expenses.cash;
-			const totalRemaining = tableContext.expensesTable.remaining.card + tableContext.expensesTable.remaining.cash;
-			let totalIncome = tableContext.expensesTable.income.card + tableContext.expensesTable.income.cash;
-			let totalAdded = 0;
-			tableContext.expensesTable.added.forEach(element => {
-				if (!element.isWithdrawal) {
-					totalAdded += element.card;
-					totalAdded += element.cash;
-				}
-			});
-			totalIncome += totalAdded;
-			const percentage = (totalSpent / totalIncome) * 100;
-			const newSummary: SummaryObjectI = {
-				periodExpenses: moneyFilter(totalSpent), percentageSpent: percentage.toFixed(),
-				currentBalance: moneyFilter(totalRemaining), transactionsNumber: tableContext.expensesTable.expenses.length
-			};
-			setSummary(newSummary);
-		}
-	}, [tableContext]);
+	const summary: SummaryObjectI = useMemo(() => {
+		const expensesTable = data.data;
+		const totalSpent = expensesTable.totals.total_expenses.card + expensesTable.totals.total_expenses.cash;
+		const totalRemaining = expensesTable.remaining.card + expensesTable.remaining.cash;
+		let totalIncome = expensesTable.income.card + expensesTable.income.cash;
+		let totalAdded = 0;
+		expensesTable.added.forEach(element => {
+			if (!element.isWithdrawal) {
+				totalAdded += element.card;
+				totalAdded += element.cash;
+			}
+		});
+		totalIncome += totalAdded;
+		const percentage = (totalSpent / totalIncome) * 100;
+		const newSummary: SummaryObjectI = {
+			periodExpenses: moneyFilter(totalSpent), percentageSpent: percentage.toFixed(2),
+			currentBalance: moneyFilter(totalRemaining), transactionsNumber: expensesTable.expenses.length
+		};
+		return newSummary;
+	}, [data]);
+
+	// useEffect(() => {
+	// 	if (tableContext.expensesTable) {
+	// 		const totalSpent = tableContext.expensesTable.totals.total_expenses.card + tableContext.expensesTable.totals.total_expenses.cash;
+	// 		const totalRemaining = tableContext.expensesTable.remaining.card + tableContext.expensesTable.remaining.cash;
+	// 		let totalIncome = tableContext.expensesTable.income.card + tableContext.expensesTable.income.cash;
+	// 		let totalAdded = 0;
+	// 		tableContext.expensesTable.added.forEach(element => {
+	// 			if (!element.isWithdrawal) {
+	// 				totalAdded += element.card;
+	// 				totalAdded += element.cash;
+	// 			}
+	// 		});
+	// 		totalIncome += totalAdded;
+	// 		const percentage = (totalSpent / totalIncome) * 100;
+	// 		const newSummary: SummaryObjectI = {
+	// 			periodExpenses: moneyFilter(totalSpent), percentageSpent: percentage.toFixed(),
+	// 			currentBalance: moneyFilter(totalRemaining), transactionsNumber: tableContext.expensesTable.expenses.length
+	// 		};
+	// 		setSummary(newSummary);
+	// 	}
+	// }, [tableContext]);
 
 	return (<>
 		<div className="w-full flex">

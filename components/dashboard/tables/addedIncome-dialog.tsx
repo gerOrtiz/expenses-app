@@ -36,23 +36,23 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 			<DialogBody className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h4" color="blue-gray">
-							Added Income
+						<Typography id=":r4:-label" variant="h4" color="blue-gray">
+							{`Added Income`}
 						</Typography>
 						<IconButton variant="text" aria-label="close" onClick={handleOpen}>
 							<FontAwesomeIcon icon={faTimes} size="lg" color="blue-gray" />
 						</IconButton>
 					</div>
 
-					<Typography color="gray" variant="paragraph" className="mt-1 font-normal">
-						History of income additions and withdrawals
+					<Typography id=":r4:-description" color="gray" variant="paragraph" className="mt-1 font-normal">
+						{`History of income additions and withdrawals`}
 					</Typography>
 
 					<div className="mt-3 max-h-96 overflow-y-auto">
 						{addedIncome.length === 0 ? (
 							<div className="text-center py-8">
 								<Typography color="gray" variant="paragraph">
-									No income additions yet
+									{`No income additions yet`}
 								</Typography>
 							</div>
 						) : (
@@ -74,24 +74,22 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 														<div className="flex flex-col items-center gap-2">
 															<div className="flex item-center gap-2">
 																<Typography variant="small" color="blue-gray" className="font-normal">
-																	Cash:
+																	{`Cash`}:
 																</Typography>
 																<Typography
 																	variant="small"
-																	color="green"
-																	className="font-medium"
+																	className="font-semibold text-green-800"
 																>
 																	{'+'}{formatCurrency(income.cash)}
 																</Typography>
 															</div>
 															{income.isWithdrawal && (<div className="flex item-center gap-2">
 																<Typography variant="small" color="blue-gray" className="font-normal">
-																	Card:
+																	{`Card`}:
 																</Typography>
 																<Typography
 																	variant="small"
-																	color="red"
-																	className="font-medium"
+																	className="font-semibold text-red-700"
 																>
 																	{'-'}{formatCurrency(income.cash)}
 																</Typography>
@@ -101,7 +99,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 													{income.card > 0 && (
 														<div className="flex items-center gap-2">
 															<Typography variant="small" color="blue-gray" className="font-normal">
-																Card:
+																{`Card`}:
 															</Typography>
 															<Typography
 																variant="small"

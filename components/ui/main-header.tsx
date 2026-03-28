@@ -7,7 +7,7 @@ import classes from './main-header.module.css';
 import logoImg from '@/assets/transparent-logo.png';
 import logoIcon from '@/assets/logo.png';
 
-import { Button, Drawer, IconButton, Typography } from "@material-tailwind/react";
+import { Button, Drawer, IconButton, Spinner, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
@@ -49,11 +49,16 @@ export default function MainHeader() {
 
 					<nav className={classes.nav}>
 						<ul>
+							{!session && status === 'loading' && (<>
+
+								<li><Spinner /> </li>
+							</>)}
+
 							{!session && status != 'loading' && (<li>
 								<Link href="/login">	<Button variant="filled" className="filled" >{`Get started`}</Button></Link>
 							</li>)}
 
-							{session && status != 'loading' && (<>
+							{session && status === 'authenticated' && (<>
 								<li>
 									<Link href="/dashboard">Dashboard</Link>
 								</li><li>

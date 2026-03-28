@@ -1,15 +1,11 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/authOptions";
-import Dashboardlayout from "@/components/dashboard/layout/dashboardLayout";
+import DashboardlayoutComponent from "@/components/dashboard/layout/dashboardLayout";
 import { Suspense } from "react";
-import { getActiveTable } from "@/lib/user/simple-expenses";
 import DashboardSkeleton from "@/components/loadingSkeletons/dashboardSkeleton";
 
-async function retrieveSession() {
-	const session = await getServerSession(authOptions);
-	return session;
-}
+
 
 export default function Dashboard() {
 	const wrapper = (
@@ -28,13 +24,14 @@ export default function Dashboard() {
 }
 
 async function DashboardPage() {
-	const session = await retrieveSession();
+	const session = await getServerSession(authOptions);
+
 	if (!session) redirect('/login');
-	const tableData = await getActiveTable();
 	return (
 		<main className=" container flex min-h-1 flex-col py-2 justify-self-center justify-center">
 			<div className="relative lg:w-11/12 w-full text-center p-0 mx-auto overflow-x-hidden overflow-auto ">
-				<Dashboardlayout username={session.user.name} expensesTable={tableData} />
+				<h1 className="sr-only">User dashboard</h1>
+				<DashboardlayoutComponent username={session.user.name} />
 			</div>
 		</main>
 	);

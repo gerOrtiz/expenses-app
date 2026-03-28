@@ -17,26 +17,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClockRotateLeft, faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
 
 interface TableWrapperPropsI {
-	data: ExpensesTableI;
+	tableData: ExpensesTableI;
 }
 
-export default function TableWrapper({ data }: TableWrapperPropsI) {
+export default function TableWrapper({ tableData }: TableWrapperPropsI) {
 	// const { data } = props;
 	//const { remaining } = data;
 	const [pendingDialogOpen, setPendingDialogOpen] = useState(false);
 	const [expenseDialogOpen, setExpenseDilogOpen] = useState(false);
-	const [tableData, setTableData] = useState<ExpensesTableI | null>(data);
-	const tableCtx = useContext(SimpleExpensesContext);
+	// const [tableData, setTableData] = useState<ExpensesTableI | null>(data);
+	// const tableCtx = useContext(SimpleExpensesContext);
 	const handlePendingOpen = () => setPendingDialogOpen((cur) => !cur);
 	const handleExpenseOpen = () => setExpenseDilogOpen((cur) => !cur);
 
-	useEffect(() => {
-		if (data) tableCtx.updateExpensesTable(data);
-	}, [data, tableCtx]);
+	// useEffect(() => {
+	// 	if (data) tableCtx.updateExpensesTable(data);
+	// }, [data, tableCtx]);
 
-	useEffect(() => {
-		if (tableCtx.expensesTable) setTableData(tableCtx.expensesTable);
-	}, [tableCtx]);
+	// useEffect(() => {
+	// 	if (tableCtx.expensesTable) setTableData(tableCtx.expensesTable);
+	// }, [tableCtx]);
 
 
 	// const handleTableDataChange = (data: ExpensesTableI) => {

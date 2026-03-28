@@ -18,7 +18,7 @@ import { connectToDB, convertToObjectId, disconnectFromDB } from "../db";
 import { AddedIncomeI, ExpenseItemI, ExpensesTableI, IncomeI, PendingExpenseI } from "@/interfaces/expenses";
 import { ObjectId } from "mongodb";
 
-async function setInitialValues() {
+export async function setInitialValues() {
 	const session = await getServerSession(authOptions);
 	if (!session) redirect('/login');
 
@@ -34,7 +34,7 @@ async function setInitialValues() {
 
 export async function createNewTable(initialValues: IncomeI): Promise<{ success: boolean }> {
 	const { session, client, collection } = await setInitialValues();
-	const initialTableValues: Omit<ExpensesTableI, 'id' | '_id'> = {
+	const initialTableValues: Omit<ExpensesTableI, 'id' | '_id'> = { //Either create custom unique code or get rid of id text
 		user_id: session.user.email,
 		status: 'active',
 		income: { ...initialValues },
