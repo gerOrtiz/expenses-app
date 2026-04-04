@@ -1,10 +1,9 @@
 'use client';
 
-import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
 import { useActiveTable } from "@/hooks/useActiveTable";
-import { ExpensesTableI } from "@/interfaces/expenses";
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 interface SummaryObjectI {
 	periodExpenses: string;
@@ -14,17 +13,8 @@ interface SummaryObjectI {
 }
 
 export default function SummaryCard() {
-	// const [summary, setSummary] = useState<SummaryObjectI>({ periodExpenses: '$0', percentageSpent: '0', transactionsNumber: 0, currentBalance: '$0' });
-	// const tableContext = useContext(SimpleExpensesContext);
 	const { data } = useActiveTable();
-
-	const moneyFilter = (value: number) => {
-		const formattedValue = value.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
-		return formattedValue;
-	};
+	const { formatValue } = useMoneyFilter();
 
 	const summary: SummaryObjectI = useMemo(() => {
 		const expensesTable = data.data;
@@ -41,33 +31,11 @@ export default function SummaryCard() {
 		totalIncome += totalAdded;
 		const percentage = (totalSpent / totalIncome) * 100;
 		const newSummary: SummaryObjectI = {
-			periodExpenses: moneyFilter(totalSpent), percentageSpent: percentage.toFixed(2),
-			currentBalance: moneyFilter(totalRemaining), transactionsNumber: expensesTable.expenses.length
+			periodExpenses: formatValue(totalSpent), percentageSpent: percentage.toFixed(2),
+			currentBalance: formatValue(totalRemaining), transactionsNumber: expensesTable.expenses.length
 		};
 		return newSummary;
-	}, [data]);
-
-	// useEffect(() => {
-	// 	if (tableContext.expensesTable) {
-	// 		const totalSpent = tableContext.expensesTable.totals.total_expenses.card + tableContext.expensesTable.totals.total_expenses.cash;
-	// 		const totalRemaining = tableContext.expensesTable.remaining.card + tableContext.expensesTable.remaining.cash;
-	// 		let totalIncome = tableContext.expensesTable.income.card + tableContext.expensesTable.income.cash;
-	// 		let totalAdded = 0;
-	// 		tableContext.expensesTable.added.forEach(element => {
-	// 			if (!element.isWithdrawal) {
-	// 				totalAdded += element.card;
-	// 				totalAdded += element.cash;
-	// 			}
-	// 		});
-	// 		totalIncome += totalAdded;
-	// 		const percentage = (totalSpent / totalIncome) * 100;
-	// 		const newSummary: SummaryObjectI = {
-	// 			periodExpenses: moneyFilter(totalSpent), percentageSpent: percentage.toFixed(),
-	// 			currentBalance: moneyFilter(totalRemaining), transactionsNumber: tableContext.expensesTable.expenses.length
-	// 		};
-	// 		setSummary(newSummary);
-	// 	}
-	// }, [tableContext]);
+	}, [data, formatValue]);
 
 	return (<>
 		<div className="w-full flex">

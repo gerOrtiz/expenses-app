@@ -1,4 +1,6 @@
 'use client';
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { AddedIncomeI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,12 +13,8 @@ interface AddedIncomeDialogPropsI {
 }
 
 export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: AddedIncomeDialogPropsI) {
-	const formatCurrency = (amount: number) => {
-		return amount.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
-	};
+	const dialogRef = useStableDialogA11y(isOpen, 'income-dialog-label', 'income-dialog-description');
+	const { formatValue } = useMoneyFilter();
 
 	const formatDate = (timestamp: number) => {
 		return new Date(timestamp).toLocaleDateString('en-US', {
@@ -33,10 +31,10 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 			handler={handleOpen}
 			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody className="w-full p-4">
+			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography id=":r4:-label" variant="h4" color="blue-gray">
+						<Typography variant="h5" className="text-blue-800" id="income-dialog-label">
 							{`Added Income`}
 						</Typography>
 						<IconButton variant="text" aria-label="close" onClick={handleOpen}>
@@ -44,7 +42,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 						</IconButton>
 					</div>
 
-					<Typography id=":r4:-description" color="gray" variant="paragraph" className="mt-1 font-normal">
+					<Typography variant="paragraph" id="income-dialog-description" color="blue-gray" className="mt-1">
 						{`History of income additions and withdrawals`}
 					</Typography>
 
@@ -80,7 +78,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 																	variant="small"
 																	className="font-semibold text-green-800"
 																>
-																	{'+'}{formatCurrency(income.cash)}
+																	{'+'}{formatValue(income.cash)}
 																</Typography>
 															</div>
 															{income.isWithdrawal && (<div className="flex item-center gap-2">
@@ -91,7 +89,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 																	variant="small"
 																	className="font-semibold text-red-700"
 																>
-																	{'-'}{formatCurrency(income.cash)}
+																	{'-'}{formatValue(income.cash)}
 																</Typography>
 															</div>)}
 														</div>
@@ -106,7 +104,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 																color={income.isWithdrawal ? "red" : "green"}
 																className="font-medium"
 															>
-																{'+'}{formatCurrency(income.card)}
+																{'+'}{formatValue(income.card)}
 															</Typography>
 														</div>
 													)}

@@ -2,13 +2,14 @@
 
 import { useActiveTable } from "@/hooks/useActiveTable";
 import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkeleton";
-import TableWrapper from "../tables/simpleTableWrapper";
+import ExpensesTableWrapper from "../tables/expensesTableWrapper";
 import CreateSimpleTableComponent from "../tables/createSimpleTableComponent";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Typography } from "@material-tailwind/react";
 import CloseTableButton from "../tables/closeTableButton";
+
 
 export default function SimpleTableLayoutComponent() {
 	const { data, isFetching } = useActiveTable();
@@ -24,11 +25,11 @@ export default function SimpleTableLayoutComponent() {
 		</div>
 		<div className="flex flex-col lg:flex-row items-center justify-evenly gap-3 lg:justify-between w-full px-5">
 			<Typography variant="h2" color="blue">{`Daily expenses`}</Typography>
-			{data && data.data !== null && (<CloseTableButton />)}
+			{data && data.data !== null && (<CloseTableButton tableId={data.data._id} />)}
 		</div>
 		<section>
 			{data && (
-				data.data !== null ? (<TableWrapper tableData={data.data} />) : (<CreateSimpleTableComponent />)
+				data.data !== null ? (<ExpensesTableWrapper tableData={data.data} />) : (<CreateSimpleTableComponent />)
 			)}
 		</section>
 	</>);

@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 
-export async function GET(request: Request) {
+export async function GET() {
 	try {
 		const { session, client, collection } = await setInitialValues();
 		const table = await collection.findOne({
@@ -23,11 +23,11 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) { //Add Income
 	try {
-		const body = await request.json() as { currentTable_id: string, newIncomeData: AddedIncomeI };
+		const body = await request.json() as { currentTable_id: string | ObjectId, newIncomeData: AddedIncomeI };
 		if (!body.currentTable_id || (isNaN(body.newIncomeData.cash) && isNaN(body.newIncomeData.card)))
 			return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
-		const table_id = convertToObjectId(body.currentTable_id);
+		const table_id = typeof body.currentTable_id === 'string' ? convertToObjectId(body.currentTable_id) : body.currentTable_id;
 		const existingTable: ExpensesTableI = await collection.findOne({ _id: table_id, user_id: session.user.email }) as ExpensesTableI;
 		if (!existingTable || !existingTable._id) return NextResponse.json({ error: 'No active table found' }, { status: 404 });
 		const updatedTable = await processAddIncome(body.newIncomeData, existingTable);
@@ -35,8 +35,8 @@ export async function PUT(request: Request) { //Add Income
 			$set: { remaining: updatedTable.remaining, added: updatedTable.added, lastModified: new Date().getTime() },
 		});
 		await client.close();
-		updatedTable.id = body.currentTable_id;
-		delete updatedTable._id;
+		// updatedTable.id = body.currentTable_id;
+		// delete updatedTable._id;
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -77,10 +77,10 @@ export async function POST(request: Request) { //Create new table
 
 export async function PATCH(request: Request) { //close table 
 	try {
-		const currentTable = await request.json() as ExpensesTableI;
-		if (!currentTable || !currentTable.id) return NextResponse.json({ error: 'Invalid table' }, { status: 400 });
+		const currentTableId = await request.json() as string | ObjectId;
+		if (!currentTableId) return NextResponse.json({ error: 'Invalid table' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
-		const table_id = convertToObjectId(currentTable.id);
+		const table_id: ObjectId = typeof currentTableId === 'string' ? convertToObjectId(currentTableId) : currentTableId;
 		await collection.updateOne({ _id: table_id, user_id: session.user.email }, {
 			$set: { status: "closed", fDate: new Date().getTime(), lastModified: new Date().getTime() },
 		});

@@ -1,6 +1,8 @@
 'use client';
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { TotalsI, TotalsType } from "@/interfaces/expenses";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Accordion,
 	AccordionBody,
@@ -45,8 +47,9 @@ const SingleTable: React.FC<{ tableTitle: string, data: TotalsType }> = ({ table
 		<Card className="mb-0 lg:mb-1 w-full overflow-hidden shadow-blue-100 border border-blue-gray-100 h-fit">
 			<CardBody className="p-3 lg:p-6">
 				<section className="relative flex flex-col gap-2">
-					<Accordion open={openAccordion}>
+					<Accordion open={openAccordion} icon={<FontAwesomeIcon aria-label="Accordion caret" icon={openAccordion ? faAngleUp : faAngleDown} />}>
 						<AccordionHeader onClick={handleOpenAccordion}>
+
 							<div className="flex flex-col lg:flex-row w-full justify-around gap-2 lg:gap-0">
 								<Typography variant="h6" color="gray" className="text-xs lg:text-base">{tableTitle}:</Typography>
 								<Typography variant="h6" color="blue-gray" className="text-xs lg:text-base">{total}</Typography>
@@ -73,30 +76,6 @@ const SingleTable: React.FC<{ tableTitle: string, data: TotalsType }> = ({ table
 							</div>
 						</AccordionBody>
 					</Accordion>
-					{/* <div className="flex w-full justify-around">
-						<Typography variant="h6" color="gray">{tableTitle}:</Typography>
-						<Typography variant="h6" color="blue-gray">{total}</Typography>
-					</div>
-
-					<div className="flex flex-col">
-						<div className="flex w-full justify-around">
-							<Typography variant="paragraph" color="gray" >
-								{`Cash`}
-							</Typography>
-							<Typography variant="paragraph" color="blue-gray" className="font-semibold" >
-								{cashFormatted}
-							</Typography>
-						</div>
-						<div className="flex w-full justify-around">
-							<Typography variant="paragraph" color="gray" >
-								{`Card`}
-							</Typography>
-							<Typography variant="paragraph" color="blue-gray" className="font-semibold" >
-								{cardFormatted}
-							</Typography>
-						</div>
-					</div> */}
-
 				</section>
 			</CardBody>
 		</Card>

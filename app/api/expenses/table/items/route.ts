@@ -15,15 +15,15 @@ import { processAddNewExpense, processDeleteExpenses, processUpdateExpenses } fr
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-function sanitizeDocument(currentTable_id: string, updatedTable: ExpensesTableI) {
-	updatedTable.id = currentTable_id;
-	delete updatedTable._id;
-}
+// function sanitizeDocument(currentTable_id: string, updatedTable: ExpensesTableI) {
+// 	updatedTable.id = currentTable_id;
+// 	delete updatedTable._id;
+// }
 
 
 export async function POST(request: Request) {
 	try {
-		const body = await request.json() as { currentTable_id: string, newClientExpense: ExpenseItemI };
+		const body = await request.json() as { currentTable_id: string | ObjectId, newClientExpense: ExpenseItemI };
 		if (!body.currentTable_id || isNaN(body.newClientExpense.amount)) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
 		const table_id = convertToObjectId(body.currentTable_id);
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 			},
 		});
 		await client.close();
-		sanitizeDocument(body.currentTable_id, updatedTable);
+		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
 	try {
-		const body = await request.json() as { currentTable_id: string, clientExpense: ExpenseItemI };
+		const body = await request.json() as { currentTable_id: string | ObjectId, clientExpense: ExpenseItemI };
 		if (!body.currentTable_id || isNaN(body.clientExpense.amount)) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
 		const table_id = convertToObjectId(body.currentTable_id);
@@ -65,7 +65,7 @@ export async function PUT(request: Request) {
 			},
 		});
 		await client.close();
-		sanitizeDocument(body.currentTable_id, updatedTable);
+		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -74,8 +74,8 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
 	try {
-		const body = await request.json() as { currentTable_id: string, clientExpenseId: number };
-		if (!body.currentTable_id || isNaN(body.clientExpenseId)) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
+		const body = await request.json() as { currentTable_id: string | ObjectId, clientExpenseId: string };
+		if (!body.currentTable_id || !body.clientExpenseId) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
 		const table_id = convertToObjectId(body.currentTable_id);
 		const existingTable: ExpensesTableI = await collection.findOne({ _id: table_id, user_id: session.user.email }) as ExpensesTableI;
@@ -91,7 +91,7 @@ export async function DELETE(request: Request) {
 			}
 		});
 		await client.close();
-		sanitizeDocument(body.currentTable_id, updatedTable);
+		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

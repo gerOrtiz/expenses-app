@@ -21,22 +21,26 @@ export interface IncomeI {
 }
 
 export interface ExpenseItemI {
-	id?: number;
+	id?: string;
 	description: string;
 	type: string;
 	date: number;
 	isPending: boolean;
 	amount: number;
-	pending_id?: number;
+	pending_id?: string;
 }
 
-export interface PendingExpenseI {
-	id?: number;
-	name: string;
-	// type: 'cash' | 'card';
-	type: string;
-	amount: number;
-	fulfilled?: boolean; // Flag to mark if this has been fulfilled
+// export interface PendingExpenseI {
+// 	id?: number;
+// 	name: string;
+// 	type: string;
+// 	amount: number;
+// 	fulfilled?: boolean; // Flag to mark if this has been fulfilled
+// }
+
+export interface PendingExpenseI extends Omit<ExpenseItemI, 'isPending' | 'date' | 'pending_id'> {
+	fulfilled?: boolean;
+	originalAmount?: number;
 }
 
 

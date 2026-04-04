@@ -2,11 +2,12 @@
 
 import { AddedIncomeI } from "@/interfaces/expenses";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ObjectId } from "mongodb";
 
 export function useAddIncome() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { currentTable_id: string, newIncomeData: AddedIncomeI }) => {
+		mutationFn: (data: { currentTable_id: string | ObjectId, newIncomeData: AddedIncomeI }) => {
 			return fetch('/api/expenses/table', {
 				method: 'PUT',
 				headers: {
@@ -17,10 +18,11 @@ export function useAddIncome() {
 		onMutate: () => { },
 		onError: (error) => {
 			console.error(error);
-		}, onSuccess: (data) => {
-			console.log(data.json());
-			queryClient.invalidateQueries({ queryKey: ['activeTable'] }); queryClient.invalidateQueries({ queryKey: ['activeTable'] });
-			// queryClient.setQueryData(['budget'], updatedDocument);
+			throw new Error(error.message);
+		}, onSuccess: async (data) => {
+			const updatedDocument = await data.json();
+			// queryClient.invalidateQueries({ queryKey: ['activeTable'] }); queryClient.invalidateQueries({ queryKey: ['activeTable'] });
+			queryClient.setQueryData(['activeTable'], updatedDocument);
 		}
 	});
 

@@ -8,7 +8,7 @@ jest.mock('../../../components/dashboard/tables/closeTableButton', () => {
 		return <button >Close</button>;
 	};
 });
-jest.mock('../../../components/dashboard/tables/simpleTableWrapper', () => {
+jest.mock('../../../components/dashboard/tables/expensesTableWrapper', () => {
 	return function MockSimpleTableWrapper() {
 		return <div data-testid="table-wrapper">Table wrapper</div>;
 	};

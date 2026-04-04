@@ -14,13 +14,13 @@ export function useActiveTable() {
 			return res.json();
 		},
 		staleTime: 1000 * 60 * 5,
-		select: (response: tableData) => {
-			if (response && response.data) {
-				const newData = { ...response.data, id: response.data._id.toString() };
-				delete newData._id;
-				return { data: newData };
-			} else return { data: null };
-		}
+		// select: (response: tableData) => {
+		// 	if (response && response.data) {
+		// 		const newData = { ...response.data, id: response.data._id.toString() };
+		// 		delete newData._id;
+		// 		return { data: newData };
+		// 	} else return { data: null };
+		// }
 	});
 
 	return {

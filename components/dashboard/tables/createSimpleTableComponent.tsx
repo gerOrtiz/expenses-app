@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTable } from "@/hooks/useCreateTable";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 
 
 export default function CreateSimpleTableComponent() {
 	const [open, setOpen] = useState<boolean>(false);
+	const dialogRef = useStableDialogA11y(open, 'create-table-label', 'create-table-description');
 	const { mutation } = useCreateTable();
 
 	const { register, handleSubmit, reset, formState: { errors, isSubmitting, isValid } } =
@@ -34,7 +36,7 @@ export default function CreateSimpleTableComponent() {
 			<div className="flex flex-col gap-2 items-center ">
 				<Typography variant="h3" color="blue-gray">{`Take control of your personal expenses`}</Typography>
 				<Typography variant="paragraph" color="gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography>
-				<Button variant="filled" aria-haspopup="dialog" size="lg" className="filled" onClick={handleOpen}>Create new expenses table</Button>
+				<Button variant="filled" aria-haspopup="dialog" size="lg" className="filled hover:-translate-y-1" onClick={handleOpen}>{`Create new expenses table`}</Button>
 			</div>
 
 		</div>
@@ -46,12 +48,13 @@ export default function CreateSimpleTableComponent() {
 			handler={handleOpen}
 			className="bg-transparent shadow-none min-w-[90%] justify-items-center"
 			aria-modal
+			ref={dialogRef}
 		>
 			<form className="mt-8 mb-2 w-full lg:w-3/5 max-w-screen-lg " onSubmit={handleSubmit(onSubmit)}>
 				<Card className="mx-auto w-full ">
 					<CardBody className="flex flex-col gap-4">
 						<div className="flex w-full justify-between items-center">
-							<Typography variant="h4" color="blue-gray" id={`:r1g:-label`}>
+							<Typography variant="h4" className="text-blue-800" id="create-table-label">
 								{`New expenses table`}
 							</Typography>
 							<IconButton variant="text" aria-label="close" onClick={handleOpen} >
@@ -59,10 +62,9 @@ export default function CreateSimpleTableComponent() {
 							</IconButton>
 						</div>
 						<Typography
-							className="font-normal"
 							variant="paragraph"
-							color="gray"
-							id={`:r1g:-description`}
+							color="blue-gray"
+							id="create-table-description"
 						>
 							{`Enter initial amounts to get started`}
 						</Typography>

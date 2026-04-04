@@ -8,7 +8,7 @@ jest.mock('@material-tailwind/react', () => ({
 import CreateSimpleTableComponent from "@/components/dashboard/tables/createSimpleTableComponent";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe('CreateSimpleTableComponent', () => {
@@ -77,8 +77,6 @@ describe('CreateSimpleTableComponent', () => {
 		});
 
 	});
-
-
 
 	it('calls mutation with correct data when form is submitted', async () => {
 		// Mock successful response

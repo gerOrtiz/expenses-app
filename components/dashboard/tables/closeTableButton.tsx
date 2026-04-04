@@ -1,15 +1,26 @@
 'use client';
 
+import { useCloseActiveTable } from "@/hooks/useCloseActiveTable";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, CardBody, CardFooter, Dialog, DialogBody, IconButton, Typography } from "@material-tailwind/react";
+import { Button, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
+import { ObjectId } from "mongodb";
 import { useState } from "react";
 
-export default function CloseTableButton() {
+export default function CloseTableButton({ tableId }: { tableId: string | ObjectId }) {
+
 	const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+	const dialogRef = useStableDialogA11y(openConfirmationDialog, 'close-period-label', 'close-period-description');
+	const { mutation } = useCloseActiveTable();
 
 	const handleOpen = () => setOpenConfirmationDialog((op) => !op);
-	const mockClose = () => { return; };
+	const handleCloseTable = async () => {
+		const res = await mutation.mutateAsync(tableId);
+		if (res.ok) {
+			setOpenConfirmationDialog(false);
+		}
+	};
 	return (<>
 		<Button variant="filled" className="filled" onClick={handleOpen} >
 			<span className="hidden lg:block text-[13px]">{`Close period`}</span>
@@ -19,29 +30,30 @@ export default function CloseTableButton() {
 			size="md"
 			open={openConfirmationDialog}
 			handler={handleOpen}
-			className="bg-transparent shadow-none"
+			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody>
-				<Card className="border border-blue-gray-100 shadow-sm p-3">
-					<div className="flex absolute right-2">
-						<IconButton className=" justify-self-end" variant="text" aria-label="close dialog" onClick={handleOpen} >
-							<FontAwesomeIcon icon={faTimes} color="blue-gray" size="lg" />
+			<DialogBody ref={dialogRef} className="w-full p-4">
+				<div className="flex flex-col w-full gap-3 p-1">
+					<div className="flex w-full justify-between items-center">
+						<Typography variant="h5" className="text-blue-800" id="close-period-label">
+							{`Close expenses period`}
+						</Typography>
+						<IconButton variant="text" aria-label={`Close dialog`} size="sm" onClick={handleOpen}>
+							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
 						</IconButton>
 					</div>
-					<CardBody>
-						<Typography id=":r0:-label" variant="h3" color="blue">Close expenses period</Typography>
-						<Typography id=":r0:-description" variant="h4" color="blue-gray">
-							{`Do you wish to close this expenses period?`}
-						</Typography>
-					</CardBody>
-					<CardFooter>
-						<div className="flex flex-row gap-4">
-							<Button variant="filled" className="filled" onClick={mockClose} >{`Close period`}</Button>
-							<Button variant="outlined" className="outlined" onClick={handleOpen}>{`Cancel`}</Button>
-						</div>
-					</CardFooter>
-				</Card>
+					<Typography color="blue-gray" variant="paragraph" id="close-period-description">
+						{`This action can't be undone, do you wish to continue?`}
+					</Typography>
+				</div>
+
 			</DialogBody>
+			<DialogFooter>
+				<div className="flex flex-row gap-4">
+					<Button variant="filled" className="filled" onClick={handleCloseTable} >{`Close period`}</Button>
+					<Button variant="outlined" className="outlined" onClick={handleOpen}>{`Cancel`}</Button>
+				</div>
+			</DialogFooter>
 		</Dialog>
 	</>);
 }

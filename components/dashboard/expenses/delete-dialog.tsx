@@ -1,65 +1,65 @@
 'use client';
-
-import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
-import { ExpenseItemI, ExpensesTableI } from "@/interfaces/expenses";
-import { deleteExpenses, updateExpenses } from "@/lib/user/simple-expenses";
-import { Button, Card, CardFooter, Dialog, Typography } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useActiveTableId } from "@/hooks/useActiveTableId";
+import { useDeleteExpense } from "@/hooks/useDeleteExpense";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
+import { ExpenseItemI } from "@/interfaces/expenses";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
+import { useState } from "react";
 
 interface DeleteDialogPropsI {
-	index: number;
 	expense: ExpenseItemI;
-	isPendingPayment: boolean;
 	onCancel: () => void;
 }
 
-export default function DeleteDialog({ index, expense, isPendingPayment, onCancel }: DeleteDialogPropsI) {
+export default function DeleteDialog({ expense, onCancel }: DeleteDialogPropsI) {
+	const tableId = useActiveTableId();
 	const [open, setOpen] = useState(true);
-	const [isDeleting, setIsDeleting] = useState(false);
-	const tableCtx = useContext(SimpleExpensesContext);
+	const dialogRef = useStableDialogA11y(open, 'delete-expense-label', 'delete-expense-description');
+	const { mutation } = useDeleteExpense();
 	const handleOpen = () => setOpen((op) => !op);
 
 	function cancel() {
 		setOpen(false);
 		onCancel();
 	}
-	async function deleteEntry() {
-		// setIsDeleting(true);
-		// let newExpensesList = [...expensesList];
-		// newExpensesList.splice(index, 1);
-		const currentTable = tableCtx.getCurrentExpenses();
-		const updatedTable = await deleteExpenses(currentTable.id, expense.id);
-		// const attr = isPendingPayment ? 'pending' : 'expenses';
-		// currentTable[attr] = newExpensesList;
-		// await updateExpenses(currentTable.id, currentTable[attr]);
-		tableCtx.updateExpensesTable(updatedTable);
-		onCancel();
 
-		// if (dataCallback) dataCallback(currentTable);
+	const deleteExpenseHandler = async () => {
+		const res = await mutation.mutateAsync({ currentTable_id: tableId, clientExpenseId: expense.id });
+		if (res.ok) {
+			cancel();
+		}
 	}
-
 
 	return (
 		<Dialog
 			size="xs"
 			open={open}
 			handler={handleOpen}
-			className="bg-transparent shadow-none"
+			className="bg-white shadow-none min-w-[90%]"
 		>
-			<Card className="border border-blue-gray-100 shadow-sm p-3">
-				<Typography variant="h4" color="blue-gray">
-					Estás a punto de borrar una entrada
-				</Typography>
-				<Typography color="gray" className="mt-1 font-normal">
-					Esta accion no se puede deshacer, ¿Deseas continuar?
-				</Typography>
-				<CardFooter>
-					<div className="flex flex-row gap-4">
-						<Button onClick={deleteEntry} loading={isDeleting}>Continuar</Button>
-						<Button variant="outlined" onClick={cancel}>Cancelar</Button>
+			<DialogBody ref={dialogRef} className="w-full p-4">
+				<div className="flex flex-col w-full gap-3 p-1">
+					<div className="flex w-full justify-between items-center">
+						<Typography variant="h5" className="text-blue-800" id="delete-expense-label">
+							{`Delete expense?`}
+						</Typography>
+						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
+							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+						</IconButton>
 					</div>
-				</CardFooter>
-			</Card>
+					<Typography color="blue-gray" variant="paragraph" id="delete-expense-description">
+						{`This action can't be undone, do you wish to continue?`}
+					</Typography>
+				</div>
+			</DialogBody>
+			<DialogFooter>
+				<div className="flex flex-row gap-4">
+					<Button variant="filled" className="filled" onClick={deleteExpenseHandler} loading={mutation.isPending}>{`Delete`}</Button>
+					<Button variant="outlined" className="outlined" disabled={mutation.isPending} onClick={cancel}>{`Cancel`}</Button>
+				</div>
+			</DialogFooter>
 		</Dialog>
 	);
 }

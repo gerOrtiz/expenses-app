@@ -1,51 +1,42 @@
 'use client';
-import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardBody, IconButton, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
 import ExpensesForm from '../expenses/expenses-form';
 import DeleteDialog from '../expenses/delete-dialog';
-import { ExpenseItemI, ExpensesTableI } from '@/interfaces/expenses';
+import { ExpenseItemI } from '@/interfaces/expenses';
 
 import EditExpenseDialog from '../expenses/edit-expenses-form';
+import { useMoneyFilter } from '@/hooks/useMoneyFilter';
 
 interface SimpleTablePropsI {
 	expenses: ExpenseItemI[];
-	tableId: string;
-	dataCallback?: (data: ExpensesTableI) => void;
+	// dataCallback?: (data: ExpensesTableI) => void;
 }
 
-export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
+const dateFilter = (date: number) => {
+	return new Date(date).toLocaleDateString();
+}
+
+export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 	const [expensesList, setExpensesList] = useState<ExpenseItemI[] | null>(null);
-	const [isEditing, setIsEditing] = useState<boolean>(false);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [indexBeingEdited, setIndexBeingEdited] = useState<number>(-1);
 	const [isOpen, setOpen] = useState<boolean>(false);
 	const [openEditDialog, setOpenEditDialog] = useState(false);
 	const [expenseToEdit, setExpenseToEdit] = useState<ExpenseItemI | null>(null);
-	// const tableContext = useContext(SimpleExpensesContext);
+	const { formatValue } = useMoneyFilter();
 
-	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, `Date`, ' '];
-	const MOBILE_TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ` `];
+	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, `Date`, ''];
+	const MOBILE_TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ``];
 
 	const typeFilter = (type: string): string => {
 		return type == 'cash' ? `Cash` : `Card`;
 	}
 
-	const dateFilter = (date: number) => {
-		return new Date(date).toLocaleDateString();
-	}
-
-	const moneyFilter = (value: number) => {
-		const formattedValue = value.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
-		return formattedValue;
-	};
-
 	const handleOpen = () => setOpen((cur) => !cur);
-	// const handlePendingFlag = () => setIsPendingPayment((val) => !val);
+
 	const handleOpenEditDialog = () => {
 		setOpenEditDialog(cur => !cur);
 	}
@@ -62,7 +53,7 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 
 	function cancelChanges() {
 		setIndexBeingEdited(-1);
-		setIsEditing(false);
+		// setIsEditing(false);
 		setIsDeleting(false);
 	}
 
@@ -78,18 +69,20 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 			<CardBody>
 				<div className="w-full flex justify-between items-center mb-3">
 					<Typography color="blue-gray" variant="lead" className="text-lg lg:text-xl">{`Current expenses`}</Typography>
-					<Button variant="filled" color="blue" className="hidden lg:block hover:bg-blue-600" size="sm" onClick={handleOpen}>
-						{`Add expense`}
+					<Button aria-label={`Add expense`} variant="outlined" className="hidden outlined lg:block hover:-translate-y-1" size="sm" onClick={handleOpen}>
+						{`Add`}
 					</Button>
-					<Button className="lg:hidden block text-[11px] hover:bg-blue-500 hover:text-white" variant="text" color="blue" size="sm" onClick={handleOpen}>
-						{`Add expense`}
-					</Button>
+					<IconButton aria-label={`Add expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpen}>
+						<FontAwesomeIcon aria-label={`Plus symbol`} icon={faPlus} size="lg" />
+					</IconButton>
 				</div>
 				<table className="lg:hidden w-full min-w-max table-auto text-center">
 					<thead className="rounded-lg  bg-blue-50">
 						<tr>
 							{MOBILE_TABLE_HEAD.map((title, index) => (
-								<th key={title} className={`p-2 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == MOBILE_TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+								<th aria-label={title ? title : `Edit column`}
+									key={title}
+									className={`p-2 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == MOBILE_TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
 									<Typography
 										variant="small"
 										color="blue-gray"
@@ -111,7 +104,7 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 								</td>
 								<td className="p-2">
 									<Typography variant="small" color="blue-gray" className="text-xs">
-										{moneyFilter(expense.amount)}
+										{formatValue(expense.amount)}
 									</Typography>
 								</td>
 								<td className="p-2">
@@ -123,14 +116,11 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 									</div>
 								</td>
 								<td className="p-2">
-									{/* <Typography variant="small" color="blue-gray" className="text-xs">
-										{dateFilter(expense.date)}
-									</Typography> */}
 									<div className="grid-cols-2 ">
-										{!expense.isPending && <IconButton variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
+										{!expense.isPending && <IconButton aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
 											<FontAwesomeIcon icon={faPencil} />
 										</IconButton>}
-										<IconButton variant="text" size="sm" color="blue" className="rounded-full" onClick={() => deleteExpense(index)}>
+										<IconButton aria-label={`Open delete expense dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => deleteExpense(index)}>
 											<FontAwesomeIcon icon={faTrash} />
 										</IconButton>
 									</div>
@@ -143,7 +133,9 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 					<thead className="rounded-lg  bg-blue-50">
 						<tr>
 							{TABLE_HEAD.map((title, index) => (
-								<th key={title} className={`p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+								<th aria-label={title ? title : `Edit column`}
+									key={title}
+									className={`p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
 									<Typography
 										variant="small"
 										color="blue-gray"
@@ -165,7 +157,7 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 								</td>
 								<td className="p-4">
 									<Typography variant="small" color="blue-gray" className="text-[15px]">
-										{moneyFilter(expense.amount)}
+										{formatValue(expense.amount)}
 									</Typography>
 								</td>
 								<td className="p-4">
@@ -187,11 +179,16 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 								</td>
 								<td className="p-4">
 									<div className="grid-cols-2 ">
-										{!expense.isPending && <IconButton variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
-											<FontAwesomeIcon icon={faPencil} />
-										</IconButton>}
-										<IconButton variant="text" size="sm" color="blue" className="rounded-full" onClick={() => deleteExpense(index)}>
-											<FontAwesomeIcon icon={faTrash} />
+										{!expense.isPending &&
+											<IconButton aria-label={`Open edit expense dialog`}
+												variant="text" color="blue-gray" size="sm"
+												className="rounded-full mr-1 hover:-translate-y-1" onClick={() => editRow(expense)}>
+												<FontAwesomeIcon icon={faPencil} size="lg" />
+											</IconButton>}
+										<IconButton aria-label={`Open delete expense dialog`}
+											variant="text" size="sm" color="blue-gray"
+											className="rounded-full hover:-translate-y-1" onClick={() => deleteExpense(index)}>
+											<FontAwesomeIcon icon={faTrash} size="lg" />
 										</IconButton>
 									</div>
 								</td>
@@ -201,11 +198,8 @@ export default function SimpleTable({ expenses, tableId }: SimpleTablePropsI) {
 				</table>
 			</CardBody>
 		</Card>
-		{isDeleting && <DeleteDialog
-			expense={expensesList[indexBeingEdited]} isPendingPayment={false} index={indexBeingEdited}
-			onCancel={cancelChanges}
-		/>}
-		{isOpen && <ExpensesForm isPending={false} tableId={tableId} isOpen handleOpen={handleOpen} />}
+		{isDeleting && <DeleteDialog expense={expensesList[indexBeingEdited]} onCancel={cancelChanges} />}
+		{isOpen && <ExpensesForm isPending={false} isOpen handleOpen={handleOpen} />}
 		{openEditDialog && <EditExpenseDialog expense={expenseToEdit} isOpen={openEditDialog} handleOpen={handleOpenEditDialog} />}
 	</>);
 }

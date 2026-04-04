@@ -1,98 +1,94 @@
 'use client';
-import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
-import { ExpenseItemI, ExpensesTableI, PendingExpenseI } from "@/interfaces/expenses";
-import { addExpense, addPendingExpense } from "@/lib/user/simple-expenses";
+import { useActiveTable } from "@/hooks/useActiveTable";
+import { useAddExpense } from "@/hooks/useAddExpense";
+import { useAddPendingExpense } from "@/hooks/useAddPendingExpense";
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
+import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Dialog, Input, Typography, Select, Option, Checkbox, DialogBody, IconButton } from "@material-tailwind/react";
-import { FormEventHandler, useContext, useEffect, useState } from "react";
+import { Button, Dialog, Typography, Select, Option, Checkbox, DialogBody, IconButton } from "@material-tailwind/react";
+import { useEffect, useMemo, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 
 interface ExpensesFormPropsI {
 	isPending: boolean;
-	tableId: string;
-	updateTableHandler?: (data: ExpensesTableI) => void;
+	//updateTableHandler?: (data: ExpensesTableI) => void;
 	isOpen: boolean;
 	handleOpen: () => void;
 }
 
-export default function ExpensesForm({ isPending, tableId, isOpen, handleOpen }: ExpensesFormPropsI) {
-	const message = isPending ? `Enter a pending to pay expense` : `Enter a new expense to add it to the table`;
-	const [description, setDescription] = useState('');
-	const [amount, setAmount] = useState<string>('');
-	const [type, setType] = useState<string>('cash');
-	// const [open, setOpen] = useState(true);
-	// const [pendingArray, setPendingArray] = useState<PendingExpenseI[]>([]);
-	const [filteredPending, setFilteredArray] = useState<PendingExpenseI[]>([]);
-	const [isPendingPayment, setIsPendingPayment] = useState(false);
-	const [pending_id, setPendingId] = useState('');
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [hasPendingExpenses, setHasPendingExpenses] = useState<boolean>(false);
-	const tableCtx = useContext(SimpleExpensesContext);
-	const expensesTable = tableCtx.expensesTable;
-	// const handleOpen = () => {
-	// 	setOpen((cur) => !cur);
-	// };
-	const handlePendingFlag = () => setIsPendingPayment((val) => !val);
+type ExpenseFormType = Omit<ExpenseItemI, 'date' | 'isPending'>;
 
-	const hanldeAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-		const value = ev.target.value;
-		if (!isNaN(parseFloat(value))) setAmount(value);
-		else setAmount('');
+const hasTypePendingExpenses = (pendingExpenses: PendingExpenseI[], type: string): Boolean => {
+	return pendingExpenses.some(t => t.type === type);
+}
+
+export default function ExpensesForm({ isPending, isOpen, handleOpen }: ExpensesFormPropsI) {
+	const message = isPending ? `Enter a pending to pay expense` : `Enter a new expense to add it to the table`;
+	const { data } = useActiveTable();
+	const { formatValue } = useMoneyFilter();
+	const currentTable = data.data;
+	const [isPendingPayment, setIsPendingPayment] = useState(false);
+	const [hasPendingExpenses, setHasPendingExpenses] = useState<boolean>(false);
+	const dialogRef = useStableDialogA11y(isOpen, 'expense-label', 'expense-description');
+	const { register, handleSubmit, control, reset, watch, setValue, formState: { isValid, isSubmitting, errors } } =
+		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: '', type: 'cash', amount: 0, pending_id: '' } });
+	const { mutation: pendingMutation } = useAddPendingExpense();
+	const { mutation: expenseMutation } = useAddExpense();
+
+	const onSubmit: SubmitHandler<ExpenseFormType> = async (data) => {
+		let res: Response;
+		if (isPending) {
+			const newPendingExpense: PendingExpenseI =
+				{ description: data.description, amount: data.amount, originalAmount: data.amount, type: data.type, fulfilled: false };
+			// console.log({ currentTable_id: currentTable._id, newPendingExpense });
+			res = await pendingMutation.mutateAsync({ currentTable_id: currentTable._id, newPendingExpense });
+		}
+		else {
+			let expenseObj: ExpenseItemI = {
+				description: data.description, amount: data.amount, type: data.type, date: new Date().getTime(), isPending: false, pending_id: undefined
+			};
+			if (isPendingPayment && data.pending_id) {
+				expenseObj.isPending = true;
+				expenseObj.pending_id = data.pending_id;
+			}
+			console.log(expenseObj);
+			setIsPendingPayment(false);
+			res = await expenseMutation.mutateAsync({ currentTable_id: currentTable._id, newClientExpense: expenseObj });
+		}
+		if (res.ok) {
+			reset();
+			handleOpen();
+		}
 	};
 
-	const filterPendingByType = (typeSelected: string, pendingArray: PendingExpenseI[]): PendingExpenseI[] => {
-		const newArray = pendingArray.filter((pendingExpense) => pendingExpense.type == typeSelected);
+	const handlePendingFlag = () => setIsPendingPayment((val) => !val);
+	const watchType = watch('type');
+
+	const filteredPending = useMemo<PendingExpenseI[]>(() => {
+		if (isPending) return [];
+		if (currentTable.pending.length === 0) return [];
+		const typeHasPending = hasTypePendingExpenses(currentTable.pending, watchType);
+		if (!typeHasPending) return [];
+		const newArray = currentTable.pending.filter((pendingExpense) => pendingExpense.type === watchType);
 		return newArray;
-	}
-
-	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		setIsSubmitting(true);
-		let newData: any;
-
-		if (isPending) {
-			// const currentPending: PendingExpenseI[] = expensesTable ? [...expensesTable.pending] : [];
-			// currentExpenses[currentExpenses.length - 1].id = currentExpenses.length + 1;
-			// const newID = currentPending.length > 0 ? currentPending[currentPending.length - 1].id + 1 : 1;
-			const newExpenseObj = { name: description, amount: parseFloat(amount), type, fulfilled: false };
-			// currentPending.push(newExpenseObj);
-			newData = await addPendingExpense(tableId, newExpenseObj);
-		} else {
-			let expenseObj = {
-				description, amount: parseFloat(amount), type, date: new Date().getTime(), isPending: false, pending_id: undefined
-			};
-			if (isPendingPayment && pending_id) {
-				expenseObj.isPending = true;
-				expenseObj.pending_id = pending_id;
-			}
-			// expensesCopy.push(expenseObj);
-			newData = await addExpense(tableId, expenseObj);
-		}
-		setIsSubmitting(false);
-		handleOpen();
-		setPendingId('');
-		setIsPendingPayment(false);
-		// if (newData && updateTableHandler) updateTableHandler(newData);
-		if (newData) tableCtx.updateExpensesTable(newData);
-
-	}
-
-	// function selectType(val) {
-	//   const pendingyByType = filterPendingByType(val, pendingArray);
-	//   setFilteredArray(pendingyByType);
-	//   setPendingId(val);
-	// }
+	}, [isPending, watchType, currentTable]);
 
 	useEffect(() => {
-		if (!expensesTable) return;
-		if (expensesTable.pending && expensesTable.pending.length > 0) {
+		if (isPending) return;
+		if (currentTable.pending.length === 0) return;
+		const hasPending = hasTypePendingExpenses(currentTable.pending, watchType);
+		if (!hasPending) {
+			setHasPendingExpenses(false);
+			setIsPendingPayment(false);
+		} else {
 			setHasPendingExpenses(true);
-			const pendingyByType = filterPendingByType(type, expensesTable.pending);
-			setFilteredArray(pendingyByType);
+			setValue('pending_id', filteredPending[0].id);
 		}
+	}, [isPending, currentTable, watchType, filteredPending, setValue]);
 
-	}, [expensesTable, type])
 
 	return (<>
 		<Dialog
@@ -101,85 +97,112 @@ export default function ExpensesForm({ isPending, tableId, isOpen, handleOpen }:
 			handler={handleOpen}
 			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody className="w-full  p-4">
+			<DialogBody ref={dialogRef} className="w-full  p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h4" color="blue-gray">
-							{`Expense`}
-						</Typography>
-						<IconButton variant="text" aria-label="close" onClick={handleOpen} >
-							<FontAwesomeIcon icon={faTimes} size="lg" color="blue-gray" />
+						<Typography variant="h5" className="text-blue-800" id="expense-label">{isPending ? `Add Pending` : `Add expense`}</Typography>
+
+						<IconButton variant="text" aria-label="close" size="sm" onClick={handleOpen} >
+							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
 						</IconButton>
 					</div>
 
-					<Typography color="gray" variant="paragraph" className="mt-1 font-normal">
+					<Typography color="blue-gray" variant="paragraph" id="expense-description">
 						{message}
 					</Typography>
-					<form className="mt-2 mb-2" onSubmit={submitHandler}>
+					<form className="mt-2 mb-2" onSubmit={handleSubmit(onSubmit)}>
 						<div className="mb-1 flex flex-col gap-3">
 							<div className="flex flex-col items-left">
-								<label htmlFor="description" className="text-xs text-gray-800 font-semibold">{'Description'}</label>
-								<Input
-									id="description"
-									name="description"
-									className="!rounded-lg !border-blue-600 !border-2 p-3"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									value={description}
-									type="text"
-									onChange={event => setDescription(event.target.value)} crossOrigin={undefined} />
+								<label htmlFor="description" className="text-xs text-gray-900 font-semibold ml-1">{'Description'}</label>
+								<input id="description" name="description" type="text" className={`formInput ${errors.description ? 'inputError' : ''}`} {...register('description', { required: true, minLength: 3 })} />
+								{errors.description && errors.description.type === 'required' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
+								{errors.description && errors.description.type === 'minLength' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Description requires at least 3 characters`}</span>)}
 							</div>
 							<div className="flex flex-col items-left">
-								<label htmlFor="amount" className="text-xs text-gray-800 font-semibold">{'Amount'}</label>
-								<Input
-									id="amount"
-									name="amount"
-									className="!rounded-lg !border-blue-600 !border-2 p-3"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									type="number"
-									min={0.1}
-									step={0.01}
-									value={amount}
-									onChange={hanldeAmountChange} crossOrigin={undefined} />
+								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} {...register('amount', { required: true, min: 1, valueAsNumber: true })} />
+								{errors.amount && errors.amount.type === 'required' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
+								{errors.amount && errors.amount.type === 'min' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number or zero`}</span>)}
 							</div>
 							<div className="flex flex-col items-left">
-								<label htmlFor="paymethod" className="text-xs text-gray-800 font-semibold">{'Paymethod'}</label>
-								<Select
-									id="paymethod"
-									name="paymethod"
-									className="!rounded-lg !border-blue-600 !border-2 p-3 !text-base"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									value={type}
-									onChange={(val) => setType(val)}>
-									<Option value="cash">Efectivo</Option>
-									<Option value="card">Tarjeta</Option>
-								</Select>
+								<label htmlFor="paymethod-select" className="text-xs text-gray-900 font-semibold ml-1">{'Paymethod'}</label>
+								<Controller name="type"
+									control={control}
+									rules={{ required: true }}
+									render={({ field }) =>
+										<Select
+											id="paymethod-select"
+											className="formInput"
+											{...field}
+											containerProps={{ className: 'selectContainer' }}
+											labelProps={{ className: 'hidden', 'aria-hidden': true, 'aria-label': 'Ignore' }}
+											animate={{
+												mount: { y: 0 },
+												unmount: { y: 25 },
+											}}
+										>
+											<Option value="cash">{`Cash`}</Option>
+											<Option value="card">{`Card`}</Option>
+										</Select>
+									}
+								/>
+								{errors.type && errors.type.type === 'required' &&
+									(<span role="alert" className="text-sm text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
 							</div>
 
 
-							{!isPending && hasPendingExpenses &&
-								<Checkbox label={`Is a pending payment?`} color="blue" labelProps={{ className: 'text-gray-800 font-semibold' }} defaultChecked={isPendingPayment} onChange={handlePendingFlag} crossOrigin={undefined} />}
+							{!isPending && hasPendingExpenses && (
+								<div className="flex gap-2 items-center">
+									<Checkbox id="payment"
+										containerProps={{ 'aria-label': 'Check if it is a payment' }}
+										color="blue"
+										defaultChecked={isPendingPayment}
+										onChange={handlePendingFlag}
+										crossOrigin={undefined} />
+									<Typography id="payment-label" variant="small" className=" text-blue-gray-900 font-light">{`Is a pending payment?`}</Typography>
+								</div>
+
+							)
+							}
 							{isPendingPayment && (<>
 								<div className="flex flex-col items-left">
-									<label htmlFor="pending" className="text-xs text-gray-800 font-semibold">{'Pending expense'}</label>
-									<Select id="pending" name="pending"
-										className="!rounded-lg !border-blue-600 !border-2 p-3 !text-base"
-										color="blue"
-										labelProps={{ className: 'hidden' }} value={pending_id} onChange={(val) => setPendingId(val)}>
-										{filteredPending.map(pending => (
-											<Option key={pending.id} value={pending.id + ''}>
-												<span>{pending.name}: </span><span>${pending.amount.toFixed(2)} </span><span>({pending.type == 'cash' ? 'Efectivo' : 'Tarjeta'})</span>
-											</Option>
-										))}
-									</Select>
+									<label htmlFor="pendingId" className="text-xs text-gray-800 font-semibold">{'Pending expense'}</label>
+									<Controller name="pending_id"
+										control={control}
+										rules={{ required: true }}
+										render={({ field: { onChange, value, ...rest } }) =>
+											<Select id="pendingId"
+												className="formInput"
+												containerProps={{ className: 'selectContainer' }}
+												{...rest}
+												value={value}
+												onChange={onChange}
+												labelProps={{ className: 'hidden', 'aria-hidden': true, 'aria-label': 'Ignore' }}
+												animate={{
+													mount: { y: 0 },
+													unmount: { y: 25 },
+												}} >
+												{filteredPending.map(pending => (
+													<Option key={pending.id} value={pending.id}>
+														<span>{pending.description}: </span><span>{formatValue(pending.amount)} </span><span>({pending.type.toWellFormed()})</span>
+													</Option>
+												))}
+											</Select>
+										}
+									/>
 								</div>
 							</>)}
 						</div>
-						<Button variant="filled" color="blue" className="mt-6 hover:bg-blue-600" fullWidth type="submit" disabled={(!type || !amount || !description) || isSubmitting} loading={isSubmitting}>
+						<Button variant="filled" className="mt-6 filled" fullWidth type="submit" disabled={!isValid || isSubmitting} loading={isSubmitting}>
 							{`Add`}
 						</Button>
+						{(expenseMutation.isError || pendingMutation.isError) && (
+							<span role="alert" className="text-sm text-red-700 font-normal mt-1 text-left">{`Something went wrong, please try again later`}</span>
+						)}
 					</form>
 				</div>
 			</DialogBody>

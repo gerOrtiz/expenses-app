@@ -8,52 +8,37 @@ import {
 	Typography,
 
 } from "@material-tailwind/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import IncomeForm from "../income/income-form";
-import { AddedIncomeI, ExpensesTableI, TotalsI, TotalsType } from "@/interfaces/expenses";
+import { AddedIncomeI, TotalsI, TotalsType } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import BalanceCard from "../cards/balanceCard";
 import AddedIncomeDialog from "./addedIncome-dialog";
-// import SummaryCard from "../cards/summaryCard";
+import { ObjectId } from "mongodb";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface RemainingIncomePropsI {
 	remaining: TotalsType;
 	totals: TotalsI;
 	added: AddedIncomeI[];
-	tableId: string;
-	dataCallback?: (data: ExpensesTableI) => void;
+	tableId: string | ObjectId;
+	// dataCallback?: (data: ExpensesTableI) => void;
 }
 
 
 export default function RemainingIncome({ remaining, totals, added, tableId }: RemainingIncomePropsI) {
 	const totalPending = totals.total_pending.cash + totals.total_pending.card;
 	let positiveBalance = (remaining.cash + remaining.card) - totalPending;
-	// const [lastAdded, setLastAdded] = useState('');
-	// const [totalIncome, setTotalIncome] = useState<string>('');
 	const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
 	const [openAddedIncomeDialog, setOpenAddedIncomeDialog] = useState(false);
 	const cashAmountFormat = useMoneyFilter();
-	// const cardAmountFormatted = useMoneyFilter(added[added.length - 1].card);
+
 
 	const handleOpenAddedDialog = () => {
 		setOpenAddedIncomeDialog(cur => !cur);
 	};
 
-	// useEffect(() => {
-	// 	if (added && added.length > 0) {
-	// 		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} Cash` : '';
-	// 		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} Card` : '';
-	// 		// const date = added[added.length - 1].date ? new Date(added[added.length - 1].date).toLocaleDateString() : '';
-	// 		const lastAddedString = `${cash}  ${card} `;
-	// 		let totalAdded = 0;
-	// 		added.forEach(income => {
-	// 			totalAdded += income.card;
-	// 			totalAdded += income.cash;
-	// 		});
-	// 		setLastAdded(lastAddedString);
-	// 		setTotalIncome(cashAmountFormat.formatValue(totalAdded));
-	// 	}
-	// }, [added]);
 
 	const lastAdded: string = useMemo(() => {
 		if (!Array.isArray(added) || added.length == 0) return '';
@@ -89,8 +74,17 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 							</Typography>
 						</div>
 						<div>
-							<Button className="hidden lg:block outlined" variant="outlined" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>{`Add income`}</Button>
-							<Button className="lg:hidden block text-[11px] hover:bg-blue-500 hover:text-white" variant="text" color="blue" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>{`Add income`}</Button>
+							<Button aria-label={`Add income`} aria-haspopup={true}
+								className="hidden lg:block outlined hover:-translate-y-1"
+								variant="outlined" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>
+								{`Add income`}
+							</Button>
+							<IconButton aria-label={`Add new income`} aria-haspopup={true}
+								variant="outlined"
+								className="block lg:hidden outlined"
+								size="sm">
+								<FontAwesomeIcon icon={faPlus} size="lg" />
+							</IconButton>
 						</div>
 					</div>
 					<div className="w-full flex lg:flex-nowrap flex-wrap  gap-2 lg:gap-5 justify-center p-0 lg:p-2 mb-2 ">
@@ -122,8 +116,8 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 								</Typography>
 							</div>
 							<div className="mt-2 lg:mt-0">
-								<Button variant="outlined" className=" outlined p-2 text-[11px] lg:text-sm " onClick={handleOpenAddedDialog}>
-									{`See all incomes`}
+								<Button aria-label={`Show all income movements`} aria-haspopup={true} variant="outlined" className="outlined p-2 text-[11px] lg:text-sm hover:-translate-y-1" onClick={handleOpenAddedDialog}>
+									{`Show more`}
 								</Button>
 							</div>
 						</div>

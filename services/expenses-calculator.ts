@@ -12,7 +12,9 @@ import { AddedIncomeI, ExpenseItemI, ExpensesTableI, IncomeI, PendingExpenseI, T
 export async function processAddNewExpense(newClientExpense: ExpenseItemI, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
 	const updatedTable = { ...existingTable };
 	const expensesArray: ExpenseItemI[] = existingTable.expenses || [];
-	const newId: number = expensesArray.length > 0 ? expensesArray[expensesArray.length - 1].id + 1 : 1;
+	// const newId: number = expensesArray.length > 0 ? expensesArray[expensesArray.length - 1].id + 1 : 1;
+	const newId: string = expensesArray.length + 1 + newClientExpense.description.slice(0, 2).toLocaleUpperCase();
+
 	newClientExpense.id = newId;
 	expensesArray.push(newClientExpense);
 	const { totalExpenses, totalPendingPaid } = await calculateExpensesTotals(expensesArray);
@@ -68,7 +70,7 @@ export async function processNewPendingIncome(expensesArray: ExpenseItemI[], cur
 	const newPayment = expensesArray[expensesArray.length - 1]; //Make sure only the latest entry is the one that changes pending payments
 	const pendingArray = [...currentPendingArray];
 
-	const findCoincidence = (pending_id: number) => {
+	const findCoincidence = (pending_id: string) => {
 		let index = pendingArray.findIndex((e) => {
 			return pending_id == e.id;
 		});
@@ -131,7 +133,9 @@ export async function processRemaining(existingTable: ExpensesTableI): Promise<T
 export async function processAddPending(newClientPendingExpense: PendingExpenseI, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
 	const updatedTable = { ...existingTable };
 	const pendingArray: PendingExpenseI[] = updatedTable.pending || [];
-	const newId: number = pendingArray.length > 0 ? pendingArray[pendingArray.length - 1].id + 1 : 1;
+	// const newId: number = pendingArray.length > 0 ? pendingArray[pendingArray.length - 1].id + 1 : 1;
+	const newId: string = pendingArray.length + 1 + newClientPendingExpense.description.slice(0, 2).toLocaleUpperCase();
+
 	newClientPendingExpense.id = newId;
 	pendingArray.push(newClientPendingExpense);
 	const totalPending = await getTotalPending(pendingArray);
@@ -163,7 +167,7 @@ export async function processUpdateExpenses(clientExpense: ExpenseItemI, existin
  * @param existingTable The bd data of the expenses table
  * @returns An update version for the expenses table
  */
-export async function processDeleteExpenses(clientExpenseId: number, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
+export async function processDeleteExpenses(clientExpenseId: string, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
 	const updatedTable = { ...existingTable };
 	const expensesArray: ExpenseItemI[] = existingTable.expenses;
 	const index = expensesArray.findIndex(o => o.id == clientExpenseId);

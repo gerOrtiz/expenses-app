@@ -1,63 +1,43 @@
 'use client';
-import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
+import { useActiveTableId } from "@/hooks/useActiveTableId";
+import { useEditExpense } from "@/hooks/useEditExpense";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { ExpenseItemI } from "@/interfaces/expenses";
-import { updateExpenses } from "@/lib/user/simple-expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Dialog, Input, Typography, Select, Option, DialogBody, IconButton } from "@material-tailwind/react";
-import { useState, useEffect, useContext } from "react";
+import { Button, Dialog, Typography, Select, Option, DialogBody, IconButton } from "@material-tailwind/react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface EditExpenseDialogPropsI {
 	expense: ExpenseItemI | null;
 	isOpen: boolean;
 	handleOpen: () => void;
-	onSave?: (updatedExpense: ExpenseItemI) => void;
 }
 
-export default function EditExpenseDialog({ expense, isOpen, handleOpen, onSave }: EditExpenseDialogPropsI) {
-	const [description, setDescription] = useState('');
-	const [amount, setAmount] = useState<string>('');
-	const [type, setType] = useState<string>('cash');
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const tableContext = useContext(SimpleExpensesContext);
+type ExpenseFormType = Omit<ExpenseItemI, 'date' | 'isPending'>;
 
-	const handleAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-		const value = ev.target.value;
-		if (!isNaN(parseFloat(value))) setAmount(value);
-		else setAmount('');
-	};
+export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditExpenseDialogPropsI) {
+	const dialogRef = useStableDialogA11y(isOpen, 'edit-expense-label', 'edit-expense-description');
+	const tableId = useActiveTableId();
+	const { register, handleSubmit, control, reset, formState: { errors, isValid, isSubmitting } } =
+		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: expense.description, amount: expense.amount, type: expense.type } });
+	const { mutation } = useEditExpense();
 
-	async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
-		event.preventDefault();
-		if (!expense) return;
-
-		setIsSubmitting(true);
+	const onSubmit: SubmitHandler<ExpenseFormType> = async (data) => {
 
 		const editedRow: ExpenseItemI = {
 			...expense,
-			description,
-			amount: parseFloat(amount),
-			type
+			description: data.description,
+			amount: data.amount,
+			type: data.type
 		};
 
-		const newData = await updateExpenses(tableContext.expensesTable.id, editedRow);
-
-		tableContext.updateExpensesTable(newData);
-
-		if (onSave) onSave(editedRow);
-
-		setIsSubmitting(false);
-		handleOpen();
-	}
-
-	// Populate form when expense changes
-	useEffect(() => {
-		if (expense) {
-			setDescription(expense.description || '');
-			setAmount(expense.amount?.toString() || '');
-			setType(expense.type || 'cash');
+		const res = await mutation.mutateAsync({ currentTable_id: tableId, clientExpense: editedRow });
+		if (res.ok) {
+			reset();
+			handleOpen();
 		}
-	}, [expense]);
+	}
 
 	return (
 		<Dialog
@@ -66,97 +46,82 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen, onSave 
 			handler={handleOpen}
 			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody className="w-full p-4">
+			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h4" color="blue-gray">
+						<Typography variant="h5" className="text-blue-800" id="edit-expense-label">
 							Edit Expense
 						</Typography>
-						<IconButton variant="text" aria-label="close" onClick={handleOpen}>
-							<FontAwesomeIcon icon={faTimes} size="lg" color="blue-gray" />
+						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
+							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
 						</IconButton>
 					</div>
 
-					<Typography color="gray" variant="paragraph" className="mt-1 font-normal">
+					<Typography color="blue-gray" variant="paragraph" id="edit-expense-description">
 						Update the expense details
 					</Typography>
 
-					<form className="mt-2 mb-2" onSubmit={submitHandler}>
+					<form className="mt-2 mb-2" onSubmit={handleSubmit(onSubmit)}>
 						<div className="mb-1 flex flex-col gap-3">
 							<div className="flex flex-col items-left">
-								<label htmlFor="edit-description" className="text-xs text-gray-800 font-semibold">
-									Description
-								</label>
-								<Input
-									id="edit-description"
-									name="description"
-									className="!rounded-lg !border-blue-600 !border-2 p-3"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									value={description}
-									type="text"
-									onChange={event => setDescription(event.target.value)}
-									crossOrigin={undefined}
-								/>
+								<label htmlFor="description" className="text-xs text-gray-900 font-semibold ml-1">{'Description'}</label>
+								<input id="description" name="description" type="text" className={`formInput ${errors.description ? 'inputError' : ''}`} {...register('description', { required: true, minLength: 3 })} />
+								{errors.description && errors.description.type === 'required' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
+								{errors.description && errors.description.type === 'minLength' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Description requires at least 3 characters`}</span>)}
+							</div>
+							<div className="flex flex-col items-left">
+								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} {...register('amount', { required: true, min: 1, valueAsNumber: true })} />
+								{errors.amount && errors.amount.type === 'required' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
+								{errors.amount && errors.amount.type === 'min' &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number or zero`}</span>)}
 							</div>
 
 							<div className="flex flex-col items-left">
-								<label htmlFor="edit-amount" className="text-xs text-gray-800 font-semibold">
-									Amount
-								</label>
-								<Input
-									id="edit-amount"
-									name="amount"
-									className="!rounded-lg !border-blue-600 !border-2 p-3"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									type="number"
-									min={0.1}
-									step={0.01}
-									value={amount}
-									onChange={handleAmountChange}
-									crossOrigin={undefined}
+								<label htmlFor="paymethod-select" className="text-xs text-gray-900 font-semibold ml-1">{'Paymethod'}</label>
+								<Controller name="type"
+									control={control}
+									rules={{ required: true }}
+									render={({ field }) =>
+										<Select
+											id="paymethod-select"
+											className="formInput"
+											{...field}
+											containerProps={{ className: 'selectContainer' }}
+											labelProps={{ className: 'hidden', 'aria-hidden': true, 'aria-label': 'Ignore' }}
+											animate={{
+												mount: { y: 0 },
+												unmount: { y: 25 },
+											}}
+										>
+											<Option value="cash">{`Cash`}</Option>
+											<Option value="card">{`Card`}</Option>
+										</Select>
+									}
 								/>
-							</div>
-
-							<div className="flex flex-col items-left">
-								<label htmlFor="edit-paymethod" className="text-xs text-gray-800 font-semibold">
-									{`Paymethod`}
-								</label>
-								<Select
-									id="edit-paymethod"
-									name="paymethod"
-									className="!rounded-lg !border-blue-600 !border-2 p-3 !text-base"
-									color="blue"
-									labelProps={{ className: 'hidden' }}
-									value={type}
-									onChange={(val) => setType(val)}
-								>
-									<Option value="cash">Efectivo</Option>
-									<Option value="card">Tarjeta</Option>
-								</Select>
 							</div>
 						</div>
-
-						<div className="flex gap-3 mt-6">
+						<div className="flex justify-end gap-3 mt-6">
 							<Button
 								variant="filled"
-								color="blue"
-								className="flex-1 hover:bg-blue-600"
+
+								className="filled"
 								type="submit"
-								disabled={(!type || !amount || !description) || isSubmitting}
+								disabled={isSubmitting || !isValid}
 								loading={isSubmitting}
 							>
-								Save Changes
+								{`Save`}
 							</Button>
 							<Button
 								variant="outlined"
-								color="blue"
-								className="flex-1"
+								className="outlined"
 								onClick={handleOpen}
 								disabled={isSubmitting}
 							>
-								Cancel
+								{`Cancel`}
 							</Button>
 						</div>
 					</form>
