@@ -31,7 +31,7 @@ export async function disconnectFromDB(): Promise<void> {
 	}
 }
 
-export function convertToObjectId(string) {
+export function convertToObjectId(string): ObjectId {
 	const newObject = new ObjectId(string);
 	return newObject;
 }

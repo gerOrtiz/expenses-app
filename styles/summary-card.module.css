@@ -1,0 +1,11 @@
+.positive {
+	color: rgb(51, 156, 51);
+}
+
+.negative {
+	color: rgb(139, 3, 3);
+}
+
+.warning {
+	color: rgb(187, 187, 1)
+}

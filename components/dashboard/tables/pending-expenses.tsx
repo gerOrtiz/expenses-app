@@ -1,13 +1,11 @@
 'use client';
 
-import { addPendingExpense } from "@/lib/user/simple-expenses";
-import { faCheckCircle, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Button,
 	Card,
 	CardBody,
-	CardFooter,
 	Dialog,
 	DialogBody,
 	DialogFooter,
@@ -19,16 +17,19 @@ import {
 import { useState } from "react";
 import ExpensesForm from "../expenses/expenses-form";
 import { PendingExpenseI } from "@/interfaces/expenses";
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 
 interface PendingExpensesTablePropsI {
 	pendingArray: PendingExpenseI[];
-	tableId: string;
+
 	dataCallback?: () => void;
 }
 
-export default function PendingExpensesTable({ pendingArray, tableId, dataCallback }: PendingExpensesTablePropsI) {
+export default function PendingExpensesTable({ pendingArray }: PendingExpensesTablePropsI) {
 	const [isOpen, setOpen] = useState<boolean>(false);
 	const [selectedExpense, setSelectedExpense] = useState<PendingExpenseI | null>(null);
+	const { formatValue } = useMoneyFilter();
+
 	const handleOpen = () => setOpen((cur) => !cur);
 
 	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ""];
@@ -41,44 +42,37 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 		setSelectedExpense(null);
 	};
 
-	const moneyFilter = (value: number) => {
-		const formattedValue = value.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
-		return formattedValue;
-	};
-
 	return (<>
 		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-blue-100 border border-blue-gray-100">
 			<CardBody>
 				<div className="relative flex flex-col">
 					<div className="w-full flex justify-between items-center mb-3">
 						<Typography color="blue-gray" variant="lead" className="text-lg lg:text-xl">{`Pending expenses`}</Typography>
-						<Button variant="filled" color="blue" className="hidden lg:block hover:bg-blue-600" size="sm" onClick={handleOpen}>
-							{`Add pendig expense`}
+						<Button aria-label={`Add pending expense`} variant="outlined" className="hidden outlined lg:block hover:-translate-y-1" size="sm" onClick={handleOpen}>
+							{`Add`}
 						</Button>
-						<Button className="lg:hidden block text-[11px] hover:bg-blue-500 hover:text-white" variant="text" color="blue" size="sm" onClick={handleOpen}>
-							{`Add pending expense`}
-						</Button>
+						<IconButton aria-label={`Add pending expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpen}>
+							<FontAwesomeIcon aria-label={`Plus symbol`} icon={faPlus} size="lg" />
+						</IconButton>
 					</div>
-					{/* <Typography variant="lead">Gastos previstos</Typography> */}
 					<table className="w-full min-w-max table-auto text-left">
 						<thead className="rounded-lg  bg-blue-50">
 							<tr>
 								{TABLE_HEAD.map((title, index) => (
-									<th key={title} className={`p-2 lg:p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+									<th key={title}
+										aria-label={title ? title : `Edit column`}
+										className={`p-2 lg:p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
 										<Typography
 											variant="small"
 											color="blue-gray"
-											className="hidden lg:block font-normal leading-none opacity-70"
+											className="hidden lg:block font-semibold leading-none opacity-70"
 										>
 											{title}
 										</Typography>
 										<Typography
 											variant="small"
 											color="blue-gray"
-											className="lg:hidden font-normal leading-none opacity-70 text-xs "
+											className="lg:hidden font-semibold leading-none opacity-70 text-xs "
 										>
 											{title}
 										</Typography>
@@ -87,16 +81,16 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 							</tr>
 						</thead>
 						<tbody>
-							{pendingArray.map((p, index) => (
+							{pendingArray.map((p) => (
 								<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80">
 									<td className="p-2 lg:p-4">
 										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
-											{p.name}
+											{p.description}
 										</Typography>
 									</td>
 									<td className="p-2 lg:p-4">
 										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
-											{moneyFilter(p.amount)}
+											{formatValue(p.amount)}
 										</Typography>
 									</td>
 									<td className="p-2 lg:p-4">
@@ -106,7 +100,7 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 									</td>
 									<td className="p-2 lg:p-4">
 										<Tooltip content={`Clear this expense amount`}>
-											<IconButton variant="text" color="blue" size="sm" onClick={() => setSelectedExpense(p)}>
+											<IconButton aria-label={`Edit pending expense`} className="hover:-translate-y-1" variant="text" color="blue-gray" size="sm" onClick={() => setSelectedExpense(p)}>
 												<FontAwesomeIcon icon={faPencil} />
 											</IconButton>
 										</Tooltip>
@@ -118,25 +112,21 @@ export default function PendingExpensesTable({ pendingArray, tableId, dataCallba
 					</table>
 				</div>
 			</CardBody>
-			{/* <CardFooter>
-				<Button onClick={handleOpen}>Agregar gasto previsto</Button>
-
-			</CardFooter> */}
 		</Card>
-		{isOpen && <ExpensesForm isPending={true} tableId={tableId} isOpen handleOpen={handleOpen} />}
+		{isOpen && <ExpensesForm isPending={true} isOpen handleOpen={handleOpen} />}
 		{selectedExpense &&
-			<ResetAmountDialog tableId={tableId} pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
+			<ResetAmountDialog pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
 	</>);
 }
 
 interface ResetAmountDialogPropsI {
 	pendingArray: PendingExpenseI[];
-	tableId: string;
+	// tableId: string;
 	selectedItem: PendingExpenseI;
 	onCancel: () => void;
 }
 
-const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, tableId, selectedItem, onCancel }) => {
+const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, selectedItem, onCancel }) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const handleOpen = () => {
@@ -163,12 +153,12 @@ const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, ta
 		<Dialog size="sm" open={isOpen} handler={handleOpen} >
 			<DialogHeader className="flex flex-col gap-4">
 				<Typography variant="h6" color="blue-gray">
-					Vas a convertir la cantidad de este gasto en 0
+					{`You're turning this expense amount into 0`}
 				</Typography>
 			</DialogHeader>
 			<DialogBody>
 				<Typography variant="lead" className=" flex flex-row justify-center gap-6" >
-					<span>{selectedItem.name}</span>
+					<span>{selectedItem.description}</span>
 					<span>${selectedItem.amount.toFixed(2)}</span>
 					<span>{selectedItem.type == 'cash' ? `Cash` : `Card`}</span>
 				</Typography>

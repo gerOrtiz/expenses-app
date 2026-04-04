@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
 				const { email, password } = credentials as { email: string, password: string };
 				const { db, client } = await connectToDB();
 				const usersCollection = db.collection('users');
-				const user = await usersCollection.findOne({ email: credentials.email }) as UserI | null;
+				const user = await usersCollection.findOne({ email: email }) as UserI | null;
 				if (!user) {
 					await client.close();
 					// await disconnectFromDB();

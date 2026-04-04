@@ -3,29 +3,24 @@
 import { Typography } from "@material-tailwind/react";
 import DasboardCards from "../cards/cardsGrid";
 import SummaryCard from "../cards/summaryCard";
-import { ExpensesTableI } from "@/interfaces/expenses";
-import { useContext, useEffect } from "react";
-import SimpleExpensesContext from "@/components/providers/simple-expenses-context";
+import { useActiveTable } from "@/hooks/useActiveTable";
 
 interface DashboardLayoutPropsI {
 	username: string;
-	expensesTable: ExpensesTableI | { error: string };
 }
 
-export default function Dashboardlayout({ username, expensesTable }: DashboardLayoutPropsI) {
-	const tableContext = useContext(SimpleExpensesContext);
-
-	useEffect(() => {
-		if ('error' in expensesTable) return;
-		tableContext.updateExpensesTable(expensesTable);
-	}, [expensesTable, tableContext]);
-
+export default function DashboardlayoutComponent({ username }: DashboardLayoutPropsI) {
+	const { status, isFetching, data } = useActiveTable();
 	return (<>
 		<section className="w-full flex flex-col gap-6 mt-8  p-8">
-			<Typography variant="h3" className="text-blue-700">{`Welcome, `} <span className="text-blue-400">{username} </span> ! </Typography>
+			<Typography variant="h2" >{`Welcome, `} <span className="text-blue-700">{username} </span> ! </Typography>
 			<div className="flex flex-col w-full gap-8" >
 
-				<SummaryCard />
+				{status === 'success' && data && data.data !== null && <SummaryCard />}
+				{isFetching && !data && (
+					<div data-testid="skeleton" className="h-40 bg-gray-300 rounded-xl animate-pulse" />
+				)}
+
 				<DasboardCards />
 			</div>
 		</section>

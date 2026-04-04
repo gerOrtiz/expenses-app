@@ -2,7 +2,6 @@
 import {
 	Card,
 	CardBody,
-	CardFooter,
 	Typography,
 	Button,
 	CardHeader,
@@ -12,7 +11,7 @@ import Link from "next/link";
 import calculatorImg from "@/assets/calculator.jpg";
 import moneyImg from "@/assets/money.jpg";
 import reports from "@/assets/reports.jpg";
-import expensesPhoto from "@/assets/expenses.jpg";
+
 
 
 export default function DasboardCards() {
@@ -33,7 +32,7 @@ export default function DasboardCards() {
 							</Typography>
 						</div>
 						<Link href="/dashboard/simple-table">
-							<Button variant="filled" color="blue" fullWidth >{`Go there`}</Button>
+							<Button variant="filled" className="filled" fullWidth >{`Go there`}</Button>
 						</Link>
 					</CardBody>
 				</Card>

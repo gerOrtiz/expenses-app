@@ -1,4 +1,6 @@
 'use client';
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { AddedIncomeI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,12 +13,8 @@ interface AddedIncomeDialogPropsI {
 }
 
 export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: AddedIncomeDialogPropsI) {
-	const formatCurrency = (amount: number) => {
-		return amount.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD'
-		});
-	};
+	const dialogRef = useStableDialogA11y(isOpen, 'income-dialog-label', 'income-dialog-description');
+	const { formatValue } = useMoneyFilter();
 
 	const formatDate = (timestamp: number) => {
 		return new Date(timestamp).toLocaleDateString('en-US', {
@@ -33,26 +31,26 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 			handler={handleOpen}
 			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody className="w-full p-4">
+			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h4" color="blue-gray">
-							Added Income
+						<Typography variant="h5" className="text-blue-800" id="income-dialog-label">
+							{`Added Income`}
 						</Typography>
 						<IconButton variant="text" aria-label="close" onClick={handleOpen}>
 							<FontAwesomeIcon icon={faTimes} size="lg" color="blue-gray" />
 						</IconButton>
 					</div>
 
-					<Typography color="gray" variant="paragraph" className="mt-1 font-normal">
-						History of income additions and withdrawals
+					<Typography variant="paragraph" id="income-dialog-description" color="blue-gray" className="mt-1">
+						{`History of income additions and withdrawals`}
 					</Typography>
 
 					<div className="mt-3 max-h-96 overflow-y-auto">
 						{addedIncome.length === 0 ? (
 							<div className="text-center py-8">
 								<Typography color="gray" variant="paragraph">
-									No income additions yet
+									{`No income additions yet`}
 								</Typography>
 							</div>
 						) : (
@@ -74,26 +72,24 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 														<div className="flex flex-col items-center gap-2">
 															<div className="flex item-center gap-2">
 																<Typography variant="small" color="blue-gray" className="font-normal">
-																	Cash:
+																	{`Cash`}:
 																</Typography>
 																<Typography
 																	variant="small"
-																	color="green"
-																	className="font-medium"
+																	className="font-semibold text-green-800"
 																>
-																	{'+'}{formatCurrency(income.cash)}
+																	{'+'}{formatValue(income.cash)}
 																</Typography>
 															</div>
 															{income.isWithdrawal && (<div className="flex item-center gap-2">
 																<Typography variant="small" color="blue-gray" className="font-normal">
-																	Card:
+																	{`Card`}:
 																</Typography>
 																<Typography
 																	variant="small"
-																	color="red"
-																	className="font-medium"
+																	className="font-semibold text-red-700"
 																>
-																	{'-'}{formatCurrency(income.cash)}
+																	{'-'}{formatValue(income.cash)}
 																</Typography>
 															</div>)}
 														</div>
@@ -101,14 +97,14 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 													{income.card > 0 && (
 														<div className="flex items-center gap-2">
 															<Typography variant="small" color="blue-gray" className="font-normal">
-																Card:
+																{`Card`}:
 															</Typography>
 															<Typography
 																variant="small"
 																color={income.isWithdrawal ? "red" : "green"}
 																className="font-medium"
 															>
-																{'+'}{formatCurrency(income.card)}
+																{'+'}{formatValue(income.card)}
 															</Typography>
 														</div>
 													)}

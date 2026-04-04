@@ -8,58 +8,43 @@ import {
 	Typography,
 
 } from "@material-tailwind/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import IncomeForm from "../income/income-form";
-import { AddedIncomeI, ExpensesTableI, TotalsI, TotalsType } from "@/interfaces/expenses";
+import { AddedIncomeI, TotalsI, TotalsType } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import BalanceCard from "../cards/balanceCard";
 import AddedIncomeDialog from "./addedIncome-dialog";
-// import SummaryCard from "../cards/summaryCard";
+import { ObjectId } from "mongodb";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface RemainingIncomePropsI {
 	remaining: TotalsType;
 	totals: TotalsI;
 	added: AddedIncomeI[];
-	tableId: string;
-	dataCallback?: (data: ExpensesTableI) => void;
+	tableId: string | ObjectId;
+	// dataCallback?: (data: ExpensesTableI) => void;
 }
 
 
 export default function RemainingIncome({ remaining, totals, added, tableId }: RemainingIncomePropsI) {
 	const totalPending = totals.total_pending.cash + totals.total_pending.card;
 	let positiveBalance = (remaining.cash + remaining.card) - totalPending;
-	// const [lastAdded, setLastAdded] = useState('');
-	// const [totalIncome, setTotalIncome] = useState<string>('');
 	const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
 	const [openAddedIncomeDialog, setOpenAddedIncomeDialog] = useState(false);
 	const cashAmountFormat = useMoneyFilter();
-	// const cardAmountFormatted = useMoneyFilter(added[added.length - 1].card);
+
 
 	const handleOpenAddedDialog = () => {
 		setOpenAddedIncomeDialog(cur => !cur);
 	};
 
-	// useEffect(() => {
-	// 	if (added && added.length > 0) {
-	// 		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} Cash` : '';
-	// 		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} Card` : '';
-	// 		// const date = added[added.length - 1].date ? new Date(added[added.length - 1].date).toLocaleDateString() : '';
-	// 		const lastAddedString = `${cash}  ${card} `;
-	// 		let totalAdded = 0;
-	// 		added.forEach(income => {
-	// 			totalAdded += income.card;
-	// 			totalAdded += income.cash;
-	// 		});
-	// 		setLastAdded(lastAddedString);
-	// 		setTotalIncome(cashAmountFormat.formatValue(totalAdded));
-	// 	}
-	// }, [added]);
 
 	const lastAdded: string = useMemo(() => {
 		if (!Array.isArray(added) || added.length == 0) return '';
-		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} Cash` : '';
-		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} Card` : '';
-		return `${cash}  ${card} `;
+		const cash = added[added.length - 1].cash > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].cash)} - Cash` : '';
+		const card = added[added.length - 1].card > 0 ? `${cashAmountFormat.formatValue(added[added.length - 1].card)} - Card` : '';
+		return `${cash}${card ? ', ' + card : ''} `;
 	}, [added, cashAmountFormat]);
 
 	const totalIncome = useMemo(() => {
@@ -84,13 +69,22 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 				<section className="w-full flex flex-col items-start p-2">
 					<div className="flex w-full justify-between mb-2">
 						<div>
-							<Typography variant="h5" color="blue-gray" className="mb-2 text-lg lg:text-xl">
+							<Typography variant="h3" color="blue-gray" className="mb-2 text-lg lg:text-xl">
 								{`Balance`}
 							</Typography>
 						</div>
 						<div>
-							<Button className="hidden lg:block hover:bg-blue-500 hover:text-white" variant="outlined" color="blue" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>{`Add income`}</Button>
-							<Button className="lg:hidden block text-[11px] hover:bg-blue-500 hover:text-white" variant="text" color="blue" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>{`Add income`}</Button>
+							<Button aria-label={`Add income`} aria-haspopup={true}
+								className="hidden lg:block outlined hover:-translate-y-1"
+								variant="outlined" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>
+								{`Add income`}
+							</Button>
+							<IconButton aria-label={`Add new income`} aria-haspopup={true}
+								variant="outlined"
+								className="block lg:hidden outlined"
+								size="sm">
+								<FontAwesomeIcon icon={faPlus} size="lg" />
+							</IconButton>
 						</div>
 					</div>
 					<div className="w-full flex lg:flex-nowrap flex-wrap  gap-2 lg:gap-5 justify-center p-0 lg:p-2 mb-2 ">
@@ -99,21 +93,22 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 						))}
 					</div>
 					{added && lastAdded &&
-						<div className="w-full lg:w-1/2 flex flex-wrap justify-center border border-blue-gray-100 rounded-lg items-center self-center p-5 mt-3 gap-0 lg:gap-3">
+						<div className="w-full lg:w-1/2 flex flex-wrap justify-center border border-blue-gray-100 shadow-sm rounded-lg items-center self-center p-5 mt-3 gap-0 lg:gap-3">
 							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center lg:gap-5">
-								<Typography variant="h6" color="gray" className="col-span-1 text-left lg:text-center text-sm lg:text-base">
+								<Typography variant="h5" color="gray" className="col-span-1 text-left lg:text-center text-sm lg:text-base">
 									{`Latest income: `}
 								</Typography>
-								<Typography variant="h6" color="blue-gray" className=" col-span-2 text-left lg:text-center text-sm lg:text-base">
+								<Typography variant="lead" color="blue-gray" className="col-span-2 text-left lg:text-center font-semibold text-sm lg:text-base">
+									{lastAdded}
+								</Typography>
+								<Typography variant="h5" color="blue-gray" className=" col-span-2 text-left lg:text-center font-semibold text-sm lg:text-base">
 									{new Date(added[added.length - 1].date).toLocaleDateString()}
 									&nbsp;
 								</Typography>
-								<Typography variant="h6" color="blue-gray" className="col-span-2 text-left lg:text-center text-sm lg:text-base">
-									{lastAdded}
-								</Typography>
+
 							</div>
-							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center lg:gap-5">
-								<Typography variant="h6" color="gray" className="col-span-1 text-left lg:text-center text-sm lg:text-base">
+							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center justify-center lg:gap-5">
+								<Typography variant="paragraph" color="gray" className="col-span-1 text-left font-semibold lg:text-center text-sm lg:text-base">
 									{`Total income: `}
 								</Typography>
 								<Typography variant="h6" color="blue-gray" className=" col-span-2 text-left lg:text-center text-sm lg:text-base">
@@ -121,8 +116,8 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 								</Typography>
 							</div>
 							<div className="mt-2 lg:mt-0">
-								<Button variant="text" color="blue" className="p-1 text-[11px] lg:text-sm " onClick={handleOpenAddedDialog}>
-									{`See all incomes`}
+								<Button aria-label={`Show all income movements`} aria-haspopup={true} variant="outlined" className="outlined p-2 text-[11px] lg:text-sm hover:-translate-y-1" onClick={handleOpenAddedDialog}>
+									{`Show more`}
 								</Button>
 							</div>
 						</div>

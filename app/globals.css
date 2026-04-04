@@ -76,8 +76,10 @@ button.outlined {
 }
 
 button.outlined:hover {
-	background-color: rgb(30 64 175);
-	color: #ffffff;
+	/* background-color: rgb(30 64 175); */
+	/* color: #ffffff; */
+	border-color: rgb(0, 55, 207);
+	color: rgb(0, 55, 207);
 }
 
 /* labels & Inputs */
@@ -108,6 +110,30 @@ textarea.formTextArea {
 
 	&:focus {
 		outline-color: #2a84f9;
+	}
+}
+
+button.formInput {
+	border: 1px solid #e3e0fc;
+	border-radius: 10px;
+	background: linear-gradient(90deg, #c3effe, #ffffff);
+	font-size: 1rem;
+	font-family: 'Montserrat', sans-serif;
+	color: #000000;
+}
+
+div.selectContainer {
+	ul {
+		padding: 8px;
+		border: 1px solid rgba(175, 175, 175, 0.705);
+		box-shadow: 2px 0px 4px 1px rgba(176, 176, 186, 0.75);
+		-webkit-box-shadow: 2px 0px 4px 1px rgba(176, 176, 186, 0.75);
+		-moz-box-shadow: 2px 0px 4px 1px rgba(176, 176, 186, 0.75);
+
+		li {
+			font-family: 'Montserrat', sans-serif;
+			color: #2a2b2c
+		}
 	}
 }
 

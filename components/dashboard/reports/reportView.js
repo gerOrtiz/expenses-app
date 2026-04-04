@@ -1,7 +1,7 @@
 'use client';
 
 import { getData } from "@/lib/user/reports";
-import { Accordion, AccordionBody, AccordionHeader, Typography } from "@material-tailwind/react";
+import { Accordion, AccordionBody, AccordionHeader } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import DateFilter from "./dateFilter";
 
