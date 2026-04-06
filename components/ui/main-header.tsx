@@ -6,6 +6,7 @@ import Image from "next/image";
 import classes from './main-header.module.css';
 import logoImg from '@/assets/transparent-logo.png';
 import logoIcon from '@/assets/logo.png';
+import logoTitle from '@/assets/transparent-title.png';
 
 import { Button, Drawer, IconButton, Spinner, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -69,12 +70,18 @@ export default function MainHeader() {
 					</nav>
 				</div>
 				<div className="lg:hidden flex w-full">
-					<Button variant="text" className="p-0" onClick={openDrawer} aria-label="Go to homepage">
-						<div className="flex gap-4 items-center">
-							<Image src={logoIcon} alt="Expenses logo" width={50} priority />
-							<FontAwesomeIcon icon={faChevronRight} size="lg" />
+					<div className="flex w-full justify-between">
+						<Button variant="text" className="p-0" onClick={openDrawer} aria-label={`Open drawer`}>
+							<div className="flex gap-4 items-center">
+								<Image src={logoIcon} alt="Expenses logo" width={40} priority />
+								<FontAwesomeIcon icon={faChevronRight} size="1x" color="blue" />
+							</div>
+						</Button>
+						<div className="flex items-center">
+							<Image src={logoTitle} alt="Expenses app title" width={150} className="opacity-50" />
 						</div>
-					</Button>
+					</div>
+
 					<Drawer open={open} onClose={closeDrawer} className="p-4" >
 						<div className="flex flex-col w-full ">
 							<div className="w-full flex justify-between items-center mb-8 ">
