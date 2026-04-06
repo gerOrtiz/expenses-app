@@ -22,7 +22,7 @@ export default function CloseTableButton({ tableId }: { tableId: string | Object
 		}
 	};
 	return (<>
-		<Button variant="filled" className="filled" onClick={handleOpen} >
+		<Button aria-label={`Close active table`} aria-haspopup={true} variant="filled" className="filled" onClick={handleOpen} >
 			<span className="hidden lg:block text-[13px]">{`Close period`}</span>
 			<span className=" block lg:hidden text-[12px]">{`Close`}</span>
 		</Button>

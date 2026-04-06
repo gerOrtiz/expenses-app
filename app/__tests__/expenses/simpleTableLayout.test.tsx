@@ -39,8 +39,8 @@ describe('SimpleTableLayout', () => {
 		income: { cash: 600, card: 1000 },
 		added: [],
 		expenses: [
-			{ id: 1, amount: 100, description: 'Groceries', type: 'cash', date: new Date().getTime(), isPending: false },
-			{ id: 2, amount: 500, description: 'Rent', type: 'card', date: new Date().getTime(), isPending: false },
+			{ id: '1', amount: 100, description: 'Groceries', type: 'cash', date: new Date().getTime(), isPending: false },
+			{ id: '2', amount: 500, description: 'Rent', type: 'card', date: new Date().getTime(), isPending: false },
 		],
 		pending: [],
 		sDate: new Date().getTime(),
