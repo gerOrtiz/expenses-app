@@ -54,7 +54,6 @@ export default function ExpensesForm({ isPending, isOpen, handleOpen }: Expenses
 				expenseObj.isPending = true;
 				expenseObj.pending_id = data.pending_id;
 			}
-			console.log(expenseObj);
 			setIsPendingPayment(false);
 			res = await expenseMutation.mutateAsync({ currentTable_id: currentTable._id, newClientExpense: expenseObj });
 		}
@@ -69,6 +68,7 @@ export default function ExpensesForm({ isPending, isOpen, handleOpen }: Expenses
 
 	const filteredPending = useMemo<PendingExpenseI[]>(() => {
 		if (isPending) return [];
+		if (!currentTable || !currentTable.pending) return [];
 		if (currentTable.pending.length === 0) return [];
 		const typeHasPending = hasTypePendingExpenses(currentTable.pending, watchType);
 		if (!typeHasPending) return [];
@@ -78,6 +78,7 @@ export default function ExpensesForm({ isPending, isOpen, handleOpen }: Expenses
 
 	useEffect(() => {
 		if (isPending) return;
+		if (!currentTable || !currentTable.pending) return;
 		if (currentTable.pending.length === 0) return;
 		const hasPending = hasTypePendingExpenses(currentTable.pending, watchType);
 		if (!hasPending) {
@@ -187,7 +188,7 @@ export default function ExpensesForm({ isPending, isOpen, handleOpen }: Expenses
 													unmount: { y: 25 },
 												}} >
 												{filteredPending.map(pending => (
-													<Option key={pending.id} value={pending.id}>
+													<Option aria-label={`Pending expense id: ${pending.id}`} key={pending.id} value={pending.id}>
 														<span>{pending.description}: </span><span>{formatValue(pending.amount)} </span><span>({pending.type.toWellFormed()})</span>
 													</Option>
 												))}

@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 		const table_id = convertToObjectId(body.currentTable_id);
 		const existingTable: ExpensesTableI = await collection.findOne({ _id: table_id, user_id: session.user.email }) as ExpensesTableI;
 		if (!existingTable || !existingTable._id) return NextResponse.json({ error: 'No active table found' }, { status: 404 });
-		let updatedTable = await processAddNewExpense(body.newClientExpense, existingTable);
+		let updatedTable: ExpensesTableI = await processAddNewExpense(body.newClientExpense, existingTable);
 		await collection.updateOne({ _id: existingTable._id as ObjectId }, {
 			$set: {
 				expenses: updatedTable.expenses,
@@ -40,7 +40,6 @@ export async function POST(request: Request) {
 			},
 		});
 		await client.close();
-		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

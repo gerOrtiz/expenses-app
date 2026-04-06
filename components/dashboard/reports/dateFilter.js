@@ -48,7 +48,7 @@ export default function DateFilter(props) {
 						inputRef={sDate}
 						error={sDateHasError}
 						onChange={validate}
-						className="bg-white shadow-lg text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent"
+						className="bg-white shadow-lg text-gray-900 shadow-gray-900/5 ring-4 ring-transparent"
 						containerProps={{
 							className: "min-w-0",
 						}} />
@@ -56,7 +56,7 @@ export default function DateFilter(props) {
 						label="Fecha final"
 						inputRef={fDate}
 						onChange={validate}
-						className="bg-white shadow-lg text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent"
+						className="bg-white shadow-lg text-gray-900 shadow-gray-900/5 ring-4 ring-transparent"
 						error={fDateHasError}
 						containerProps={{
 							className: "min-w-0",

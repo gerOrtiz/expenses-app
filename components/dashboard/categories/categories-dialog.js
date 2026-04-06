@@ -94,7 +94,7 @@ export default function CategoriesDialog({ closeHandler }) {
 				</div>
 			</DialogHeader>
 			<DialogBody >
-				<section className="grid grid-cols-2 flex gap-6">
+				<section className="grid grid-cols-2 gap-6">
 					<div className="flex-col gap-4">
 						<AddCategories isSubcategory={false} list={categoryList} callback={addNewCategory} />
 						{categoryList && categoryList.length > 0 &&
