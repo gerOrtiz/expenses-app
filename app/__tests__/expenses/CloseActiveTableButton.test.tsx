@@ -1,5 +1,5 @@
 global.fetch = jest.fn();
-import CloseTableButton from "@/components/dashboard/tables/CloseTableButton";
+import CloseActiveTableButton from "@/components/dashboard/tables/CloseActiveTableButton";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { cleanup, screen, waitFor } from "@testing-library/react";
@@ -17,7 +17,7 @@ describe('Close table button', () => {
 			ok: true,
 			json: async () => ({ success: true })
 		});
-		renderWithQuery(<CloseTableButton />, queryClient);
+		renderWithQuery(<CloseActiveTableButton />, queryClient);
 		const user = userEvent.setup();
 		const actionButton = await screen.findByRole('button', { name: /close active table/i });
 		await user.click(actionButton);
