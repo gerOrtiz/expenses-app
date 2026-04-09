@@ -1,18 +1,17 @@
 'use client';
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ObjectId } from "mongodb";
 
 export function useCloseActiveTable() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: string | ObjectId) => {
+		mutationFn: () => {
 			return fetch('/api/expenses/table', {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(data)
+				// body: JSON.stringify(data)
 			});
 		},
 		onError: (err) => {

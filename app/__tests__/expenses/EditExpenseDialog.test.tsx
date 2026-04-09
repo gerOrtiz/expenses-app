@@ -1,18 +1,17 @@
 global.fetch = jest.fn();
-jest.mock('../../../hooks/useActiveTableId');
 jest.mock('@material-tailwind/react', () => ({
 	...jest.requireActual('@material-tailwind/react'),
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
-import EditExpenseDialog from "@/components/dashboard/expenses/edit-expenses-form";
-import { useActiveTableId } from "@/hooks/useActiveTableId";
+import EditExpenseDialog from "@/components/dashboard/expenses/EditExpenseDialog";
+
 import { ExpenseItemI } from "@/interfaces/expenses";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { cleanup, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-const mockUseActiveTableId = useActiveTableId as jest.MockedFunction<typeof useActiveTableId>;
+
 
 describe('Edit expenses form', () => {
 	let queryClient: QueryClient;
@@ -21,7 +20,7 @@ describe('Edit expenses form', () => {
 	beforeEach(() => {
 		queryClient = createTestQueryClient();
 		(global.fetch as jest.Mock).mockClear();
-		mockUseActiveTableId.mockReturnValue('507f1f77bcf86cd799439011');
+
 	});
 
 	afterEach(() => {
@@ -53,9 +52,9 @@ describe('Edit expenses form', () => {
 			await waitFor(() => {
 				expect((global.fetch as jest.Mock).mock.calls.length).toBe(1);
 				const [url, options] = (global.fetch as jest.Mock).mock.calls[0];
-				const body = JSON.parse(options.body) as { currentTable_id: string, clientExpense: ExpenseItemI }
+				const body = JSON.parse(options.body) as { clientExpense: ExpenseItemI }
 				expect(url).toBe('/api/expenses/table/items');
-				expect(body.currentTable_id).toBe('507f1f77bcf86cd799439011');
+				//expect(body.currentTable_id).toBe('507f1f77bcf86cd799439011');
 				expect(body.clientExpense).toMatchObject({
 					id: '1T',
 					description: 'Test groceries',
@@ -87,9 +86,9 @@ describe('Edit expenses form', () => {
 			await waitFor(() => {
 				expect((global.fetch as jest.Mock).mock.calls.length).toBe(1);
 				const [url, options] = (global.fetch as jest.Mock).mock.calls[0];
-				const body = JSON.parse(options.body) as { currentTable_id: string, clientExpense: ExpenseItemI }
+				const body = JSON.parse(options.body) as { clientExpense: ExpenseItemI }
 				expect(url).toBe('/api/expenses/table/items');
-				expect(body.currentTable_id).toBe('507f1f77bcf86cd799439011');
+				// expect(body.currentTable_id).toBe('507f1f77bcf86cd799439011');
 				expect(body.clientExpense).toMatchObject({
 					id: '1T',
 					description: 'Groceries',

@@ -6,13 +6,13 @@ import { ObjectId } from "mongodb";
 export function useDeleteExpense() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { currentTable_id: string | ObjectId, clientExpenseId: string }) => {
-			return fetch('/api/expenses/table/items', {
+		mutationFn: (data: { clientExpenseId: string }) => {
+			return fetch(`/api/expenses/table/items?id=${data.clientExpenseId}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(data)
+				//body: JSON.stringify(data)
 			});
 		},
 		onError: (err) => {

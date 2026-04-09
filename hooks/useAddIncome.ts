@@ -2,12 +2,11 @@
 
 import { AddedIncomeI } from "@/interfaces/expenses";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ObjectId } from "mongodb";
 
 export function useAddIncome() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { currentTable_id: string | ObjectId, newIncomeData: AddedIncomeI }) => {
+		mutationFn: (data: { newIncomeData: AddedIncomeI }) => {
 			return fetch('/api/expenses/table', {
 				method: 'PUT',
 				headers: {

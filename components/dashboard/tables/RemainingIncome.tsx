@@ -9,12 +9,11 @@ import {
 
 } from "@material-tailwind/react";
 import { useMemo, useState } from "react";
-import IncomeForm from "../income/income-form";
+import AddIncomeDialog from "../income/AddIncomeDialog";
 import { AddedIncomeI, TotalsI, TotalsType } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import BalanceCard from "../cards/balanceCard";
-import AddedIncomeDialog from "./addedIncome-dialog";
-import { ObjectId } from "mongodb";
+import AddedIncomeDialog from "./AddedIncome.dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,12 +21,11 @@ interface RemainingIncomePropsI {
 	remaining: TotalsType;
 	totals: TotalsI;
 	added: AddedIncomeI[];
-	tableId: string | ObjectId;
 	// dataCallback?: (data: ExpensesTableI) => void;
 }
 
 
-export default function RemainingIncome({ remaining, totals, added, tableId }: RemainingIncomePropsI) {
+export default function RemainingIncome({ remaining, totals, added }: RemainingIncomePropsI) {
 	const totalPending = totals.total_pending.cash + totals.total_pending.card;
 	let positiveBalance = (remaining.cash + remaining.card) - totalPending;
 	const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
@@ -125,7 +123,7 @@ export default function RemainingIncome({ remaining, totals, added, tableId }: R
 				</section>
 			</CardBody>
 		</Card>
-		{openIncomeDialog && <IncomeForm tableId={tableId} isOpen={openIncomeDialog} handleOpen={setOpenIncomeDialog} />}
+		{openIncomeDialog && <AddIncomeDialog isOpen={openIncomeDialog} handleOpen={setOpenIncomeDialog} />}
 		{openAddedIncomeDialog && <AddedIncomeDialog addedIncome={added} isOpen={openAddedIncomeDialog} handleOpen={handleOpenAddedDialog} />}
 	</>);
 }

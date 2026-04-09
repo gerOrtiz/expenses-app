@@ -1,5 +1,4 @@
 'use client';
-import { useActiveTableId } from "@/hooks/useActiveTableId";
 import { useEditExpense } from "@/hooks/useEditExpense";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { ExpenseItemI } from "@/interfaces/expenses";
@@ -18,7 +17,6 @@ type ExpenseFormType = Omit<ExpenseItemI, 'date' | 'isPending'>;
 
 export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditExpenseDialogPropsI) {
 	const dialogRef = useStableDialogA11y(isOpen, 'edit-expense-label', 'edit-expense-description');
-	const tableId = useActiveTableId();
 	const { register, handleSubmit, control, reset, formState: { errors, isValid, isSubmitting } } =
 		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: expense.description, amount: expense.amount, type: expense.type } });
 	const { mutation } = useEditExpense();
@@ -32,7 +30,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 			type: data.type
 		};
 
-		const res = await mutation.mutateAsync({ currentTable_id: tableId, clientExpense: editedRow });
+		const res = await mutation.mutateAsync({ clientExpense: editedRow });
 		if (res.ok) {
 			reset();
 			handleOpen();

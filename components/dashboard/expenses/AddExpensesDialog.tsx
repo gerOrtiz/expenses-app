@@ -25,7 +25,7 @@ const hasTypePendingExpenses = (pendingExpenses: PendingExpenseI[], type: string
 	return pendingExpenses.some(t => t.type === type);
 }
 
-export default function ExpensesForm({ isPending, isOpen, handleOpen }: ExpensesFormPropsI) {
+export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: ExpensesFormPropsI) {
 	const message = isPending ? `Enter a pending to pay expense` : `Enter a new expense to add it to the table`;
 	const { data } = useActiveTable();
 	const { formatValue } = useMoneyFilter();
@@ -55,7 +55,7 @@ export default function ExpensesForm({ isPending, isOpen, handleOpen }: Expenses
 				expenseObj.pending_id = data.pending_id;
 			}
 			setIsPendingPayment(false);
-			res = await expenseMutation.mutateAsync({ currentTable_id: currentTable._id, newClientExpense: expenseObj });
+			res = await expenseMutation.mutateAsync({ newClientExpense: expenseObj });
 		}
 		if (res.ok) {
 			reset();

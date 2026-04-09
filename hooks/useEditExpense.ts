@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 export function useEditExpense() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { currentTable_id: string | ObjectId, clientExpense: ExpenseItemI }) => {
+		mutationFn: (data: { clientExpense: ExpenseItemI }) => {
 			return fetch('/api/expenses/table/items', {
 				method: 'PUT',
 				headers: {

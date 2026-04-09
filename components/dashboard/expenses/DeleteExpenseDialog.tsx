@@ -1,5 +1,5 @@
 'use client';
-import { useActiveTableId } from "@/hooks/useActiveTableId";
+// import { useActiveTableId } from "@/hooks/useActiveTableId";
 import { useDeleteExpense } from "@/hooks/useDeleteExpense";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { ExpenseItemI } from "@/interfaces/expenses";
@@ -13,12 +13,15 @@ interface DeleteDialogPropsI {
 	onCancel: () => void;
 }
 
-export default function DeleteDialog({ expense, onCancel }: DeleteDialogPropsI) {
-	const tableId = useActiveTableId();
+export default function DeleteExpenseDialog({ expense, onCancel }: DeleteDialogPropsI) {
+	// const tableId = useActiveTableId();
 	const [open, setOpen] = useState(true);
 	const dialogRef = useStableDialogA11y(open, 'delete-expense-label', 'delete-expense-description');
 	const { mutation } = useDeleteExpense();
-	const handleOpen = () => setOpen((op) => !op);
+	const handleOpen = () => {
+		setOpen(op => !op);
+		onCancel();
+	}
 
 	function cancel() {
 		setOpen(false);
@@ -26,12 +29,12 @@ export default function DeleteDialog({ expense, onCancel }: DeleteDialogPropsI) 
 	}
 
 	const deleteExpenseHandler = async () => {
-		const res = await mutation.mutateAsync({ currentTable_id: tableId, clientExpenseId: expense.id });
+		const res = await mutation.mutateAsync({ clientExpenseId: expense.id });
 		if (res.ok) {
 			cancel();
 		}
 	}
-
+	//Add Expense data for better UX
 	return (
 		<Dialog
 			size="xs"

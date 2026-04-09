@@ -8,9 +8,10 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button, Typography } from "@material-tailwind/react";
-import CloseTableButton from "../tables/closeTableButton";
+import CloseTableButton from "../tables/CloseTableButton";
 import { useState } from "react";
-import ExpensesForm from "../expenses/expenses-form";
+import ExpensesForm from "../expenses/AddExpensesDialog";
+
 
 
 export default function SimpleTableLayoutComponent() {
@@ -38,7 +39,7 @@ export default function SimpleTableLayoutComponent() {
 						<span className="hidden lg:block text-[13px]">{`Add expense`}</span>
 						<span className=" block lg:hidden text-[12px]">{`Add`}</span>
 					</Button>
-					<CloseTableButton tableId={data.data._id} />
+					<CloseTableButton />
 				</div>
 			)}
 		</div>
