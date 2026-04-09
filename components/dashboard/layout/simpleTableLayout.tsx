@@ -1,17 +1,16 @@
 'use client';
 
-import { useActiveTable } from "@/hooks/useActiveTable";
 import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkeleton";
 import ExpensesTableWrapper from "../tables/expensesTableWrapper";
 import CreateSimpleTableComponent from "../tables/createSimpleTableComponent";
+import ExpensesForm from "../expenses/AddExpensesDialog";
+import CloseActiveTableButton from "../tables/CloseActiveTableButton";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button, Typography } from "@material-tailwind/react";
-import CloseTableButton from "../tables/CloseTableButton";
 import { useState } from "react";
-import ExpensesForm from "../expenses/AddExpensesDialog";
-
+import { useActiveTable } from "@/hooks/useActiveTable";
 
 
 export default function SimpleTableLayoutComponent() {
@@ -39,7 +38,7 @@ export default function SimpleTableLayoutComponent() {
 						<span className="hidden lg:block text-[13px]">{`Add expense`}</span>
 						<span className=" block lg:hidden text-[12px]">{`Add`}</span>
 					</Button>
-					<CloseTableButton />
+					<CloseActiveTableButton />
 				</div>
 			)}
 		</div>

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 
-export default function CloseTableButton() {
+export default function CloseActiveTableButton() {
 
 	const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 	const dialogRef = useStableDialogA11y(openConfirmationDialog, 'close-period-label', 'close-period-description');
