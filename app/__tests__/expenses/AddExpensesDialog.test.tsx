@@ -3,7 +3,7 @@ jest.mock('@material-tailwind/react', () => ({
 	...jest.requireActual('@material-tailwind/react'),
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
-import ExpensesForm from "@/components/dashboard/expenses/expenses-form";
+import AddExpensesDialog from "@/components/dashboard/expenses/AddExpensesDialog";
 import { ExpenseItemI, ExpensesTableI } from "@/interfaces/expenses";
 import { processAddNewExpense } from "@/services/expenses-calculator";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
@@ -56,7 +56,7 @@ describe('Expenses Form', () => {
 			const user = userEvent.setup();
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
-			renderWithQuery(<ExpensesForm isPending={true} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			renderWithQuery(<AddExpensesDialog isPending={true} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
 			const paymehodSelect = screen.getByLabelText('Paymethod');
@@ -92,7 +92,7 @@ describe('Expenses Form', () => {
 			const user = userEvent.setup();
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
-			renderWithQuery(<ExpensesForm isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
 			const paymehodSelect = screen.getByLabelText('Paymethod');
@@ -128,7 +128,7 @@ describe('Expenses Form', () => {
 			const user = userEvent.setup();
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
-			renderWithQuery(<ExpensesForm isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
 			const paymehodSelect = screen.getByLabelText('Paymethod');
@@ -186,7 +186,7 @@ describe('Expenses Form', () => {
 			const user = userEvent.setup();
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
-			renderWithQuery(<ExpensesForm isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
 
@@ -210,7 +210,7 @@ describe('Expenses Form', () => {
 			const user = userEvent.setup();
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
-			renderWithQuery(<ExpensesForm isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
 			await user.clear(descriptionInput);

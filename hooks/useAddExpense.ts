@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 export function useAddExpense() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { currentTable_id: string | ObjectId, newClientExpense: ExpenseItemI }) => {
+		mutationFn: (data: { newClientExpense: ExpenseItemI }) => {
 			return fetch('/api/expenses/table/items', {
 				method: 'POST',
 				headers: {

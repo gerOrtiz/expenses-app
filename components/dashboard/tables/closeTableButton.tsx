@@ -5,10 +5,9 @@ import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
-import { ObjectId } from "mongodb";
 import { useState } from "react";
 
-export default function CloseTableButton({ tableId }: { tableId: string | ObjectId }) {
+export default function CloseTableButton() {
 
 	const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
 	const dialogRef = useStableDialogA11y(openConfirmationDialog, 'close-period-label', 'close-period-description');
@@ -16,7 +15,7 @@ export default function CloseTableButton({ tableId }: { tableId: string | Object
 
 	const handleOpen = () => setOpenConfirmationDialog((op) => !op);
 	const handleCloseTable = async () => {
-		const res = await mutation.mutateAsync(tableId);
+		const res = await mutation.mutateAsync();
 		if (res.ok) {
 			setOpenConfirmationDialog(false);
 		}

@@ -1,6 +1,6 @@
 global.fetch = jest.fn();
 
-import IncomeForm from "@/components/dashboard/income/income-form";
+import AddIncomeDialog from "@/components/dashboard/income/AddIncomeDialog";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { screen, waitFor } from "@testing-library/react";
@@ -26,7 +26,7 @@ describe('Income-Form', () => {
 		});
 
 		const user = userEvent.setup();
-		renderWithQuery(<IncomeForm tableId="507f1f77bcf86cd799439011" isOpen={true} handleOpen={jest.fn()} />, queryClient);
+		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
 
 		const amount = await screen.findByRole('spinbutton', { name: /amount/i });
 		const submitButton = screen.getByRole('button', { name: /add/i });
@@ -57,7 +57,7 @@ describe('Income-Form', () => {
 		});
 
 		const user = userEvent.setup();
-		renderWithQuery(<IncomeForm tableId="507f1f77bcf86cd799439011" isOpen={true} handleOpen={jest.fn()} />, queryClient);
+		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
 
 		const incomeTabButton = await screen.findByRole('tab', { name: /income/i });
 		expect(incomeTabButton).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe('Income-Form', () => {
 				json: async () => ({ success: true })
 			});
 			const user = userEvent.setup();
-			renderWithQuery(<IncomeForm tableId="507f1f77bcf86cd799439011" isOpen={true} handleOpen={jest.fn()} />, queryClient);
+			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
 
 			const submitButton = screen.getByRole('button', { name: /add/i });
 			const amount = await screen.findByRole('spinbutton', { name: /amount/i });
@@ -123,7 +123,7 @@ describe('Income-Form', () => {
 				json: async () => ({ success: true })
 			});
 			const user = userEvent.setup();
-			renderWithQuery(<IncomeForm tableId="507f1f77bcf86cd799439011" isOpen={true} handleOpen={jest.fn()} />, queryClient);
+			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
 
 			const submitButton = screen.getByRole('button', { name: /add/i });
 

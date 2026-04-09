@@ -6,14 +6,15 @@ import {
 	Typography
 } from "@material-tailwind/react";
 import { useState } from "react";
-import ExpensesForm from "../expenses/expenses-form";
-import PendingExpensesTable from "./pending-expenses";
-import RemainingIncome from "./remaining-income";
-import SimpleTable from "./simple-table";
-import TotalsTables from "./totals-table";
+import AddExpensesDialog from "../expenses/AddExpensesDialog";
+import PendingExpensesTable from "./PendingExpensesTable";
+import RemainingIncome from "./RemainingIncome";
+import SimpleTable from "./SimpleTable";
+import TotalsTables from "./TotalsTable";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClockRotateLeft, faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
+
 
 interface TableWrapperPropsI {
 	tableData: ExpensesTableI;
@@ -28,7 +29,7 @@ export default function ExpensesTableWrapper({ tableData }: TableWrapperPropsI) 
 
 	return (<>
 		<section className="flex flex-col w-full items-center mt-3 mb-3 p-4 lg:p-1">
-			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} tableId={tableData._id} added={tableData.added} />
+			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} added={tableData.added} />
 		</section>
 		<section className="grid grid-flow-row gap-y-3 lg:gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3">
 			<section className="flex flex-col overflow-hidden gap-6 md:col-span-2 xl:col-span-2">
@@ -43,7 +44,7 @@ export default function ExpensesTableWrapper({ tableData }: TableWrapperPropsI) 
 								</div>
 								<Typography color="blue-gray" variant="paragraph" className="mb-3">{`You still haven't add any new expenses. Try adding a new one to start taking control of your finances`}</Typography>
 								<Button aria-haspopup={true} variant="filled" className="filled hover:-translate-y-1" onClick={handleExpenseOpen}>{`Add expense`}</Button>
-								{expenseDialogOpen && <ExpensesForm isPending={false} isOpen={expenseDialogOpen} handleOpen={handleExpenseOpen} />}
+								{expenseDialogOpen && <AddExpensesDialog isPending={false} isOpen={expenseDialogOpen} handleOpen={handleExpenseOpen} />}
 							</CardBody>
 						</Card>
 					</section>
@@ -64,7 +65,7 @@ export default function ExpensesTableWrapper({ tableData }: TableWrapperPropsI) 
 								<FontAwesomeIcon icon={faClockRotateLeft} size="3x" />
 							</div>
 							<Button aria-haspopup={true} className="filled hover:-translate-y-1" variant="filled" onClick={handlePendingOpen}>{`Add pending expense`}</Button>
-							{pendingDialogOpen && <ExpensesForm isPending={true} isOpen={pendingDialogOpen} handleOpen={handlePendingOpen} />}
+							{pendingDialogOpen && <AddExpensesDialog isPending={true} isOpen={pendingDialogOpen} handleOpen={handlePendingOpen} />}
 						</CardBody>
 					</Card>
 				)}

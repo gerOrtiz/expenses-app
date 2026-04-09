@@ -15,7 +15,7 @@ import {
 	Typography
 } from "@material-tailwind/react";
 import { useState } from "react";
-import ExpensesForm from "../expenses/expenses-form";
+import ExpensesForm from "../expenses/AddExpensesDialog";
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 

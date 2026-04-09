@@ -3,12 +3,12 @@ import { faPencil, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardBody, IconButton, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
-import ExpensesForm from '../expenses/expenses-form';
-import DeleteDialog from '../expenses/delete-dialog';
+import AddExpensesDialog from '../expenses/AddExpensesDialog';
+import DeleteExpenseDialog from '../expenses/DeleteExpenseDialog';
 import { ExpenseItemI } from '@/interfaces/expenses';
-
-import EditExpenseDialog from '../expenses/edit-expenses-form';
+import EditExpenseDialog from '../expenses/EditExpenseDialog';
 import { useMoneyFilter } from '@/hooks/useMoneyFilter';
+
 
 interface SimpleTablePropsI {
 	expenses: ExpenseItemI[];
@@ -198,8 +198,8 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 				</table>
 			</CardBody>
 		</Card>
-		{isDeleting && <DeleteDialog expense={expensesList[indexBeingEdited]} onCancel={cancelChanges} />}
-		{isOpen && <ExpensesForm isPending={false} isOpen handleOpen={handleOpen} />}
+		{isDeleting && <DeleteExpenseDialog expense={expensesList[indexBeingEdited]} onCancel={cancelChanges} />}
+		{isOpen && <AddExpensesDialog isPending={false} isOpen handleOpen={handleOpen} />}
 		{openEditDialog && <EditExpenseDialog expense={expenseToEdit} isOpen={openEditDialog} handleOpen={handleOpenEditDialog} />}
 	</>);
 }

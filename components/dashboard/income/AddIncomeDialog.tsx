@@ -18,12 +18,10 @@ import {
 	TabPanel,
 	IconButton
 } from "@material-tailwind/react";
-import { ObjectId } from "mongodb";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface IncomeFormPropsI {
-	tableId: string | ObjectId;
 	isOpen: boolean;
 	handleOpen: Dispatch<SetStateAction<boolean>>;
 	dataCallback?: () => void;
@@ -37,7 +35,7 @@ type IncomeFormValues = {
 
 
 
-export default function IncomeForm({ tableId, isOpen, handleOpen }: IncomeFormPropsI) {
+export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI) {
 	const dialogRef = useStableDialogA11y(isOpen, 'income-dialog-label', 'income-dialog-description');
 	const [isWithdrawalView, setIsWithdrawalView] = useState<boolean>(true);
 	const { register, handleSubmit, reset, formState: { errors, isSubmitting }, getValues } =
@@ -64,8 +62,7 @@ export default function IncomeForm({ tableId, isOpen, handleOpen }: IncomeFormPr
 			isWithdrawal: isWithdrawalView,
 			date: new Date().getTime()
 		};
-		const body = { currentTable_id: tableId, newIncomeData: newIncome };
-		const res = await mutation.mutateAsync(body);
+		const res = await mutation.mutateAsync({ newIncomeData: newIncome });
 		if (res.ok) {
 			handleOpen(false);
 			reset();
