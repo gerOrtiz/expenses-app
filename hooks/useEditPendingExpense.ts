@@ -2,21 +2,23 @@
 
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ObjectId } from "mongodb";
 
-export function useAddPendingExpense() {
+export function useUpdatePendingExpense() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { newPendingExpense: PendingExpenseI }) => {
+		mutationFn: (data: { pendingExpense: PendingExpenseI }) => {
 			return fetch('/api/expenses/table/pending', {
-				method: 'POST',
+				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(data)
-			})
+			});
 		},
-		onError: (error) => { console.error(error); throw new Error(error.message) },
+		onError: (error) => {
+			console.error(error);
+			throw new Error(error.message);
+		},
 		onSuccess: async (data) => {
 			const res = await data.json();
 			queryClient.setQueryData(['activeTable'], res);
@@ -24,4 +26,5 @@ export function useAddPendingExpense() {
 	});
 
 	return { mutation };
+
 }

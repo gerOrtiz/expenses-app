@@ -181,12 +181,12 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 									<div className="grid-cols-2 ">
 										{!expense.isPending &&
 											<IconButton aria-label={`Open edit expense dialog`}
-												variant="text" color="blue-gray" size="sm"
+												variant="text" color="blue" size="sm"
 												className="rounded-full mr-1 hover:-translate-y-1" onClick={() => editRow(expense)}>
 												<FontAwesomeIcon icon={faPencil} size="lg" />
 											</IconButton>}
 										<IconButton aria-label={`Open delete expense dialog`}
-											variant="text" size="sm" color="blue-gray"
+											variant="text" size="sm" color="blue"
 											className="rounded-full hover:-translate-y-1" onClick={() => deleteExpense(index)}>
 											<FontAwesomeIcon icon={faTrash} size="lg" />
 										</IconButton>
@@ -198,7 +198,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 				</table>
 			</CardBody>
 		</Card>
-		{isDeleting && <DeleteExpenseDialog expense={expensesList[indexBeingEdited]} onCancel={cancelChanges} />}
+		{isDeleting && <DeleteExpenseDialog expense={expensesList[indexBeingEdited]} date={expensesList[indexBeingEdited].date} onCancel={cancelChanges} />}
 		{isOpen && <AddExpensesDialog isPending={false} isOpen handleOpen={handleOpen} />}
 		{openEditDialog && <EditExpenseDialog expense={expenseToEdit} isOpen={openEditDialog} handleOpen={handleOpenEditDialog} />}
 	</>);

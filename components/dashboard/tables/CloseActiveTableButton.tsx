@@ -2,7 +2,7 @@
 
 import { useCloseActiveTable } from "@/hooks/useCloseActiveTable";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
 import { useState } from "react";
@@ -41,8 +41,20 @@ export default function CloseActiveTableButton() {
 							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
 						</IconButton>
 					</div>
-					<Typography color="blue-gray" variant="paragraph" id="close-period-description">
+					<Typography color="blue-gray" variant="paragraph" id="delete-expense-description">
+						{`You're about to close this expenses period`}
+					</Typography>
+					{/* <Typography color="blue-gray" variant="paragraph" id="close-period-description">
 						{`This action can't be undone, do you wish to continue?`}
+					</Typography> */}
+					<div className="flex w-full p-4 bg-red-100 rounded-md gap-4 items-center">
+						<FontAwesomeIcon aria-label="warning icon" icon={faTriangleExclamation} size="lg" color="yellow" />
+						<Typography className="font-semibold" color="blue-gray" variant="small" >
+							{`This action can't be undone`}
+						</Typography>
+					</div>
+					<Typography className="text-center" color="blue-gray" variant="small" >
+						{`Do you wish to continue?`}
 					</Typography>
 				</div>
 
