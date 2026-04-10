@@ -76,7 +76,7 @@ describe('Expenses Form', () => {
 					'/api/expenses/table/pending', {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ currentTable_id: '507f1f77bcf86cd799439011', newPendingExpense }),
+					body: JSON.stringify({ newPendingExpense }),
 				}
 				);
 			});
@@ -108,7 +108,7 @@ describe('Expenses Form', () => {
 			await waitFor(() => {
 				expect((global.fetch as jest.Mock).mock.calls.length).toBe(1);
 				const [url, options] = (global.fetch as jest.Mock).mock.calls[0];
-				const body = JSON.parse(options.body) as { currentTable_id: string, newClientExpense: ExpenseItemI };
+				const body = JSON.parse(options.body) as { newClientExpense: ExpenseItemI };
 				expect(url).toBe('/api/expenses/table/items');
 				expect(body.newClientExpense).toMatchObject({
 					description: 'Test expense',
@@ -151,7 +151,7 @@ describe('Expenses Form', () => {
 			await waitFor(() => {
 				expect((global.fetch as jest.Mock).mock.calls.length).toBe(1);
 				const [url, options] = (global.fetch as jest.Mock).mock.calls[0];
-				const body = JSON.parse(options.body) as { currentTable_id: string, newClientExpense: ExpenseItemI };
+				const body = JSON.parse(options.body) as { newClientExpense: ExpenseItemI };
 				expect(url).toBe('/api/expenses/table/items');
 				expect(body.newClientExpense).toMatchObject({
 					description: 'Test expense',

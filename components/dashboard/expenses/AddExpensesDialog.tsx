@@ -44,7 +44,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 			const newPendingExpense: PendingExpenseI =
 				{ description: data.description, amount: data.amount, originalAmount: data.amount, type: data.type, fulfilled: false };
 			// console.log({ currentTable_id: currentTable._id, newPendingExpense });
-			res = await pendingMutation.mutateAsync({ currentTable_id: currentTable._id, newPendingExpense });
+			res = await pendingMutation.mutateAsync({ newPendingExpense });
 		}
 		else {
 			let expenseObj: ExpenseItemI = {

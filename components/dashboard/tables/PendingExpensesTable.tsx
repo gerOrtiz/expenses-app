@@ -1,6 +1,6 @@
 'use client';
 
-import { faPencil, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faPlus, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Button,
@@ -18,6 +18,8 @@ import { useState } from "react";
 import ExpensesForm from "../expenses/AddExpensesDialog";
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
+import DeleteExpenseDialog from "../expenses/DeleteExpenseDialog";
+import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 
 interface PendingExpensesTablePropsI {
 	pendingArray: PendingExpenseI[];
@@ -26,11 +28,44 @@ interface PendingExpensesTablePropsI {
 }
 
 export default function PendingExpensesTable({ pendingArray }: PendingExpensesTablePropsI) {
-	const [isOpen, setOpen] = useState<boolean>(false);
+	const [openAddPending, setOpenAddPending] = useState<boolean>(false);
 	const [selectedExpense, setSelectedExpense] = useState<PendingExpenseI | null>(null);
+	const [isEditing, setIsEditing] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
+	const [openOptionsDialog, setOpenOptionsDialog] = useState(false);
+	const dialogRef = useStableDialogA11y(openOptionsDialog, 'pending-options-label', 'pending-options-description');
+
 	const { formatValue } = useMoneyFilter();
 
-	const handleOpen = () => setOpen((cur) => !cur);
+	const handleOpenAddPending = () => setOpenAddPending((cur) => !cur);
+
+	const handleDeleteClick = (pending: PendingExpenseI) => {
+		setSelectedExpense(pending);
+		setIsDeleting(true);
+	};
+
+	const handleEditClick = (pending: PendingExpenseI) => {
+		setSelectedExpense(pending);
+		setIsEditing(true);
+	};
+
+	const handleCancel = () => {
+		setSelectedExpense(null);
+		setIsDeleting(false);
+		setIsEditing(false);
+		if (openOptionsDialog) setOpenOptionsDialog(false);
+	};
+
+	const handleOpenChoiceDialog = (pending: PendingExpenseI) => {
+		setSelectedExpense(pending);
+		setOpenOptionsDialog(true);
+	};
+
+	const handleChoiceClick = (isEdit: boolean) => {
+		if (isEdit) setIsEditing(true);
+		else setIsDeleting(true);
+		setOpenOptionsDialog(false);
+	}
 
 	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ""];
 
@@ -38,24 +73,20 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 		return type == 'cash' ? `Cash` : `Card`;
 	}
 
-	const handleCancelResetAmount = () => {
-		setSelectedExpense(null);
-	};
-
 	return (<>
 		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-blue-100 border border-blue-gray-100">
-			<CardBody>
+			<CardBody className="p-6 lg:p-4">
 				<div className="relative flex flex-col">
 					<div className="w-full flex justify-between items-center mb-3">
 						<Typography color="blue-gray" variant="lead" className="text-lg lg:text-xl">{`Pending expenses`}</Typography>
-						<Button aria-label={`Add pending expense`} variant="outlined" className="hidden outlined lg:block hover:-translate-y-1" size="sm" onClick={handleOpen}>
+						<Button aria-label={`Add pending expense`} variant="outlined" className="hidden outlined lg:block hover:-translate-y-1" size="sm" onClick={handleOpenAddPending}>
 							{`Add`}
 						</Button>
-						<IconButton aria-label={`Add pending expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpen}>
+						<IconButton aria-label={`Add pending expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpenAddPending}>
 							<FontAwesomeIcon aria-label={`Plus symbol`} icon={faPlus} size="lg" />
 						</IconButton>
 					</div>
-					<table className="w-full min-w-max table-auto text-left">
+					<table className="w-full max-w-full table-auto text-left">
 						<thead className="rounded-lg  bg-blue-50">
 							<tr>
 								{TABLE_HEAD.map((title, index) => (
@@ -99,8 +130,19 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 										</Typography>
 									</td>
 									<td className="p-2 lg:p-4">
-										<Tooltip content={`Clear this expense amount`}>
-											<IconButton aria-label={`Edit pending expense`} className="hover:-translate-y-1" variant="text" color="blue-gray" size="sm" onClick={() => setSelectedExpense(p)}>
+										<div className="flex lg:hidden gap-1">
+											<IconButton aria-label={`Edit pending expense`} variant="text" color="blue" size="sm" onClick={() => handleEditClick(p)}>
+												<FontAwesomeIcon icon={faPencil} />
+											</IconButton>
+											<IconButton aria-label={`Open delete dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => handleDeleteClick(p)} >
+												<FontAwesomeIcon icon={faTrash} />
+											</IconButton>
+										</div>
+										<Tooltip content={`Open dialog to see options`}>
+											<IconButton aria-label={`Open edition option dialog`}
+												className="hidden lg:block hover:-translate-y-1"
+												variant="text" color="blue" size="sm"
+												onClick={() => handleOpenChoiceDialog(p)}>
 												<FontAwesomeIcon icon={faPencil} />
 											</IconButton>
 										</Tooltip>
@@ -113,9 +155,33 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 				</div>
 			</CardBody>
 		</Card>
-		{isOpen && <ExpensesForm isPending={true} isOpen handleOpen={handleOpen} />}
-		{selectedExpense &&
-			<ResetAmountDialog pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancelResetAmount} />}
+		{openAddPending && <ExpensesForm isPending={true} isOpen={openAddPending} handleOpen={handleOpenAddPending} />}
+		{isEditing &&
+			<ResetAmountDialog pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancel} />}
+		{isDeleting && (<DeleteExpenseDialog expense={selectedExpense} onCancel={handleCancel} isPending={true} />)}
+		{openOptionsDialog && (
+			<Dialog ref={dialogRef} size="sm" open={openOptionsDialog} handler={handleCancel} >
+				<DialogHeader className="flex flex-col gap-4">
+					<div className="flex w-full justify-between items-center">
+						<Typography variant="h5" className="text-blue-800" id="pending-options-label">
+							{`Pending expense edit options`}
+						</Typography>
+						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleCancel}>
+							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+						</IconButton>
+					</div>
+				</DialogHeader>
+				<DialogBody className="p-2 text-center">
+					<Typography color="blue-gray" variant="paragraph" id="pending-options-description">
+						{`Choose action to perform: `}
+					</Typography>
+				</DialogBody>
+				<DialogFooter className="flex flex-row justify-center gap-4">
+					<Button variant="outlined" className="outlined" >{`Edit`}</Button>
+					<Button variant="outlined" className="outlined" onClick={() => handleChoiceClick(false)}>{`Delete`}</Button>
+				</DialogFooter>
+			</Dialog>
+		)}
 	</>);
 }
 
