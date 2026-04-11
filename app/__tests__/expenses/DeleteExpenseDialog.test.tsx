@@ -1,5 +1,4 @@
 global.fetch = jest.fn();
-// jest.mock('../../../hooks/useActiveTableId');
 jest.mock('@material-tailwind/react', () => ({
 	...jest.requireActual('@material-tailwind/react'),
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
@@ -46,7 +45,6 @@ describe('Delete Dialog', () => {
 	beforeEach(() => {
 		queryClient = createTestQueryClient();
 		(global.fetch as jest.Mock).mockClear();
-		// mockUseActiveTableId.mockReturnValue('507f1f77bcf86cd799439011');
 	});
 
 	afterEach(() => {
@@ -125,7 +123,7 @@ describe('Delete Dialog', () => {
 
 		it('should return updated table data after pending deletion', async () => {
 			const result = await processDeletePendingExpense('P3', mockTableData);
-			console.log(result);
+			// console.log(result);
 			expect(result.pending.length).toBe(1);
 			expect(result.expenses[2].isPending).toBe(false);
 			expect(result.totals.total_pending.card).toBe(500);

@@ -124,7 +124,7 @@ export async function processDeleteExpenses(clientExpenseId: string, existingTab
  * @returns An updated version of the expenses table
  */
 export async function processAddPending(newClientPendingExpense: PendingExpenseI, existingTable: ExpensesTableI): Promise<ExpensesTableI> { //
-	const updatedTable = { ...existingTable };
+	const updatedTable = JSON.parse(JSON.stringify(existingTable));
 	const pendingArray: PendingExpenseI[] = updatedTable.pending || [];
 	// const newId: number = pendingArray.length > 0 ? pendingArray[pendingArray.length - 1].id + 1 : 1;
 	const newId: string = pendingArray.length + 1 + newClientPendingExpense.description.slice(0, 2).toLocaleUpperCase();
@@ -154,6 +154,25 @@ export async function processUpdatePendingExpenses(pendingExpense: PendingExpens
 		updatedTable.totals.total_pending = totalPending;
 	}
 	updatedTable.pending = pendingArray;
+	return updatedTable;
+}
+
+/**
+ * @param pendingExpenseId string to identify pending expense
+ * @param existingTable Current DB table to process deletion from
+ * @returns an updated version of the expenses table
+ */
+export async function processFulfillPendingExpense(pendingExpenseId: string, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
+	const updatedTable: ExpensesTableI = JSON.parse(JSON.stringify(existingTable));
+	const pendingArray = updatedTable.pending;
+	const index = pendingArray.findIndex(o => o.id === pendingExpenseId);
+	if (index === -1) return updatedTable;
+	pendingArray[index].amount = 0;
+	pendingArray[index].fulfilled = true;
+	const totalPending = getPendingTotal(pendingArray);
+	updatedTable.totals.total_pending = totalPending;
+	updatedTable.pending = pendingArray;
+
 	return updatedTable;
 }
 

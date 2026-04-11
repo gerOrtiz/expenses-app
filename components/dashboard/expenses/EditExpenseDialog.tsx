@@ -48,7 +48,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
 						<Typography variant="h5" className="text-blue-800" id="edit-expense-label">
-							Edit Expense
+							{`Edit Expense`}
 						</Typography>
 						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
 							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
@@ -56,7 +56,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 					</div>
 
 					<Typography color="blue-gray" variant="paragraph" id="edit-expense-description">
-						Update the expense details
+						{`Update this expense details`}
 					</Typography>
 
 					<form className="mt-2 mb-2" onSubmit={handleSubmit(onSubmit)}>

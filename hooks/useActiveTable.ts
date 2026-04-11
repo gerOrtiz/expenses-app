@@ -13,7 +13,7 @@ export function useActiveTable() {
 			if (!res.ok) throw new Error('Failed to fetch active table');
 			return res.json();
 		},
-		staleTime: 1000 * 60 * 5,
+		staleTime: 1000 * 60 * 10,
 		// select: (response: tableData) => {
 		// 	if (response && response.data) {
 		// 		const newData = { ...response.data, id: response.data._id.toString() };

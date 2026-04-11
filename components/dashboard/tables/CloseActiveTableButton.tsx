@@ -47,7 +47,7 @@ export default function CloseActiveTableButton() {
 					{/* <Typography color="blue-gray" variant="paragraph" id="close-period-description">
 						{`This action can't be undone, do you wish to continue?`}
 					</Typography> */}
-					<div className="flex w-full p-4 bg-red-100 rounded-md gap-4 items-center">
+					<div role="alert" className="flex w-full p-4 bg-red-100 rounded-md gap-4 items-center">
 						<FontAwesomeIcon aria-label="warning icon" icon={faTriangleExclamation} size="lg" color="yellow" />
 						<Typography className="font-semibold" color="blue-gray" variant="small" >
 							{`This action can't be undone`}

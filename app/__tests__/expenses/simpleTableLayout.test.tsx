@@ -3,7 +3,7 @@ import { ExpensesTableI } from "@/interfaces/expenses";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { screen } from "@testing-library/react";
 
-jest.mock('../../../components/dashboard/tables/closeTableButton', () => {
+jest.mock('../../../components/dashboard/tables/CloseActiveTableButton', () => {
 	return function MockCloseTableButton() {
 		return <button >Close</button>;
 	};
