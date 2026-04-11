@@ -186,14 +186,8 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 	</>);
 }
 
-interface ResetAmountDialogPropsI {
-	pendingArray: PendingExpenseI[];
-	// tableId: string;
-	selectedItem: PendingExpenseI;
-	onCancel: () => void;
-}
 
-const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, selectedItem, onCancel }) => {
+/*function ResetAmountDialog  ({ pendingArray, selectedItem, onCancel }:ResetAmountDialogPropsI) {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const handleOpen = () => {
@@ -236,4 +230,4 @@ const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, se
 			</DialogFooter>
 		</Dialog>
 	</>);
-}
+}*/

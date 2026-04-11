@@ -11,7 +11,7 @@ import { ExpensesTableI, PendingExpenseI } from "@/interfaces/expenses";
 import { processFulfillPendingExpense } from "@/services/expenses-calculator";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
-import { cleanup, findByRole, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const mockUseActiveExpenses = useActiveExpenses as jest.MockedFunction<typeof useActiveExpenses>;

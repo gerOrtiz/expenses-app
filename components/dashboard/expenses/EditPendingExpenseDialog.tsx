@@ -8,7 +8,6 @@ import { PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogHeader, IconButton, Option, Select, Tab, TabPanel, Tabs, TabsBody, TabsHeader, Typography } from "@material-tailwind/react";
-import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface EditPendingDialogPropsI {
