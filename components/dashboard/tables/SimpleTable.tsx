@@ -208,8 +208,8 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 
 const PaymentBadge: React.FC = () => {
 	return (<>
-		<div className="w-3/4 lg:w-1/2 flex justify-center text-center p-1 rounded-xl bg-amber-300">
-			<Typography variant="small" color="white" className="text-[10px] lg:text-[11px]">{`Payment`}</Typography>
+		<div className="w-2/3 lg:w-1/3 flex justify-center text-center p-1 rounded-xl bg-lime-400">
+			<Typography variant="small" color="blue-gray" className=" text-[10px] lg:text-[11px]">{`Payment`}</Typography>
 		</div>
 	</>);
 };

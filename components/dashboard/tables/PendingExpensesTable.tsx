@@ -20,6 +20,7 @@ import { PendingExpenseI } from "@/interfaces/expenses";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import DeleteExpenseDialog from "../expenses/DeleteExpenseDialog";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
+import { EditPendingExpenseDialog } from "../expenses/EditPendingExpenseDialog";
 
 interface PendingExpensesTablePropsI {
 	pendingArray: PendingExpenseI[];
@@ -157,7 +158,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 		</Card>
 		{openAddPending && <ExpensesForm isPending={true} isOpen={openAddPending} handleOpen={handleOpenAddPending} />}
 		{isEditing &&
-			<ResetAmountDialog pendingArray={pendingArray} selectedItem={selectedExpense} onCancel={handleCancel} />}
+			<EditPendingExpenseDialog pending={selectedExpense} isOpen={isEditing} handleOpen={handleCancel} />}
 		{isDeleting && (<DeleteExpenseDialog expense={selectedExpense} onCancel={handleCancel} isPending={true} />)}
 		{openOptionsDialog && (
 			<Dialog ref={dialogRef} size="sm" open={openOptionsDialog} handler={handleCancel} >
@@ -177,7 +178,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 					</Typography>
 				</DialogBody>
 				<DialogFooter className="flex flex-row justify-center gap-4">
-					<Button variant="outlined" className="outlined" >{`Edit`}</Button>
+					<Button variant="outlined" className="outlined" onClick={() => handleChoiceClick(true)} >{`Edit`}</Button>
 					<Button variant="outlined" className="outlined" onClick={() => handleChoiceClick(false)}>{`Delete`}</Button>
 				</DialogFooter>
 			</Dialog>
@@ -185,14 +186,8 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 	</>);
 }
 
-interface ResetAmountDialogPropsI {
-	pendingArray: PendingExpenseI[];
-	// tableId: string;
-	selectedItem: PendingExpenseI;
-	onCancel: () => void;
-}
 
-const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, selectedItem, onCancel }) => {
+/*function ResetAmountDialog  ({ pendingArray, selectedItem, onCancel }:ResetAmountDialogPropsI) {
 	const [isOpen, setIsOpen] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const handleOpen = () => {
@@ -235,4 +230,4 @@ const ResetAmountDialog: React.FC<ResetAmountDialogPropsI> = ({ pendingArray, se
 			</DialogFooter>
 		</Dialog>
 	</>);
-}
+}*/

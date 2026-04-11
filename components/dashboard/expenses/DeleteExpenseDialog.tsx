@@ -1,5 +1,4 @@
 'use client';
-// import { useActiveTableId } from "@/hooks/useActiveTableId";
 import { useDeleteExpense } from "@/hooks/useDeleteExpense";
 import { useDeletePendingExpense } from "@/hooks/useDeletePendingExpense";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
@@ -18,7 +17,6 @@ interface DeleteDialogPropsI {
 }
 
 export default function DeleteExpenseDialog({ expense, date, isPending, onCancel }: DeleteDialogPropsI) {
-	// const tableId = useActiveTableId();
 	const { formatValue } = useMoneyFilter();
 	const [open, setOpen] = useState(true);
 	const dialogRef = useStableDialogA11y(open, 'delete-expense-label', 'delete-expense-description');
@@ -100,7 +98,7 @@ export default function DeleteExpenseDialog({ expense, date, isPending, onCancel
 					</Card>
 					<div role="alert" className="flex w-full p-4 bg-red-100 rounded-md gap-4 items-center">
 						<FontAwesomeIcon aria-label="warning icon" icon={faTriangleExclamation} size="lg" color="yellow" />
-						<Typography className="font-semibold" color="blue-gray" variant="small" >
+						<Typography className="font-semibold text-xs" color="blue-gray" variant="small" >
 							{isPending ?
 								`If there are linked payments to this pending expense, it will affect totals and reports. This action can't be undone.`
 								: `This action can't be undone.`}

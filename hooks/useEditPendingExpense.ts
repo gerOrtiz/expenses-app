@@ -3,7 +3,7 @@
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useUpdatePendingExpense() {
+export function useEditPendingExpense() {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
 		mutationFn: (data: { pendingExpense: PendingExpenseI }) => {

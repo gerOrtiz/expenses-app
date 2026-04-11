@@ -2,7 +2,7 @@ global.fetch = jest.fn();
 import CloseActiveTableButton from "@/components/dashboard/tables/CloseActiveTableButton";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
-import { cleanup, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 describe('Close table button', () => {
@@ -23,7 +23,8 @@ describe('Close table button', () => {
 		await user.click(actionButton);
 		const closePeriodButton = await screen.findByRole('button', { name: /Close period/i });
 		expect(screen.getByRole('heading', { level: 5 })).toHaveTextContent('Close expenses period');
-		expect(screen.getByRole('paragraph')).toHaveTextContent(`This action can't be undone, do you wish to continue?`);
+		const alertDiv = screen.getByRole('alert');
+		expect(within(alertDiv).getByRole('paragraph')).toHaveTextContent(`This action can't be undone`);
 		await user.click(closePeriodButton);
 
 		await waitFor(() => {
