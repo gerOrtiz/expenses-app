@@ -47,6 +47,7 @@ export async function PUT(request: Request) {
 			$set: {
 				expenses: updatedTable.expenses,
 				totals: updatedTable.totals,
+				pending: updatedTable.pending,
 				remaining: updatedTable.remaining,
 				lastModified: new Date().getTime()
 			},

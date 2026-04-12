@@ -166,7 +166,7 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 									{`Mark this pending expense as fulfilled, this action turns its amount to 0`}
 								</Typography>
 								<div className="w-full flex justify-center">
-									<Button variant="outlined" className="outlined" onClick={onFulfill}>
+									<Button variant="outlined" className="outlined" disabled={pending.fulfilled} onClick={onFulfill}>
 										{`Fulfill`}
 									</Button>
 								</div>

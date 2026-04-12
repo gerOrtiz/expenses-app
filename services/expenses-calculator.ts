@@ -75,14 +75,23 @@ export async function processAddNewExpense(newClientExpense: ExpenseItemI, exist
  * @returns An updated expenses table
  */
 export async function processUpdateExpenses(clientExpense: ExpenseItemI, existingTable: ExpensesTableI): Promise<ExpensesTableI> { //
-	const updatedTable = { ...existingTable };
+	const updatedTable: ExpensesTableI = JSON.parse(JSON.stringify(existingTable));
 	const expensesArray: ExpenseItemI[] = existingTable.expenses;
 	const index = expensesArray.findIndex(o => o.id == clientExpense.id);
 	if (index === -1) return updatedTable;
+	const copy = expensesArray[index];
 	expensesArray[index] = clientExpense;
-	const { totalExpenses } = calculateExpensesTotals(expensesArray);
+	// console.log(expensesArray);
+	const { totalExpenses, totalPendingPaid } = calculateExpensesTotals(expensesArray);
+	updatedTable.expenses = expensesArray;
 	updatedTable.totals.total_expenses = totalExpenses;
 	updatedTable.remaining = updateRemaining(updatedTable);
+	if (clientExpense.pending_id || copy.pending_id) {
+		const { totalPending, pendingArray } = updatePending(expensesArray, updatedTable.pending, copy.pending_id ?? clientExpense.pending_id);
+		updatedTable.totals.total_payments_made = totalPendingPaid;
+		updatedTable.totals.total_pending = totalPending;
+		updatedTable.pending = pendingArray;
+	}
 	return updatedTable;
 }
 
@@ -209,7 +218,6 @@ export async function processDeletePendingExpense(pendingExpenseId: string, exis
 function calculateExpensesTotals(expenses: ExpenseItemI[]): { totalExpenses: TotalsType, totalPendingPaid: TotalsType } {
 	const totalExpenses = { cash: 0, card: 0 };
 	const totalPendingPaid = { cash: 0, card: 0 };
-
 	if (expenses.length > 0) {
 		expenses.forEach(element => {
 			if (element.type == 'cash') {
@@ -221,7 +229,6 @@ function calculateExpensesTotals(expenses: ExpenseItemI[]): { totalExpenses: Tot
 			}
 		});
 	}
-
 	return { totalExpenses, totalPendingPaid };
 }
 
@@ -291,25 +298,10 @@ function updateRemaining(existingTable: ExpensesTableI): TotalsType {
 	return remaining;
 }
 
-/**
- * 
- * @param expense An expense item to look for in the expenses array and update it
- * @param currentPendingArray The bd version of the pending expenses array
- * @returns An updated pending totals and array
- */
-function updatePendingArray(expense: ExpenseItemI, currentPendingArray: PendingExpenseI[]): { totalPending: TotalsType, pendingArray: PendingExpenseI[] } {
-	const pendingArray = [...currentPendingArray];
-	const index = pendingArray.findIndex(o => o.id == expense.pending_id);
-	if (index != -1) {
-		pendingArray[index].amount += expense.amount;
-	}
-	const totalPending = getPendingTotal(pendingArray);
-	return { totalPending, pendingArray };
-}
 
 function updatePending(expensesArray: ExpenseItemI[], pendingExpenses: PendingExpenseI[], pendingId: string): { totalPending: TotalsType, pendingArray: PendingExpenseI[] } {
 	let totalPaid = 0;
-	const pendingArray = [...pendingExpenses];
+	const pendingArray: PendingExpenseI[] = JSON.parse(JSON.stringify(pendingExpenses));
 	for (let i = 0; i < expensesArray.length; i++) {
 		const expense = expensesArray[i];
 		if (!expense.pending_id) continue;
