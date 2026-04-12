@@ -117,9 +117,9 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 								</td>
 								<td className="p-2">
 									<div className="grid-cols-2 ">
-										{!expense.isPending && <IconButton aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
+										<IconButton aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
 											<FontAwesomeIcon icon={faPencil} />
-										</IconButton>}
+										</IconButton>
 										<IconButton aria-label={`Open delete expense dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => deleteExpense(index)}>
 											<FontAwesomeIcon icon={faTrash} />
 										</IconButton>
@@ -179,12 +179,11 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 								</td>
 								<td className="p-4">
 									<div className="grid-cols-2 ">
-										{!expense.isPending &&
-											<IconButton aria-label={`Open edit expense dialog`}
-												variant="text" color="blue" size="sm"
-												className="rounded-full mr-1 hover:-translate-y-1" onClick={() => editRow(expense)}>
-												<FontAwesomeIcon icon={faPencil} size="lg" />
-											</IconButton>}
+										<IconButton aria-label={`Open edit expense dialog`}
+											variant="text" color="blue" size="sm"
+											className="rounded-full mr-1 hover:-translate-y-1" onClick={() => editRow(expense)}>
+											<FontAwesomeIcon icon={faPencil} size="lg" />
+										</IconButton>
 										<IconButton aria-label={`Open delete expense dialog`}
 											variant="text" size="sm" color="blue"
 											className="rounded-full hover:-translate-y-1" onClick={() => deleteExpense(index)}>
