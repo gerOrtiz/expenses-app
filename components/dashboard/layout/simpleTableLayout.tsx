@@ -19,20 +19,20 @@ export default function SimpleTableLayoutComponent() {
 
 	const handleOpenExpensesDialog = () => setOpenExpensesDialog((isOpen) => !isOpen);
 
-	if (isFetching) return <ExpensesPageSkeleton />
+	// if (isFetching) return <ExpensesPageSkeleton />
 
 	return (<>
 		<div className="w-full grid grid-flow-row grid-cols-3 px-6 mx-auto mt-0 lg:mt-4">
 			<div className="flex w-full justify-start col-span-3 lg:col-span-1 py-1 lg:py-4">
-				<Link aria-label={`Return to your dashboard`} href="/dashboard" className="text-blue-700 font-bold flex gap-2 items-center py-1.5">
+				<Link aria-label={`Return to your dashboard`} href="/dashboard" className="text-blue-800 font-bold flex gap-2 items-center py-1.5">
 					<FontAwesomeIcon icon={faArrowLeft} size="lg" />
 					{`Return`}
 				</Link>
 			</div>
 			<div className="flex w-full justify-center col-span-3 lg:col-span-1 py-2 lg:py-4">
-				<Typography variant="h2" color="blue">{`Daily expenses`}</Typography>
+				<Typography variant="h2" className="text-blue-800">{`Daily expenses`}</Typography>
 			</div>
-			{data && data.data !== null && (
+			{!isFetching && data && data.data !== null && (
 				<div className="w-full flex justify-center gap-4 col-span-3 lg:col-span-1 py-2 lg:py-4">
 					<Button aria-haspopup={true} aria-label={`Add expense`} variant="filled" className="filled" onClick={handleOpenExpensesDialog}>
 						<span className="hidden lg:block text-[13px]">{`Add expense`}</span>
@@ -43,7 +43,8 @@ export default function SimpleTableLayoutComponent() {
 			)}
 		</div>
 		<section>
-			{data && (
+			{isFetching && (<ExpensesPageSkeleton />)}
+			{!isFetching && data && (
 				data.data !== null ? (<ExpensesTableWrapper tableData={data.data} />) : (<CreateSimpleTableComponent />)
 			)}
 		</section>

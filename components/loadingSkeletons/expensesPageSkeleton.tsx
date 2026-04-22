@@ -5,16 +5,6 @@ import { Card } from "@material-tailwind/react";
 export default function ExpensesPageSkeleton() {
 	return (
 		<div className="min-h-screen bg-gray-50">
-			{/* Header Skeleton - already sticky */}
-			<div className="sticky top-0 z-30 bg-gradient-to-r from-blue-100 to-blue-200 shadow-sm">
-				<div className="flex justify-between items-center p-4">
-					<div className="h-6 bg-gray-300 rounded w-20 animate-pulse"></div>
-					<div className="flex gap-3">
-						<div className="h-8 bg-gray-300 rounded w-24 animate-pulse"></div>
-						<div className="h-8 bg-gray-300 rounded w-32 animate-pulse"></div>
-					</div>
-				</div>
-			</div>
 
 			<div className="p-4 space-y-6">
 				{/* Balance Section Skeleton */}
