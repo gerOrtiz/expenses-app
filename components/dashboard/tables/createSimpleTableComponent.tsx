@@ -34,8 +34,8 @@ export default function CreateSimpleTableComponent() {
 		<div className="flex flex-col w-full items-center gap-4 p-5 lg:p-0">
 			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={300} />
 			<div className="flex flex-col gap-2 items-center ">
-				<Typography variant="h3" color="blue-gray">{`Take control of your personal expenses`}</Typography>
-				<Typography variant="paragraph" color="gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography>
+				<Typography variant="h3" className="text-blue-800">{`Take control of your personal expenses`}</Typography>
+				<Typography variant="paragraph" color="blue-gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography>
 				<Button variant="filled" aria-haspopup="dialog" size="lg" className="filled hover:-translate-y-1" onClick={handleOpen}>{`Create new expenses table`}</Button>
 			</div>
 

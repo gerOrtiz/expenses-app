@@ -1,9 +1,11 @@
 'use client';
 
 import { Typography } from "@material-tailwind/react";
-import DasboardCards from "../cards/cardsGrid";
 import SummaryCard from "../cards/summaryCard";
 import { useActiveTable } from "@/hooks/useActiveTable";
+import DashboardCharts from "../cards/DashboardCharts";
+import DashboardSkeleton from "@/components/loadingSkeletons/dashboardSkeleton";
+import DashboardEmptyState from "@/components/ui/DashboardEmptyState";
 
 interface DashboardLayoutPropsI {
 	username: string;
@@ -11,18 +13,24 @@ interface DashboardLayoutPropsI {
 
 export default function DashboardlayoutComponent({ username }: DashboardLayoutPropsI) {
 	const { status, isFetching, data } = useActiveTable();
+
+	if (status === 'pending' && isFetching) return <DashboardSkeleton />
+
+
 	return (<>
-		<section className="w-full flex flex-col gap-6 mt-8  p-8">
-			<Typography variant="h2" >{`Welcome, `} <span className="text-blue-700">{username} </span> ! </Typography>
-			<div className="flex flex-col w-full gap-8" >
+		<section className="w-full flex flex-col gap-8 mt-8 p-8">
 
-				{status === 'success' && data && data.data !== null && <SummaryCard />}
-				{isFetching && !data && (
-					<div data-testid="skeleton" className="h-40 bg-gray-300 rounded-xl animate-pulse" />
-				)}
+			<Typography variant="h2" color="blue-gray" className=" self-start">{`Welcome, `} <span className="text-blue-700">{username} </span> </Typography>
 
-				<DasboardCards />
-			</div>
+			{status === 'success' && data && data.data === null && (
+				<DashboardEmptyState />
+			)}
+
+			{status === 'success' && data && data.data && (<>
+				<SummaryCard data={data.data} />
+				<DashboardCharts data={data.data} />
+			</>)}
+
 		</section>
 	</>);
 }

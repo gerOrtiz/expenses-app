@@ -20,7 +20,7 @@ const BalanceCard: React.FC<BalanceCardPropsI> = ({ text, value }) => {
 							{text}
 						</Typography>
 						<Typography variant="h4" className={`p-2 lg:p-4 text-lg lg:text-2xl
-						 ${value > 10 ? classes.positive : value <= 0 ? classes.negative : classes.warning}`}  >
+						 ${value > 100 ? classes.positive : value <= 0 ? classes.negative : classes.warning}`}  >
 							{moneyFilter}
 						</Typography>
 					</div>
