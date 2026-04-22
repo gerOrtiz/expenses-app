@@ -10,9 +10,21 @@ jest.mock('../../../components/dashboard/cards/summaryCard', () => {
 	};
 });
 
-jest.mock('../../../components/dashboard/cards/cardsGrid', () => {
-	return function MockDashboardCards() {
-		return <div data-testid="dashboard-cards">Dashboard Cards</div>;
+jest.mock('../../../components/dashboard/cards/DashboardCharts', () => {
+	return function MockDashboardCharts() {
+		return <div data-testid="dashboard-charts">Dashboard Cards</div>;
+	};
+});
+
+jest.mock('../../../components/loadingSkeletons/dashboardSkeleton', () => {
+	return function MockDashboardSkeleton() {
+		return <div data-testid="skeleton" className="animate-pulse"> Skeleton</div>;
+	};
+});
+
+jest.mock('../../../components/ui/DashboardEmptyState', () => {
+	return function MockDashboardEmptyState() {
+		return <div data-testid="dashboard-empty-state"> Empty State</div>;
 	};
 });
 
@@ -52,7 +64,7 @@ describe('DashboardLayoutComponent', () => {
 	});
 
 	describe('Loading State', () => {
-		it('shows skeleton when fetching and no data exists', () => {
+		it('shows skeleton when fetching ', () => {
 			const queryClient = createTestQueryClient();
 			// Don't set any data → query will be pending/fetching
 
@@ -64,16 +76,11 @@ describe('DashboardLayoutComponent', () => {
 
 			// SummaryCard should NOT be rendered
 			expect(screen.queryByTestId('summary-card')).not.toBeInTheDocument();
+			expect(screen.queryByTestId('dashboard-charts')).not.toBeInTheDocument();
+
 		});
 
-		it('always shows DashboardCards even while loading', () => {
-			const queryClient = createTestQueryClient();
 
-			renderWithQuery(<DashboardlayoutComponent username="John" />, queryClient);
-
-			// DashboardCards should always be visible
-			expect(screen.getByTestId('dashboard-cards')).toBeInTheDocument();
-		});
 	});
 
 	describe('Success State with Data', () => {
@@ -90,13 +97,14 @@ describe('DashboardLayoutComponent', () => {
 			expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument();
 		});
 
-		it('shows DashboardCards when data is loaded', () => {
+		it('shows Dashboard charts when data is loaded', () => {
 			const queryClient = createTestQueryClient();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
 
 			renderWithQuery(<DashboardlayoutComponent username="John" />, queryClient);
 
-			expect(screen.getByTestId('dashboard-cards')).toBeInTheDocument();
+			expect(screen.getByTestId('dashboard-charts')).toBeInTheDocument();
+			expect(screen.queryByTestId('skeleton')).not.toBeInTheDocument();
 		});
 	});
 
@@ -110,8 +118,10 @@ describe('DashboardLayoutComponent', () => {
 			// SummaryCard should NOT be visible
 			expect(screen.queryByTestId('summary-card')).not.toBeInTheDocument();
 
-			// DashboardCards should still be visible
-			expect(screen.getByTestId('dashboard-cards')).toBeInTheDocument();
+			// DashboardCharts should NOT be visible
+			expect(screen.queryByTestId('dashboard-charts')).not.toBeInTheDocument();
+
+			expect(screen.getByTestId('dashboard-empty-state')).toBeInTheDocument();
 		});
 	});
 

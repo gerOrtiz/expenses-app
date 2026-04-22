@@ -41,7 +41,7 @@ export default function DashboardEmptyState() {
 
 
 			<span className="text-sm text-blue-gray-600">
-				You'll be taken to the expenses module to get started.
+				{`You'll be taken to the expenses module to get started.`}
 			</span>
 
 		</div>

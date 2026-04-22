@@ -16,7 +16,7 @@ interface SummaryObjectI {
 	pendingCommitment: string;
 }
 
-export default function SummaryCard({ data }: { data: ExpensesTableI | null }) {
+export default function SummaryCard({ data }: { data: ExpensesTableI }) {
 	// const { data } = useActiveTable();
 	const { formatValue } = useMoneyFilter();
 	const [openAddExpenseDialog, setOpenAddExpenseDialog] = useState<boolean>(false);
@@ -30,7 +30,6 @@ export default function SummaryCard({ data }: { data: ExpensesTableI | null }) {
 		if (!expensesTable)
 			return { periodExpenses: formatValue(0), percentageSpent: '0%', currentBalance: formatValue(0), transactionsNumber: 0, pendingCommitment: formatValue(0) };
 		const totalSpent = expensesTable.totals.total_expenses.card + expensesTable.totals.total_expenses.cash;
-		// const totalRemaining = totalRemain;
 		const totalPending = expensesTable.totals.total_pending.card + expensesTable.totals.total_pending.cash;
 		let totalIncome = expensesTable.income.card + expensesTable.income.cash;
 		let totalAdded = 0;
@@ -48,7 +47,7 @@ export default function SummaryCard({ data }: { data: ExpensesTableI | null }) {
 			pendingCommitment: formatValue(totalPending)
 		};
 		return newSummary;
-	}, [data, formatValue]);
+	}, [data, totalRemaining, formatValue]);
 
 	const summaryArray: { title: string, value: string }[] = [{ title: 'Spent this period', value: summary.periodExpenses }, { title: 'Budget used (%)', value: summary.percentageSpent + '%' },
 	{ title: 'Pending to pay', value: summary.pendingCommitment }, { title: 'Latest expenses', value: summary.transactionsNumber + '' }];
@@ -61,21 +60,16 @@ export default function SummaryCard({ data }: { data: ExpensesTableI | null }) {
 
 			<div className="w-full lg:w-1/2 flex flex-col border border-blue-100 bg-gray-50 rounded-md p-4">
 				<div className="flex flex-col items-start gap-3 mb-4">
-					{data && (<>
-						<span className="text-sm text-blue-gray-900 font-semibold">{`Total balance`}</span>
-						<Typography variant="h3"
-							className={`${totalRemaining > 100 ? classes.positive : totalRemaining <= 0 ? classes.negative : classes.warning}`}>
-							{summary.currentBalance}
-						</Typography>
-					</>)}
-					{
-						!data && <Typography variant="h3" className="text-blue-800">{`Create a new expenses table`}</Typography>
-					}
+					<span className="text-sm text-blue-gray-900 font-semibold">{`Total balance`}</span>
+					<Typography variant="h3"
+						className={`${totalRemaining > 100 ? classes.positive : totalRemaining <= 0 ? classes.negative : classes.warning}`}>
+						{summary.currentBalance}
+					</Typography>
 				</div>
 				<div className="flex w-full items-center justify-center gap-5">
-					{data && <Button variant="filled" className="filled" onClick={handleOpenAddExpensesDialog}>
+					<Button variant="filled" className="filled" onClick={handleOpenAddExpensesDialog}>
 						{`Add expense`}
-					</Button>}
+					</Button>
 					<Link href="/dashboard/simple-table">
 						<Button variant="filled" className="filled">
 							{`Go to expenses`}
@@ -103,7 +97,5 @@ export default function SummaryCard({ data }: { data: ExpensesTableI | null }) {
 			</div>
 		</section>
 		{openAddExpenseDialog && <AddExpensesDialog isPending={false} isOpen={openAddExpenseDialog} handleOpen={handleOpenAddExpensesDialog} />}
-
-
 	</>)
 }

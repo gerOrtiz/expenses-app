@@ -1,7 +1,6 @@
 import SummaryCard from "@/components/dashboard/cards/summaryCard";
 import { ExpensesTableI } from "@/interfaces/expenses";
-import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 describe('SummaryCard', () => {
 	const mockTableData: ExpensesTableI = {
@@ -26,18 +25,24 @@ describe('SummaryCard', () => {
 	};
 
 	it('displays summary data with correct filters', () => {
-		const queryClient = createTestQueryClient();
-		queryClient.setQueryData(['activeTable'], { data: mockTableData });
-		renderWithQuery(<SummaryCard />, queryClient);
 
-		const displayedData = screen.getAllByRole('paragraph');
+		render(<SummaryCard data={mockTableData} />)
+
+		const remaining = screen.getByRole('heading', { level: 3 });
+		expect(remaining).toHaveTextContent('$700.00');
+
+		const buttons = screen.getAllByRole('button');
+		expect(buttons.length).toBe(2);
+		expect(buttons[0]).toHaveTextContent('Add expense');
+		expect(buttons[1]).toHaveTextContent('Go to expenses');
+		expect(screen.getByRole('link')).toHaveAttribute('href', '/dashboard/simple-table');
+
+		const displayedData = screen.getAllByRole('heading', { level: 4 });
 		expect(displayedData.length).toBe(4);
 		expect(displayedData[0]).toHaveTextContent('$600.00');
-		expect(displayedData[1]).toHaveTextContent('37.50 % used');
-		expect(displayedData[2]).toHaveTextContent('2 transactions');
-		expect(displayedData[3]).toHaveTextContent('$700.00');
-
-
+		expect(displayedData[1]).toHaveTextContent('37.50%');
+		expect(displayedData[2]).toHaveTextContent('$0.00');
+		expect(displayedData[3]).toHaveTextContent('2');
 
 	});
 
