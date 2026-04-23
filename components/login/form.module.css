@@ -17,7 +17,7 @@
 .actions {
 	display: flex;
 	margin-top: 15px;
-	justify-content: right;
+	justify-content: center;
 }
 
 .actions button:disabled,

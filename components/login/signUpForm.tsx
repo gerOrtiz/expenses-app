@@ -61,7 +61,7 @@ export default function SignUpForm() {
 						(<span role="alert" className={classes.warning}>{`Passwords must be the same`} </span>) : null}
 				</div>
 				<div className={classes.actions}>
-					<Button aria-label={`Sign up`} aria-disabled={isSubmitting || !isValid} type="submit" variant="filled" className="filled hover:bg-blue-600 min-w-[100px] flex justify-center" disabled={isSubmitting || !isValid}>
+					<Button aria-label={`Sign up`} aria-disabled={isSubmitting || !isValid} type="submit" variant="filled" className="filled hover:bg-blue-600 w-1/2 flex justify-center" disabled={isSubmitting || !isValid}>
 						{!isSubmitting && `Sign up`}
 						{isSubmitting && <Spinner />}
 					</Button>
