@@ -11,16 +11,16 @@ A full-stack personal finance tracker built with Next.js 14, focused on budget c
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.jpg)
+![Dashboard](screenshots/dashboard.png)
 
 ### Expenses Table — Desktop
-![Expenses Table Desktop](screenshots/expenses-desktop.jpg)
+![Expenses Table Desktop](screenshots/expenses-desktop.png)
 
 ### Expenses Table — Mobile
-![Expenses Table Mobile](screenshots/expenses-mobile.jpg)
+![Expenses Table Mobile](screenshots/expenses-mobile.png)
 
 ### Empty State
-![Empty State](screenshots/empty-state.jpg)
+![Empty State](screenshots/empty-state.png)
 
 ---
 
