@@ -53,7 +53,7 @@ export default function LoginForm() {
 				{loginStatus.message && <span role="alert" className={classes.warning}>{loginStatus.message}</span>}
 
 				<div className={classes.actions} >
-					<Button aria-label={`Sign in`} type="submit" variant="filled" className="filled flex min-w-[100px] justify-center " aria-disabled={isSubmitting} disabled={isSubmitting}>
+					<Button aria-label={`Sign in`} type="submit" variant="filled" className="filled flex w-1/2 justify-center " aria-disabled={isSubmitting} disabled={isSubmitting}>
 						{!isSubmitting && `Sign in`}
 						{isSubmitting && (<Spinner />)}
 					</Button>

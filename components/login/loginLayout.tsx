@@ -4,22 +4,53 @@ import { useState } from "react";
 import SignUpForm from "./signUpForm";
 import LoginForm from "./loginForm";
 import { Button, Card, CardBody, CardFooter, CardHeader, Typography } from "@material-tailwind/react";
+import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function LoginLayout() {
 	const [isSigningUp, setIsSigningUp] = useState(false);
+	const [googleError, setGoogleError] = useState<string | null>(null);
 
 	const onChangeView = () => {
 		setIsSigningUp(!isSigningUp);
+	};
+
+	const handleGoogleSignIn = async () => {
+		setGoogleError(null);
+		const result = await signIn('google', { callbackUrl: '/dashboard' });
+		if (result?.error) {
+			setGoogleError('Google sign in failed. Please try again.');
+		}
 	}
 
 	return (<>
-		<h2 className="sr-only">{isSigningUp ? `Sign in` : `Create an account`}</h2>
+		<h2 className="sr-only">{isSigningUp ? `Create an account` : `Sign in`}</h2>
 		<div className="w-full min-h-[300px] p-2">
 			<Card className="mt-5">
 				<CardHeader floated={false} shadow={false}  >
 					<Typography variant="h3" >{isSigningUp ? `Sign up` : `Login`}</Typography>
 				</CardHeader>
-				<CardBody>
+				<CardBody className="flex flex-col gap-6">
+					<Button
+						variant="outlined"
+						onClick={handleGoogleSignIn}
+						className="outlined w-full lg:w-3/4 flex items-center justify-center self-center gap-3 normal-case text-sm border-blue-gray-200 text-blue-gray-700"
+
+					>
+						<FcGoogle size={20} aria-hidden="true" />
+						{`Continue with Google`}
+					</Button>
+
+					{googleError && (
+						<span role="alert" className="text-red-500 text-sm text-center">{googleError}</span>
+					)}
+
+					<div className="flex items-center gap-3">
+						<hr className="flex-1 border-blue-gray-100" />
+						{/* <Typography variant="small" className="text-blue-gray-400">or continue with email</Typography> */}
+						<span className="text-blue-gray-800 text-sm ">{`or continue with email`} </span>
+						<hr className="flex-1 border-blue-gray-100" />
+					</div>
 					{isSigningUp && <SignUpForm />}
 					{!isSigningUp && <LoginForm />}
 				</CardBody>

@@ -1,15 +1,21 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { UserI } from "@/interfaces/users";
 import { verifyPassword } from "@/lib/auth/password";
 import { connectToDB } from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
 	session: {
-		strategy: 'jwt' as const
+		strategy: 'jwt' as const,
+		maxAge: 60 * 60 * 24 * 7, // 7 days
 	},
 	secret: process.env.NEXTAUTH_SECRET,
 	providers: [
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID!,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+		}),
 		CredentialsProvider({
 			credentials: {
 				email: { label: "Email", type: "email" },
@@ -25,13 +31,11 @@ export const authOptions: NextAuthOptions = {
 				const user = await usersCollection.findOne({ email: email }) as UserI | null;
 				if (!user) {
 					await client.close();
-					// await disconnectFromDB();
 					throw new Error("No user found");
 				}
 				const isValid = await verifyPassword(password, user.password || '');
 				if (!isValid) { client.close(); throw new Error('Email or password invalid'); }
 				await client.close();
-				// await disconnectFromDB();
 				return {
 					id: user._id?.toString() || user.id || '',
 					email: user.email,
@@ -39,7 +43,8 @@ export const authOptions: NextAuthOptions = {
 				};
 			}
 		})
-	], callbacks: {
+	],
+	callbacks: {
 		async session({ session, token }) {
 			if (token?.sub) {
 				session.user.id = token.sub;
