@@ -35,7 +35,7 @@ describe('SummaryCard', () => {
 		expect(buttons.length).toBe(2);
 		expect(buttons[0]).toHaveTextContent('Add expense');
 		expect(buttons[1]).toHaveTextContent('Go to expenses');
-		expect(screen.getByRole('link')).toHaveAttribute('href', '/dashboard/simple-table');
+		expect(screen.getByRole('link')).toHaveAttribute('href', '/simple-table');
 
 		const displayedData = screen.getAllByRole('heading', { level: 4 });
 		expect(displayedData.length).toBe(4);

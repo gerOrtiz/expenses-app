@@ -5,7 +5,7 @@ jest.mock('@material-tailwind/react', () => ({
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
 
-import CreateSimpleTableComponent from "@/components/dashboard/tables/createSimpleTableComponent";
+import CreateSimpleTableComponent from "@/components/simpleTable/createSimpleTableComponent";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { cleanup, screen, waitFor } from "@testing-library/react";

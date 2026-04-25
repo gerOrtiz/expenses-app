@@ -1,6 +1,6 @@
 global.fetch = jest.fn();
 
-import AddIncomeDialog from "@/components/dashboard/income/AddIncomeDialog";
+import AddIncomeDialog from "@/components/simpleTable/income/AddIncomeDialog";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { screen, waitFor } from "@testing-library/react";

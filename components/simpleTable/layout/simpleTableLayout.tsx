@@ -1,16 +1,16 @@
 'use client';
 
 import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkeleton";
-import ExpensesTableWrapper from "../tables/expensesTableWrapper";
-import CreateSimpleTableComponent from "../tables/createSimpleTableComponent";
+import CreateSimpleTableComponent from "../createSimpleTableComponent";
 import ExpensesForm from "../expenses/AddExpensesDialog";
-import CloseActiveTableButton from "../tables/CloseActiveTableButton";
+import CloseActiveTableButton from "../CloseActiveTableButton";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button, Typography } from "@material-tailwind/react";
 import { useState } from "react";
 import { useActiveTable } from "@/hooks/useActiveTable";
+import SimpleTableDashboard from "./simpleTableDashboard";
 
 
 export default function SimpleTableLayoutComponent() {
@@ -45,7 +45,7 @@ export default function SimpleTableLayoutComponent() {
 		<section>
 			{isFetching && (<ExpensesPageSkeleton />)}
 			{!isFetching && data && (
-				data.data !== null ? (<ExpensesTableWrapper tableData={data.data} />) : (<CreateSimpleTableComponent />)
+				data.data !== null ? (<SimpleTableDashboard tableData={data.data} />) : (<CreateSimpleTableComponent />)
 			)}
 		</section>
 		{openExpensesDialog && (<ExpensesForm isOpen={openExpensesDialog} isPending={false} handleOpen={handleOpenExpensesDialog} />)}

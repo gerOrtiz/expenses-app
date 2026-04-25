@@ -34,8 +34,7 @@ export default function LoginLayout() {
 					<Button
 						variant="outlined"
 						onClick={handleGoogleSignIn}
-						className="outlined w-full lg:w-3/4 flex items-center justify-center self-center gap-3 normal-case text-sm border-blue-gray-200 text-blue-gray-700"
-
+						className="outlined w-full lg:w-3/5 flex items-center justify-center self-center gap-3 normal-case text-sm border-blue-gray-200 text-blue-gray-700"
 					>
 						<FcGoogle size={20} aria-hidden="true" />
 						{`Continue with Google`}

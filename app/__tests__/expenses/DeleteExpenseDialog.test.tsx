@@ -4,7 +4,7 @@ jest.mock('@material-tailwind/react', () => ({
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
 
-import DeleteExpenseDialog from "@/components/dashboard/expenses/DeleteExpenseDialog";
+import DeleteExpenseDialog from "@/components/simpleTable/expenses/DeleteExpenseDialog";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { processDeleteExpenses, processDeletePendingExpense } from "@/services/expenses-calculator";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";

@@ -5,7 +5,7 @@ jest.mock('@material-tailwind/react', () => ({
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
 
-import { EditPendingExpenseDialog } from "@/components/dashboard/expenses/EditPendingExpenseDialog";
+import { EditPendingExpenseDialog } from "@/components/simpleTable/expenses/EditPendingExpenseDialog";
 import { useActiveExpenses } from "@/hooks/useActiveExpenses";
 import { ExpensesTableI, PendingExpenseI } from "@/interfaces/expenses";
 import { processFulfillPendingExpense } from "@/services/expenses-calculator";
