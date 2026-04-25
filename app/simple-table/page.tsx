@@ -1,5 +1,5 @@
 
-import SimpleTableLayoutComponent from "@/components/dashboard/layout/simpleTableLayout";
+import SimpleTableLayoutComponent from "@/components/simpleTable/layout/simpleTableLayout";
 import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkeleton";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";

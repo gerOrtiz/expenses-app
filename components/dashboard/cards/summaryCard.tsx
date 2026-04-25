@@ -6,7 +6,7 @@ import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { useMemo, useState } from "react";
 import classes from '@/styles/summary-card.module.css';
 import Link from "next/link";
-import AddExpensesDialog from "../expenses/AddExpensesDialog";
+import AddExpensesDialog from "../../simpleTable/expenses/AddExpensesDialog";
 
 interface SummaryObjectI {
 	periodExpenses: string;
@@ -70,7 +70,7 @@ export default function SummaryCard({ data }: { data: ExpensesTableI }) {
 					<Button variant="filled" className="filled" onClick={handleOpenAddExpensesDialog}>
 						{`Add expense`}
 					</Button>
-					<Link href="/dashboard/simple-table">
+					<Link href="/simple-table">
 						<Button variant="filled" className="filled">
 							{`Go to expenses`}
 						</Button>

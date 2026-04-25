@@ -3,8 +3,7 @@ jest.mock('@material-tailwind/react', () => ({
 	...jest.requireActual('@material-tailwind/react'),
 	Dialog: ({ children, open }: any) => (open ? <div>{children}</div> : null)
 }));
-import EditExpenseDialog from "@/components/dashboard/expenses/EditExpenseDialog";
-
+import EditExpenseDialog from "@/components/simpleTable/expenses/EditExpenseDialog";
 import { ExpenseItemI, ExpensesTableI } from "@/interfaces/expenses";
 import { processUpdateExpenses } from "@/services/expenses-calculator";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";

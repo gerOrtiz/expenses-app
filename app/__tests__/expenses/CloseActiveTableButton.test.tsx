@@ -1,5 +1,5 @@
 global.fetch = jest.fn();
-import CloseActiveTableButton from "@/components/dashboard/tables/CloseActiveTableButton";
+import CloseActiveTableButton from "@/components/simpleTable/CloseActiveTableButton";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
 import { cleanup, screen, waitFor, within } from "@testing-library/react";

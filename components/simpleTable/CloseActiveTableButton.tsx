@@ -26,10 +26,10 @@ export default function CloseActiveTableButton() {
 			<span className=" block lg:hidden text-[12px]">{`Close`}</span>
 		</Button>
 		<Dialog
-			size="md"
+			size="sm"
 			open={openConfirmationDialog}
 			handler={handleOpen}
-			className="bg-white shadow-none min-w-[90%]"
+			className="bg-white shadow-none "
 		>
 			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
@@ -53,14 +53,15 @@ export default function CloseActiveTableButton() {
 							{`This action can't be undone`}
 						</Typography>
 					</div>
-					<Typography className="text-center" color="blue-gray" variant="small" >
+					<span className="text-blue-gray-800 font-semibold text-base text-center">
 						{`Do you wish to continue?`}
-					</Typography>
+					</span>
+
 				</div>
 
 			</DialogBody>
-			<DialogFooter>
-				<div className="flex flex-row gap-4">
+			<DialogFooter className="pt-0">
+				<div className="w-full flex gap-4 items-center justify-center">
 					<Button variant="filled" className="filled" onClick={handleCloseTable} >{`Close period`}</Button>
 					<Button variant="outlined" className="outlined" onClick={handleOpen}>{`Cancel`}</Button>
 				</div>

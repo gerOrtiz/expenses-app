@@ -7,20 +7,22 @@ import {
 } from "@material-tailwind/react";
 import { useState } from "react";
 import AddExpensesDialog from "../expenses/AddExpensesDialog";
-import PendingExpensesTable from "./PendingExpensesTable";
-import RemainingIncome from "./RemainingIncome";
-import SimpleTable from "./SimpleTable";
-import TotalsTables from "./TotalsTable";
+import PendingExpensesTable from "../tables/PendingExpensesTable";
+import RemainingIncome from "../income/RemainingIncome";
+import SimpleTable from "../tables/SimpleTable";
+import TotalsTables from "../tables/TotalsTables";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClockRotateLeft, faFileInvoiceDollar } from "@fortawesome/free-solid-svg-icons";
+
+
 
 
 interface TableWrapperPropsI {
 	tableData: ExpensesTableI;
 }
 
-export default function ExpensesTableWrapper({ tableData }: TableWrapperPropsI) {
+export default function SimpleTableDashboard({ tableData }: TableWrapperPropsI) {
 	const [pendingDialogOpen, setPendingDialogOpen] = useState(false);
 	const [expenseDialogOpen, setExpenseDilogOpen] = useState(false);
 	const handlePendingOpen = () => setPendingDialogOpen((cur) => !cur);

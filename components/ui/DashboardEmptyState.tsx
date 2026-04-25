@@ -32,7 +32,7 @@ export default function DashboardEmptyState() {
 				</p>
 			</div>
 
-			<Link href="/dashboard/simple-table">
+			<Link href="/simple-table">
 				<Button variant="filled" className="filled flex items-center gap-3">
 					<FontAwesomeIcon icon={faPlus} color="white" size="lg" />
 					{`Create expenses table`}

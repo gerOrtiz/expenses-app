@@ -1,19 +1,19 @@
-import SimpleTableLayoutComponent from "@/components/dashboard/layout/simpleTableLayout";
+import SimpleTableLayoutComponent from "@/components/simpleTable/layout/simpleTableLayout";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { screen } from "@testing-library/react";
 
-jest.mock('../../../components/dashboard/tables/CloseActiveTableButton', () => {
+jest.mock('../../../components/simpleTable/CloseActiveTableButton', () => {
 	return function MockCloseTableButton() {
 		return <button >Close</button>;
 	};
 });
-jest.mock('../../../components/dashboard/tables/expensesTableWrapper', () => {
-	return function MockSimpleTableWrapper() {
-		return <div data-testid="table-wrapper">Table wrapper</div>;
+jest.mock('../../../components/simpleTable/layout/simpleTableDashboard', () => {
+	return function MockSimpleTableDashboard() {
+		return <div data-testid="tables-wrapper">Tables wrapper</div>;
 	};
 });
-jest.mock('../../../components/dashboard/tables/createSimpleTableComponent', () => {
+jest.mock('../../../components/simpleTable/createSimpleTableComponent', () => {
 	return function MockCreateSimpleTableComponent() {
 		return <div data-testid="new-table">Create new table</div>;
 	};
@@ -49,10 +49,10 @@ describe('SimpleTableLayout', () => {
 	};
 
 	describe('Loading State', () => {
-		it('displays loading skeleton', () => {
+		it('displays loading skeleton', async () => {
 			const queryClient = createTestQueryClient();
 			renderWithQuery(<SimpleTableLayoutComponent />, queryClient);
-			expect(screen.getByTestId('expenses-skeleton')).toBeInTheDocument();
+			expect(await screen.findByTestId('expenses-skeleton')).toBeInTheDocument();
 		});
 	});
 
@@ -64,7 +64,7 @@ describe('SimpleTableLayout', () => {
 			expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
 			expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Daily expenses');
 			expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
-			expect(screen.getByTestId('table-wrapper')).toBeInTheDocument();
+			expect(screen.getByTestId('tables-wrapper')).toBeInTheDocument();
 			expect(screen.queryByTestId('new-table')).not.toBeInTheDocument();
 		});
 	});
@@ -74,7 +74,7 @@ describe('SimpleTableLayout', () => {
 			const queryClient = createTestQueryClient();
 			queryClient.setQueryData(['activeTable'], { data: null });
 			renderWithQuery(<SimpleTableLayoutComponent />, queryClient);
-			expect(screen.queryByTestId('table-wrapper')).not.toBeInTheDocument();
+			expect(screen.queryByTestId('tables-wrapper')).not.toBeInTheDocument();
 			expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
 			expect(screen.queryByTestId('new-table')).toBeInTheDocument();
 			// screen.debug();
