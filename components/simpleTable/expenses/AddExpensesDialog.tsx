@@ -136,13 +136,13 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`You're about to add an expense that surpases your remaing ${watchType} budget `}</span>)}
 							</div>
 							<div className="flex flex-col items-left">
-								<label htmlFor="paymethod-select" className="text-xs text-gray-900 font-semibold ml-1">{'Paymethod'}</label>
+								<label htmlFor="method-select" className="text-xs text-gray-900 font-semibold ml-1">{'Method'}</label>
 								<Controller name="type"
 									control={control}
 									rules={{ required: true }}
 									render={({ field }) =>
 										<Select
-											id="paymethod-select"
+											id="method-select"
 											className="formInput"
 											{...field}
 											containerProps={{ className: 'selectContainer' }}

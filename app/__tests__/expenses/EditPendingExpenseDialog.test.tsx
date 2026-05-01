@@ -102,14 +102,14 @@ describe('Edit Pending Expense', () => {
 
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
-			const paymehodSelect = await screen.findByLabelText('Paymethod');
+			const methodSelect = await screen.findByLabelText('Method');
 			const saveButton = screen.getByRole('button', { name: /save/i });
 
 			await user.clear(descriptionInput);
 			await user.type(descriptionInput, 'Test Pending');
 			await user.clear(amountInput);
 			await user.type(amountInput, '500');
-			await user.click(paymehodSelect);
+			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });
 			await user.click(option);
 			await user.click(saveButton);
@@ -181,10 +181,10 @@ describe('Edit Pending Expense', () => {
 
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
-			const paymehodSelect = await screen.findByLabelText('Paymethod');
+			const methodSelect = await screen.findByLabelText('Method');
 			expect(descriptionInput).toBeEnabled();
 			expect(amountInput).toBeDisabled();
-			expect(paymehodSelect).toBeDisabled();
+			expect(methodSelect).toBeDisabled();
 		});
 
 		it('should display empty validation errors', async () => {

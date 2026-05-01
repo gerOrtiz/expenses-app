@@ -1,3 +1,4 @@
+import ReportsLayout from "@/components/reports/layout/ReportsLayout";
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -20,7 +21,5 @@ async function Reports() {
 	const session = await getServerSession(authOptions);
 
 	if (!session) redirect('/login');
-	return (<>
-
-	</>);
+	return <ReportsLayout />
 }

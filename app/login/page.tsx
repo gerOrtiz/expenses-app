@@ -28,7 +28,7 @@ export default async function UserFormPage() {
       </main> */}
 			<main className="container flex flex-col py-2 justify-self-center justify-between items-center min-h-[90vh]">
 				<h1 className="sr-only">Login screen</h1>
-				<div className="lg:w-2/4 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
+				<div className="lg:w-1/2 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
 					<LoginLayout />
 				</div>
 				<div className="flex justify-center items-center w-full my-8">

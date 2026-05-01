@@ -55,3 +55,32 @@
 	object-fit: contain;
 	filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.5));
 }
+
+a:not(.btn-link) {
+	color: #19439e;
+	text-decoration: none;
+	transition: all 0.2s ease-in-out;
+	position: relative;
+	font-size: clamp(.95rem, 1.5vw, 1.05rem);
+
+	&::after {
+		content: '';
+		position: absolute;
+		width: 0%;
+		height: 2px;
+		bottom: -2px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #112f80;
+		transition: width 0.3s ease;
+	}
+
+	&:hover {
+		color: #112f80;
+		font-size: clamp(1rem, 1.5vw, 1.1rem);
+
+		&::after {
+			width: 100%;
+		}
+	}
+}

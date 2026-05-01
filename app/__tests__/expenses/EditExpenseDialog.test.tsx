@@ -94,7 +94,7 @@ describe('Edit expenses form', () => {
 
 		});
 
-		it('call mutation with correct data to update expense paymethod', async () => {
+		it('call mutation with correct data to update expense method', async () => {
 			(global.fetch as jest.Mock).mockResolvedValueOnce({
 				ok: true,
 				json: async () => ({ success: true })
@@ -103,7 +103,7 @@ describe('Edit expenses form', () => {
 			const mockHandleOpen = jest.fn();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
 			renderWithQuery(<EditExpenseDialog isOpen={true} expense={mockExpense} handleOpen={mockHandleOpen} />, queryClient);
-			const paymehodSelect = await screen.findByLabelText('Paymethod');
+			const paymehodSelect = await screen.findByLabelText('Method');
 
 			await user.click(paymehodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });

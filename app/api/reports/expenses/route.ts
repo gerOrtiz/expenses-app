@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 type getReportsQueryType = {
 	user_id: string,
 	status: 'closed',
-	sDate?: number,
-	fDate?: number
+	sDate?: { $gte: number },
+	fDate?: { $lte: number }
 };
 
 export async function GET(request: NextRequest) {
@@ -15,8 +15,8 @@ export async function GET(request: NextRequest) {
 		const { session, client, collection } = await setInitialValues();
 		const query: getReportsQueryType = { user_id: session.user.email, status: 'closed' };
 		if (startDate && endDate) {
-			query.sDate = parseInt(startDate);
-			query.fDate = parseInt(endDate);
+			query.sDate = { $gte: Number(startDate) };
+			query.fDate = { $lte: Number(endDate) };
 		}
 		const table = await collection.findOne(query, { sort: { fDate: -1 } });
 		await client.close();

@@ -114,13 +114,13 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 										</div>
 
 										<div className="flex flex-col items-left">
-											<label htmlFor="paymethod-select" className="text-xs text-gray-900 font-semibold ml-1">{'Paymethod'}</label>
+											<label htmlFor="method-select" className="text-xs text-gray-900 font-semibold ml-1">{'Method'}</label>
 											<Controller name="type"
 												control={control}
 												rules={{ required: true }}
 												render={({ field }) =>
 													<Select
-														id="paymethod-select"
+														id="method-select"
 														className="formInput"
 														disabled={hasLinkedExpenses || pending.fulfilled}
 														{...field}

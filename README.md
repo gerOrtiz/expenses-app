@@ -131,6 +131,9 @@ npm run dev
 
 ---
 
+## Contibutions 🙏
+- No Data Vectors by Vecteezy [Vecteezy](https://www.vecteezy.com/free-vector/no-data)
+
 ## License
 
 MIT

@@ -5,7 +5,7 @@ export interface ExpensesTableI {
 	income: IncomeI;
 	sDate: number;
 	fDate: number;
-	status: 'active' | 'finished';
+	status: 'active' | 'closed';
 	expenses: ExpenseItemI[];
 	pending: PendingExpenseI[];
 	totals: TotalsI;

@@ -59,11 +59,11 @@ describe('Expenses Form', () => {
 			renderWithQuery(<AddExpensesDialog isPending={true} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
-			const paymehodSelect = screen.getByLabelText('Paymethod');
+			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test pending');
 			await user.type(amountInput, '100');
-			await user.click(paymehodSelect);
+			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });
 			await user.click(option);
 			const addButton = screen.getByRole('button', { name: /add/i });
@@ -95,11 +95,11 @@ describe('Expenses Form', () => {
 			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
-			const paymehodSelect = screen.getByLabelText('Paymethod');
+			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test expense');
 			await user.type(amountInput, '100');
-			await user.click(paymehodSelect);
+			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /cash/i });
 			await user.click(option);
 			const addButton = screen.getByRole('button', { name: /add/i });
@@ -131,11 +131,11 @@ describe('Expenses Form', () => {
 			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
 			const descriptionInput = await screen.findByRole('textbox', { name: /description/i });
 			const amountInput = screen.getByRole('spinbutton', { name: /amount/i });
-			const paymehodSelect = screen.getByLabelText('Paymethod');
+			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test expense');
 			await user.type(amountInput, '100');
-			await user.click(paymehodSelect);
+			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });
 			await user.click(option);
 			const checkbox = await screen.findByRole('checkbox');
