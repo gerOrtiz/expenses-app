@@ -89,7 +89,7 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 			</div>
 			<div className="flex flex-col items-left">
 				<label htmlFor="card" className="text-xs text-gray-900 font-semibold ml-1">{'Card'}</label>
-				<input id="card" name="card" type="number" className={`formInput ${errors.card ? 'inputError' : ''}`} step={0.1}
+				<input id="card" name="card" type="number" className={`formInput ${errors.card ? 'inputError' : ''}`} step={0.01}
 					{...register('card', { required: true, min: 0, valueAsNumber: true })} />
 				{errors.card && errors.card.type === 'required' &&
 					(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}

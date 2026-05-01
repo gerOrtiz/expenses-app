@@ -123,7 +123,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 							</div>
 							<div className="flex flex-col items-left">
 								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
-								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`}
+								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
 									{...register('amount', {
 										required: true, min: 1, valueAsNumber: true,
 										max: isPending ? Infinity : currentTable ? currentTable.remaining[watchType] : Infinity
