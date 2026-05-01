@@ -1,6 +1,15 @@
 jest.mock('next/navigation');
 jest.mock('next-auth/react');
 jest.mock('../../../lib/user/actions');
+jest.mock('@hcaptcha/react-hcaptcha', () => {
+	return function MockHCaptcha({ onVerify }: { onVerify: (token: string) => void }) {//eslint-disable-line
+		return (
+			<button onClick={() => onVerify('mock-token')}>
+				Mock Captcha
+			</button>
+		);
+	};
+});
 import SignUpForm from "@/components/login/signUpForm";
 import { signUpUser } from "@/lib/user/actions";
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
@@ -135,6 +144,8 @@ describe('Signup form', () => {
 		await user.type(emailInput, 'john_doe@mail.com');
 		await user.type(passwordInput, 'Password123');
 		await user.type(confirmPassword, 'Password123');
+		const captchaButton = screen.getByRole('button', { name: /mock captcha/i });
+		await user.click(captchaButton);
 		const signUpButton = screen.getByRole('button', { name: /sign up/i });
 		expect(signUpButton).toBeEnabled();
 		await user.click(signUpButton);

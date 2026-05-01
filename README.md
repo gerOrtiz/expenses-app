@@ -11,7 +11,7 @@ A full-stack personal finance tracker built with Next.js 14, focused on budget c
 ## Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard1.jpg)
 
 ### Expenses Table — Desktop
 ![Expenses Table Desktop](screenshots/expenses-desktop.png)
@@ -20,7 +20,7 @@ A full-stack personal finance tracker built with Next.js 14, focused on budget c
 ![Expenses Table Mobile](screenshots/expenses-mobile.png)
 
 ### Empty State
-![Empty State](screenshots/empty-state.png)
+![Empty State](screenshots/empty-state1.png)
 
 ---
 
@@ -124,7 +124,7 @@ npm run dev
 
 ## Roadmap
 
-- [ ] Reports module — historical closed periods with filtering
+- [x] Reports module — historical closed periods with filtering
 - [ ] Accounts module
 - [ ] Password reset flow
 - [ ] GitHub OAuth
