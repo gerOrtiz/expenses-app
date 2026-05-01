@@ -1,7 +1,7 @@
 import { AddedIncomeI, ExpensesTableI, IncomeI } from "@/interfaces/expenses";
 import { setInitialValues } from "@/lib/user/simple-expenses";
 import { processAddIncome } from "@/services/expenses-calculator";
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
 

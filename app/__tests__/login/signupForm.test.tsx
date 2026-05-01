@@ -2,7 +2,7 @@ jest.mock('next/navigation');
 jest.mock('next-auth/react');
 jest.mock('../../../lib/user/actions');
 jest.mock('@hcaptcha/react-hcaptcha', () => {
-	return function MockHCaptcha({ onVerify }: { onVerify: (token: string) => void }) {
+	return function MockHCaptcha({ onVerify }: { onVerify: (token: string) => void }) {//eslint-disable-line
 		return (
 			<button onClick={() => onVerify('mock-token')}>
 				Mock Captcha
