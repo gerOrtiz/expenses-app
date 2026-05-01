@@ -97,7 +97,7 @@ API routes never trust client-sent table IDs. The active expenses table is alway
 
 ## Testing
 
-64 unit tests across 12 suites covering core business logic, input validation, and data mutations. Pure server functions are tested directly without HTTP layer overhead.
+71 unit tests across 15 suites covering core business logic, input validation, and data mutations. Pure server functions are tested directly without HTTP layer overhead.
 
 ```bash
 npm run test

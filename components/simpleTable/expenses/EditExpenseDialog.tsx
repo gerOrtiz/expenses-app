@@ -122,7 +122,8 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 							</div>
 							<div className="flex flex-col items-left">
 								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
-								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} {...register('amount', { required: true, min: 1, valueAsNumber: true })} />
+								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
+									{...register('amount', { required: true, min: 1, valueAsNumber: true })} />
 								{errors.amount && errors.amount.type === 'required' &&
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
 								{errors.amount && errors.amount.type === 'min' &&
