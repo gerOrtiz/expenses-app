@@ -13,7 +13,17 @@ interface SignUpResult {
 }
 
 export async function signUpUser(formData: SignupCredentials): Promise<SignUpResult> {
-	const { name, email, password } = formData;
+	const { name, email, password, captchaToken } = formData;
+	if (!captchaToken) return { message: 'Captcha required' };
+
+	const verify = await fetch('https://api.hcaptcha.com/siteverify',
+		{
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: `secret=${process.env.HCAPTCHA_SECRET_KEY}&response=${captchaToken}`
+		});
+	const res = await verify.json();
+	if (!res.success) return { message: 'Invalid token' };
 
 
 	if (!email?.includes('@') ||
