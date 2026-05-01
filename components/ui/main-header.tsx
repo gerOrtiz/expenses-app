@@ -44,7 +44,7 @@ export default function MainHeader() {
 		<>
 			<header className={`w-11/12 lg:w-10/12 rounded-xl place-self-center ${pathname === '/' ? 'fixed' : 'sticky'}  ${classes.header} ${backgroundClass}`}>
 				<div className="lg:flex hidden w-full justify-between items-center">
-					<Link className={`${classes.logo} ${classes['btn-link']}`} href="/" aria-label="Go to homepage">
+					<Link className={classes.logo} href="/" aria-label="Go to homepage">
 						<Image src={logoImg} alt="Expenses logo" width={280} priority />
 					</Link>
 
@@ -61,13 +61,13 @@ export default function MainHeader() {
 
 							{session && status === 'authenticated' && (<>
 								<li>
-									<Link href="/dashboard">{`Dashboard`}</Link>
+									<Link className={classes.link} href="/dashboard">{`Dashboard`}</Link>
 								</li>
 								<li>
-									<Link href="/simple-table">{`Expenses`}</Link>
+									<Link className={classes.link} href="/simple-table">{`Expenses`}</Link>
 								</li>
 								<li>
-									<Link href="/reports">{`Reports`}</Link>
+									<Link className={classes.link} href="/reports">{`Reports`}</Link>
 								</li>
 								<li>
 									<Button variant="outlined" color="blue" className="outlined hover:-translate-y-1" onClick={logoutHandler} >{`Logout`}</Button>

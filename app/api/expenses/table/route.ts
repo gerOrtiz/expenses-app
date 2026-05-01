@@ -1,7 +1,7 @@
 import { AddedIncomeI, ExpensesTableI, IncomeI } from "@/interfaces/expenses";
 import { setInitialValues } from "@/lib/user/simple-expenses";
 import { processAddIncome } from "@/services/expenses-calculator";
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 import { NextResponse } from "next/server";
 
 
@@ -27,6 +27,8 @@ export async function POST(request: Request) { //Create new table
 			return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		}
 		const { session, client, collection } = await setInitialValues();
+		const lastClosedQuery: { user_id: string, status: 'closed' } = { user_id: session.user.email, status: 'closed' };
+		const lastClosed = await collection.findOne(lastClosedQuery, { sort: { fDate: -1 } });
 		const initialTableValues: Omit<ExpensesTableI, 'id' | '_id'> = {
 			user_id: session.user.email,
 			status: 'active',
@@ -37,12 +39,13 @@ export async function POST(request: Request) { //Create new table
 				total_pending: { cash: 0, card: 0 },
 				total_payments_made: { cash: 0, card: 0 }
 			},
-			pending: [],
+			pending: lastClosed ? lastClosed.pending : [],
 			expenses: [],
 			added: [],
 			fDate: 0,
 			remaining: { ...initialIncome }
 		};
+
 		await collection.insertOne(initialTableValues);
 		await client.close();
 		return NextResponse.json({ data: initialTableValues }, { status: 200 });

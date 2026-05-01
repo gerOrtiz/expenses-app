@@ -45,6 +45,27 @@ export const authOptions: NextAuthOptions = {
 		})
 	],
 	callbacks: {
+		async signIn({ user, account }) {
+			if (account?.provider === 'google') {
+				try {
+					const { client, db } = await connectToDB();
+					const usersCollection = db.collection('users');
+					const existingUser = await usersCollection.findOne({ email: user.email });
+					if (!existingUser) {
+						await usersCollection.insertOne({
+							name: user.name,
+							email: user.email,
+							createdAt: new Date().getTime(),
+							updatedAt: new Date().getTime()
+						});
+					}
+					await client.close();
+				} catch (error) {
+					return false;
+				}
+			}
+			return true;
+		},
 		async session({ session, token }) {
 			if (token?.sub) {
 				session.user.id = token.sub;
