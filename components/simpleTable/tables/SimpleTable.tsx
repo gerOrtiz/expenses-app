@@ -28,8 +28,8 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 	const [expenseToEdit, setExpenseToEdit] = useState<ExpenseItemI | null>(null);
 	const { formatValue } = useMoneyFilter();
 
-	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, `Date`, ''];
-	const MOBILE_TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ``];
+	const TABLE_HEAD = [`Description`, `Amount`, `Method`, `Date`, ''];
+	const MOBILE_TABLE_HEAD = [`Description`, `Amount`, `Method`, ``];
 
 	const typeFilter = (type: string): string => {
 		return type == 'cash' ? `Cash` : `Card`;

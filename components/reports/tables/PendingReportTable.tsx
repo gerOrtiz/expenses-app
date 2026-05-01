@@ -4,7 +4,7 @@ import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 
-const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`];
+const TABLE_HEAD = [`Description`, `Amount`, `Method`];
 const typeFilter = (type: string): string => {
 	return type == 'cash' ? `Cash` : `Card`;
 };

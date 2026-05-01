@@ -68,7 +68,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 		setOpenOptionsDialog(false);
 	}
 
-	const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, ""];
+	const TABLE_HEAD = [`Description`, `Amount`, `Method`, ""];
 
 	const typeFilter = (type: string) => {
 		return type == 'cash' ? `Cash` : `Card`;

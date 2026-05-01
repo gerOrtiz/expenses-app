@@ -133,7 +133,7 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 								<FontAwesomeIcon icon={faTimes} color="blue-gray" />
 							</IconButton>
 						</div>
-						<Typography variant="paragraph" id="income-dialog-description" color="blue-gray">{`Withdraw from card or directly add a new income for either paymethod`}</Typography>
+						<Typography variant="paragraph" id="income-dialog-description" color="blue-gray">{`Withdraw from card or directly add a new income for either payment method`}</Typography>
 						<Tabs value="withdrawal">
 							<TabsHeader>
 								<Tab value="withdrawal" onClick={() => switchView(true)}>

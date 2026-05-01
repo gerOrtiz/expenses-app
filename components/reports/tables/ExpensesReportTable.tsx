@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useDeferredValue, useState } from "react";
 
-const TABLE_HEAD = [`Description`, `Amount`, `Paymethod`, `Date`];
+const TABLE_HEAD = [`Description`, `Amount`, `Method`, `Date`];
 const dateFilter = (date: number) => {
 	return new Date(date).toLocaleDateString();
 }
