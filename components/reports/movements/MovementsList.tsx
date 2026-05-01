@@ -1,0 +1,108 @@
+'use client';
+
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
+import { AddedIncomeI } from "@/interfaces/expenses";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
+
+const formatDate = (timestamp: number) => {
+	return new Date(timestamp).toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric'
+	});
+};
+
+export default function MovementsList({ movements }: { movements: AddedIncomeI[] }) {
+	const { formatValue } = useMoneyFilter();
+	const totalAdded: { cash: number, card: number, withdrawal: number } = movements.reduce((acc, currentValue) => {
+		acc['cash'] = acc['cash'] || 0 + currentValue.cash;
+		acc['card'] = acc['card'] || 0 + currentValue.card;
+		acc['withdrawal'] = acc['withdrawal'] || 0 + (currentValue.isWithdrawal ? currentValue.cash : 0);
+		return acc;
+	}, { card: 0, cash: 0, withdrawal: 0 });
+
+	return (<>
+		<div className="p-0">
+			<Card className="mb-1 w-full overflow-x-hidden overflow-y-auto shadow-blue-100 border border-blue-gray-100 ">
+				<CardBody className="flex flex-col gap-5 p-2 lg:p-6">
+					<Typography variant="h4" className="text-blue-gray-600">{`Movements`}</Typography>
+					<div className="space-y-3">
+						{movements.map((income, index) => (
+							<Card key={index} className="shadow-sm border border-blue-gray-100">
+								<CardBody className="p-4">
+									<div className="flex justify-between items-center">
+										<div className="flex flex-col">
+											<Typography variant="small" color="blue-gray" className="font-medium">
+												{formatDate(income.date)}
+											</Typography>
+											<Typography variant="small" color="gray" className="text-xs">
+												{income.isWithdrawal ? 'Withdrawal' : 'Income Addition'}
+											</Typography>
+										</div>
+										<div className="flex flex-col items-end gap-1">
+											{income.cash > 0 && (
+												<div className="flex flex-col items-center gap-2">
+													<div className="flex item-center gap-2">
+														<Typography variant="small" color="blue-gray" className="font-normal">
+															{`Cash`}:
+														</Typography>
+														<Typography
+															variant="small"
+															className="font-semibold text-green-800"
+														>
+															{'+'}{formatValue(income.cash)}
+														</Typography>
+													</div>
+													{income.isWithdrawal && (<div className="flex item-center gap-2">
+														<Typography variant="small" color="blue-gray" className="font-normal">
+															{`Card`}:
+														</Typography>
+														<Typography
+															variant="small"
+															className="font-semibold text-red-700"
+														>
+															{'-'}{formatValue(income.cash)}
+														</Typography>
+													</div>)}
+												</div>
+											)}
+											{income.card > 0 && (
+												<div className="flex items-center gap-2">
+													<Typography variant="small" color="blue-gray" className="font-normal">
+														{`Card`}:
+													</Typography>
+													<Typography
+														variant="small"
+														color={income.isWithdrawal ? "red" : "green"}
+														className="font-medium"
+													>
+														{'+'}{formatValue(income.card)}
+													</Typography>
+												</div>
+											)}
+										</div>
+									</div>
+								</CardBody>
+							</Card>
+						))}
+					</div>
+					<div className="flex flex-col text-center gap-2">
+						<span className="text-sm font-semibold text-blue-gray-800">Totals:</span>
+						<div className="flex gap-1 justify-center">
+							<span className="text-sm  text-blue-gray-800">Cash:</span>
+							<span data-testid="totalDisplayed" className="text-sm font-semibold text-lime-900">{formatValue(totalAdded.cash)}</span>
+						</div>
+						<div className="flex gap-1 justify-center">
+							<span className="text-sm  text-blue-gray-800">Card:</span>
+							<span data-testid="totalDisplayed" className="text-sm font-semibold text-lime-900">{formatValue(totalAdded.card)}</span>
+						</div>
+						<div className="flex gap-1 justify-center">
+							<span className="text-sm text-blue-gray-800">Withdrawals:</span>
+							<span data-testid="totalDisplayed" className="text-sm font-semibold text-lime-900">{formatValue(totalAdded.withdrawal)}</span>
+						</div>
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+	</>)
+}

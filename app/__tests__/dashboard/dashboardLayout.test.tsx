@@ -22,7 +22,7 @@ jest.mock('../../../components/loadingSkeletons/dashboardSkeleton', () => {
 	};
 });
 
-jest.mock('../../../components/ui/DashboardEmptyState', () => {
+jest.mock('../../../components/dashboard/layout/DashboardEmptyState', () => {
 	return function MockDashboardEmptyState() {
 		return <div data-testid="dashboard-empty-state"> Empty State</div>;
 	};

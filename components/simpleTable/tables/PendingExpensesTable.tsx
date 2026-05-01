@@ -88,12 +88,12 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 						</IconButton>
 					</div>
 					<table className="w-full max-w-full table-auto text-left">
-						<thead className="rounded-lg  bg-blue-50">
+						<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 							<tr>
-								{TABLE_HEAD.map((title, index) => (
+								{TABLE_HEAD.map((title) => (
 									<th key={title}
 										aria-label={title ? title : `Edit column`}
-										className={`p-2 lg:p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+										className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
 										<Typography
 											variant="small"
 											color="blue-gray"
@@ -114,8 +114,8 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 						</thead>
 						<tbody>
 							{pendingArray.map((p) => (
-								<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80">
-									<td className="p-2 lg:p-4">
+								<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
+									<td className="p-2 lg:p-4 group-last:rounded-bl-md">
 										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
 											{p.description}
 										</Typography>
@@ -130,7 +130,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 											{typeFilter(p.type)}
 										</Typography>
 									</td>
-									<td className="p-2 lg:p-4">
+									<td className="p-2 lg:p-4 group-last:rounded-br-md">
 										<div className="flex lg:hidden gap-1">
 											<IconButton aria-label={`Edit pending expense`} variant="text" color="blue" size="sm" onClick={() => handleEditClick(p)}>
 												<FontAwesomeIcon icon={faPencil} />

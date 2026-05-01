@@ -31,11 +31,10 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 							<BarChart
 								data={budgetData}
 								style={{ aspectRatio: undefined, padding: '8px' }}
-
 							>
 								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="category" />
-								<YAxis width="auto" />
+								<XAxis dataKey="category" fontSize={13} />
+								<YAxis width="auto" fontSize={13} />
 								<Tooltip contentStyle={{ backgroundColor: '#220862', borderRadius: 8 }} labelStyle={{ color: "white" }} />
 								{/* <Legend /> */}
 								<Bar dataKey="cash" fill="#8884d8" isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: 'blue' }} />
@@ -44,7 +43,10 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 						)}
 						{index === 1 && (
 							<PieChart >
-								<Pie data={spentData} dataKey="value" nameKey="name" outerRadius="80%" innerRadius="50%" isAnimationActive={true} animationEasing="ease-in-out" />
+								<Pie data={spentData} dataKey="value" nameKey="name"
+									fontSize={13}
+									label
+									outerRadius="80%" innerRadius="50%" isAnimationActive={true} animationEasing="ease-in-out" />
 								<Label position="center" fill="#666">{title}</Label>
 								<Tooltip contentStyle={{ borderRadius: 8, backgroundColor: 'whitesmoke' }} />
 								<Legend verticalAlign="top" />
@@ -57,8 +59,8 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 
 							>
 								<CartesianGrid strokeDasharray="3 3" />
-								<XAxis dataKey="status" />
-								<YAxis width="auto" />
+								<XAxis dataKey="status" fontSize={13} />
+								<YAxis width="auto" fontSize={13} />
 								<Tooltip contentStyle={{ backgroundColor: '#220862', borderRadius: 8 }} labelStyle={{ color: "white" }} />
 
 								{/* <Legend /> */}

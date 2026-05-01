@@ -22,7 +22,7 @@ export default function DashboardEmptyState() {
 					<rect x="67" y="61" width="2" height="14" rx="1" fill="white" />
 					<rect x="61" y="67" width="14" height="2" rx="1" fill="white" />
 				</svg> */}
-				<Image src="/add-files.svg" alt={`Alt files sllustration`} width={100} height={100} />
+				<Image src="/add-files.svg" alt={`Alt files illustration`} width={100} height={100} />
 			</div>
 
 			<div className="flex flex-col items-center gap-2 text-center">

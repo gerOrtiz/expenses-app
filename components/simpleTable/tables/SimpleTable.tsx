@@ -33,7 +33,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 
 	const typeFilter = (type: string): string => {
 		return type == 'cash' ? `Cash` : `Card`;
-	}
+	};
 
 	const handleOpen = () => setOpen((cur) => !cur);
 
@@ -77,12 +77,12 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					</IconButton>
 				</div>
 				<table className="lg:hidden w-full min-w-max table-auto text-center">
-					<thead className="rounded-lg  bg-blue-50">
+					<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 						<tr>
-							{MOBILE_TABLE_HEAD.map((title, index) => (
+							{MOBILE_TABLE_HEAD.map((title) => (
 								<th aria-label={title ? title : `Edit column`}
 									key={title}
-									className={`p-2 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == MOBILE_TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+									className="p-2 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
 									<Typography
 										variant="small"
 										color="blue-gray"
@@ -97,7 +97,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<tbody>
 						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80">
-								<td className="p-2">
+								<td className="p-2 group-last:rounded-bl-md">
 									<Typography variant="small" color="blue-gray" className="text-xs">
 										{expense.description}
 									</Typography>
@@ -115,7 +115,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 										{expense.isPending && (<PaymentBadge />)}
 									</div>
 								</td>
-								<td className="p-2">
+								<td className="p-2 group-last:rounded-br-md">
 									<div className="grid-cols-2 ">
 										<IconButton aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
 											<FontAwesomeIcon icon={faPencil} />
@@ -130,12 +130,12 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					</tbody>
 				</table>
 				<table className="hidden lg:table w-full min-w-max table-auto text-center">
-					<thead className="rounded-lg  bg-blue-50">
+					<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 						<tr>
-							{TABLE_HEAD.map((title, index) => (
+							{TABLE_HEAD.map((title) => (
 								<th aria-label={title ? title : `Edit column`}
 									key={title}
-									className={`p-4 ${index == 0 ? 'rounded-tl-lg rounded-bl-lg' : ''} ${index == TABLE_HEAD.length - 1 ? 'rounded-tr-lg rounded-br-lg' : ''}`}>
+									className="p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
 									<Typography
 										variant="small"
 										color="blue-gray"
@@ -149,9 +149,9 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					</thead>
 					<tbody>
 						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
-							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80">
+							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
 								<td className="p-4">
-									<Typography variant="small" color="blue-gray" className="text-[15px]">
+									<Typography variant="small" color="blue-gray" className="text-[15px]  group-last:rounded-bl-md">
 										{expense.description}
 									</Typography>
 								</td>
@@ -170,14 +170,11 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 
 								</td>
 								<td className="p-4">
-
 									<Typography variant="small" color="blue-gray" className="text-[15px]">
 										{dateFilter(expense.date)}
 									</Typography>
-
-
 								</td>
-								<td className="p-4">
+								<td className="p-4 group-last:rounded-br-md">
 									<div className="grid-cols-2 ">
 										<IconButton aria-label={`Open edit expense dialog`}
 											variant="text" color="blue" size="sm"

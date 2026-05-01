@@ -44,7 +44,7 @@ export default function MainHeader() {
 		<>
 			<header className={`w-11/12 lg:w-10/12 rounded-xl place-self-center ${pathname === '/' ? 'fixed' : 'sticky'}  ${classes.header} ${backgroundClass}`}>
 				<div className="lg:flex hidden w-full justify-between items-center">
-					<Link className={classes.logo} href="/" aria-label="Go to homepage">
+					<Link className={`${classes.logo} ${classes['btn-link']}`} href="/" aria-label="Go to homepage">
 						<Image src={logoImg} alt="Expenses logo" width={280} priority />
 					</Link>
 
@@ -56,14 +56,21 @@ export default function MainHeader() {
 							</>)}
 
 							{!session && status != 'loading' && (<li>
-								<Link href="/login">	<Button variant="filled" className="filled" >{`Get started`}</Button></Link>
+								<Link href="/login" className={classes['btn-link']}>	<Button variant="filled" className="filled hover:-translate-y-1" >{`Get started`}</Button></Link>
 							</li>)}
 
 							{session && status === 'authenticated' && (<>
 								<li>
-									<Link href="/dashboard">Dashboard</Link>
-								</li><li>
-									<Button variant="outlined" color="blue" onClick={logoutHandler} >{`Logout`}</Button>
+									<Link href="/dashboard">{`Dashboard`}</Link>
+								</li>
+								<li>
+									<Link href="/simple-table">{`Expenses`}</Link>
+								</li>
+								<li>
+									<Link href="/reports">{`Reports`}</Link>
+								</li>
+								<li>
+									<Button variant="outlined" color="blue" className="outlined hover:-translate-y-1" onClick={logoutHandler} >{`Logout`}</Button>
 								</li>
 							</>)}
 						</ul>
@@ -82,7 +89,7 @@ export default function MainHeader() {
 						</div>
 					</div>
 
-					<Drawer open={open} onClose={closeDrawer} className="p-4" >
+					<Drawer open={open} onClose={closeDrawer} className="p-4 shadow-2xl shadow-blue-gray-900/80" >
 						<div className="flex flex-col w-full ">
 							<div className="w-full flex justify-between items-center mb-8 ">
 								<Image src={logoImg} alt="Expenses logo" width={150} priority />
@@ -91,28 +98,33 @@ export default function MainHeader() {
 								</IconButton>
 
 							</div>
-							<ul>
+							<ul className="flex flex-col gap-5">
 								{!session && status != 'loading' && (<li>
 									<Link href="/login">
 										<Typography variant="h6" color="blue-gray" >{`Login / Signup`}</Typography>
 									</Link>
 								</li>)}
 								{session && status != 'loading' && (<>
-									<li>
+									{/* <li>
 										<Link href="/dashboard">
 											<Typography variant="h6" color="blue-gray" >
 												Dashboard
 											</Typography>
 										</Link>
+									</li> */}
+									<li>
+										<Link href="/dashboard">{`Dashboard`}</Link>
 									</li>
 									<li>
-										<Button variant="text" onClick={logoutHandler}>
-											<Typography variant="h6" color="blue-gray" >
-												{`Logout`}
-											</Typography>
-
-										</Button>
+										<Link href="/simple-table">{`Expenses`}</Link>
 									</li>
+									<li>
+										<Link href="/reports">{`Reports`}</Link>
+									</li>
+									<li>
+										<Button variant="outlined" color="blue" onClick={logoutHandler} >{`Logout`}</Button>
+									</li>
+
 								</>)}
 							</ul>
 						</div>

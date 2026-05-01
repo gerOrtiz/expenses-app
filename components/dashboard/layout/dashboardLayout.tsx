@@ -5,7 +5,7 @@ import SummaryCard from "../cards/summaryCard";
 import { useActiveTable } from "@/hooks/useActiveTable";
 import DashboardCharts from "../cards/DashboardCharts";
 import DashboardSkeleton from "@/components/loadingSkeletons/dashboardSkeleton";
-import DashboardEmptyState from "@/components/ui/DashboardEmptyState";
+import DashboardEmptyState from "./DashboardEmptyState";
 
 interface DashboardLayoutPropsI {
 	username: string;
