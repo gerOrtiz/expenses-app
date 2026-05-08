@@ -40,7 +40,7 @@ export default function SimpleTableDashboard({ tableData }: TableWrapperPropsI) 
 					<section className="p-3 mt-2">
 						<Card className="mb-1 w-full">
 							<CardBody>
-								<Typography color="blue-gray" variant="lead" className="mb-3">{`Period expenses`}</Typography>
+								<Typography color="blue-gray" variant="h5" className="mb-3">{`Period expenses`}</Typography>
 								<div className="mb-4 text-blue-700">
 									<FontAwesomeIcon icon={faFileInvoiceDollar} size="3x" />
 								</div>

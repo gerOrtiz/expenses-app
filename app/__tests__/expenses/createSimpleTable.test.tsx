@@ -40,7 +40,9 @@ describe('CreateSimpleTableComponent', () => {
 			expect(requiredError).toHaveTextContent('This field is required');
 
 			await user.type(cashInput, '-1');
-			const minError = await screen.findByRole('alert');
+			const errors = await screen.findAllByRole('alert');
+			expect(errors.length).toBe(2);
+			const minError = errors[0];
 			expect(minError).toBeInTheDocument();
 			expect(minError).toHaveTextContent('Amount must be a positive number or zero');
 		});
@@ -62,6 +64,21 @@ describe('CreateSimpleTableComponent', () => {
 			const minError = await screen.findByRole('alert');
 			expect(minError).toBeInTheDocument();
 			expect(minError).toHaveTextContent('Amount must be a positive number or zero');
+		});
+
+		it('shows an error when none of the inputs is positive', async () => {
+			const user = userEvent.setup();
+			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
+			// Open the dialog
+			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			await user.click(openButton);
+			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1];
+
+			await user.click(cardInput);
+			await user.tab();
+			const error = await screen.findByRole('alert');
+			expect(error).toBeInTheDocument();
+			expect(error).toHaveTextContent('At least one method must be positive');
 		});
 
 		it('disables submission button when invalid', async () => {

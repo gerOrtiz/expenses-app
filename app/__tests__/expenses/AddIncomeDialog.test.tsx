@@ -3,7 +3,7 @@ global.fetch = jest.fn();
 import AddIncomeDialog from "@/components/simpleTable/income/AddIncomeDialog";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
 import { QueryClient } from "@tanstack/react-query";
-import { screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 
@@ -17,6 +17,7 @@ describe('Income-Form', () => {
 
 	afterEach(() => {
 		queryClient.clear();
+		cleanup();
 	});
 
 	it('calls mutation with correct data for withdrawal', async () => {
@@ -26,7 +27,7 @@ describe('Income-Form', () => {
 		});
 
 		const user = userEvent.setup();
-		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
+		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={400} />, queryClient);
 
 		const amount = await screen.findByRole('spinbutton', { name: /amount/i });
 		const submitButton = screen.getByRole('button', { name: /add/i });
@@ -57,7 +58,7 @@ describe('Income-Form', () => {
 		});
 
 		const user = userEvent.setup();
-		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
+		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={400} />, queryClient);
 
 		const incomeTabButton = await screen.findByRole('tab', { name: /income/i });
 		expect(incomeTabButton).toBeInTheDocument();
@@ -90,13 +91,9 @@ describe('Income-Form', () => {
 
 
 	describe('Validations', () => {
-		it('shows required validation errors', async () => {
-			(global.fetch as jest.Mock).mockResolvedValueOnce({
-				ok: true,
-				json: async () => ({ success: true })
-			});
+		it('shows required validation errors for income', async () => {
 			const user = userEvent.setup();
-			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
+			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={400} />, queryClient);
 
 			const submitButton = screen.getByRole('button', { name: /add/i });
 			const amount = await screen.findByRole('spinbutton', { name: /amount/i });
@@ -117,13 +114,9 @@ describe('Income-Form', () => {
 				expect(element).toHaveTextContent('This field is required');
 			}
 		});
-		it('shows required validation errors', async () => {
-			(global.fetch as jest.Mock).mockResolvedValueOnce({
-				ok: true,
-				json: async () => ({ success: true })
-			});
+		it('shows error for the lack of a positive amount', async () => {
 			const user = userEvent.setup();
-			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} />, queryClient);
+			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={400} />, queryClient);
 
 			const submitButton = screen.getByRole('button', { name: /add/i });
 
@@ -141,6 +134,19 @@ describe('Income-Form', () => {
 			expect(alert).toBeInTheDocument();
 			expect(alert).toHaveTextContent('At least one number must be positive');
 
+		});
+
+		it('shows error when trying to make a withdrawal with higher amount than remaining in card', async () => {
+			const user = userEvent.setup();
+			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={50} />, queryClient);
+			const amount = await screen.findByRole('spinbutton', { name: /amount/i });
+			const submitButton = screen.getByRole('button', { name: /add/i });
+			await user.clear(amount);
+			await user.type(amount, '100');
+			await user.click(submitButton);
+			const alert = await screen.findByRole('alert');
+			expect(alert).toBeInTheDocument();
+			expect(alert).toHaveTextContent(`Amount can't be higher than the remaining in card ($50)`);
 		});
 
 	});

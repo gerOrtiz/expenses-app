@@ -8,7 +8,7 @@ import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Typography, Select, Option, Checkbox, DialogBody, IconButton } from "@material-tailwind/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 
@@ -32,8 +32,9 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 	const currentTable = data.data;
 	const [isPendingPayment, setIsPendingPayment] = useState(false);
 	const [hasPendingExpenses, setHasPendingExpenses] = useState<boolean>(false);
+	const maxAmount = useRef<number>(isPending ? Infinity : currentTable ? currentTable.remaining.cash : Infinity);
 	const dialogRef = useStableDialogA11y(isOpen, 'expense-label', 'expense-description');
-	const { register, handleSubmit, control, reset, watch, setValue, formState: { isValid, isSubmitting, errors } } =
+	const { register, handleSubmit, control, reset, watch, trigger, setValue, formState: { isValid, isSubmitting, errors } } =
 		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: '', type: 'cash', amount: 0, pending_id: '' } });
 	const { mutation: pendingMutation } = useAddPendingExpense();
 	const { mutation: expenseMutation } = useAddExpense();
@@ -66,6 +67,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 	const handlePendingFlag = () => setIsPendingPayment((val) => !val);
 	const watchType = watch('type');
 
+
 	const filteredPending = useMemo<PendingExpenseI[]>(() => {
 		if (isPending) return [];
 		if (!currentTable || !currentTable.pending) return [];
@@ -78,8 +80,10 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 
 	useEffect(() => {
 		if (isPending) return;
-		if (!currentTable || !currentTable.pending) return;
-		if (currentTable.pending.length === 0) return;
+		if (!currentTable) return;
+		maxAmount.current = currentTable.remaining[watchType];
+		trigger('amount');
+		if (!currentTable.pending || currentTable.pending.length === 0) return;
 		const hasPending = hasTypePendingExpenses(currentTable.pending, watchType);
 		if (!hasPending) {
 			setHasPendingExpenses(false);
@@ -88,7 +92,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 			setHasPendingExpenses(true);
 			setValue('pending_id', filteredPending[0].id);
 		}
-	}, [isPending, currentTable, watchType, filteredPending, setValue]);
+	}, [isPending, currentTable, watchType, filteredPending, setValue, trigger]);
 
 
 	return (<>
@@ -125,15 +129,15 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
 								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
 									{...register('amount', {
-										required: true, min: 1, valueAsNumber: true,
-										max: isPending ? Infinity : currentTable ? currentTable.remaining[watchType] : Infinity
+										required: true,
+										min: { value: 0, message: 'Amount must be a positive number' },
+										valueAsNumber: true,
+										validate: (value) => value <= maxAmount.current || 'Amount surpasses budget for current method'
 									})} />
 								{errors.amount && errors.amount.type === 'required' &&
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
-								{errors.amount && errors.amount.type === 'min' &&
-									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number or zero`}</span>)}
-								{errors.amount && errors.amount.type === 'max' &&
-									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`You're about to add an expense that surpases your remaing ${watchType} budget `}</span>)}
+								{errors.amount && errors.amount.message &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{errors.amount.message}</span>)}
 							</div>
 							<div className="flex flex-col items-left">
 								<label htmlFor="method-select" className="text-xs text-gray-900 font-semibold ml-1">{'Method'}</label>
@@ -204,7 +208,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 								</div>
 							</>)}
 						</div>
-						<Button variant="filled" className="mt-6 filled" fullWidth type="submit" disabled={!isValid || isSubmitting} loading={isSubmitting}>
+						<Button variant="filled" aria-disabled={isSubmitting || !isValid} className="mt-6 filled" fullWidth type="submit" loading={isSubmitting} disabled={isSubmitting || !isValid}>
 							{`Add`}
 						</Button>
 						{(expenseMutation.isError || pendingMutation.isError) && (

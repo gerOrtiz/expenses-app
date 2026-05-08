@@ -222,10 +222,29 @@ describe('Expenses Form', () => {
 			const invalidEntries = await screen.findAllByRole('alert');
 			expect(invalidEntries.length).toBe(2);
 			expect(invalidEntries[0]).toHaveTextContent('Description requires at least 3 characters');
-			expect(invalidEntries[1]).toHaveTextContent('Amount must be a positive number or zero');
+			expect(invalidEntries[1]).toHaveTextContent('Amount must be a positive number');
 			const addButton = screen.getByRole('button', { name: /add/i });
 			expect(addButton).toBeDisabled();
 
+		});
+
+		it('should show a budget warning and hide it when method changes (if applies)', async () => {
+			const user = userEvent.setup();
+			const mockHandleOpen = jest.fn();
+			queryClient.setQueryData(['activeTable'], { data: mockTableData });
+			renderWithQuery(<AddExpensesDialog isPending={false} isOpen={true} handleOpen={mockHandleOpen} />, queryClient);
+			const amountInput = await screen.findByRole('spinbutton', { name: /amount/i });
+			await user.clear(amountInput);
+			await user.type(amountInput, '400');
+			await user.tab();
+			const invalidEntry = await screen.findByRole('alert');
+			expect(invalidEntry).toBeInTheDocument();
+			expect(invalidEntry).toHaveTextContent('Amount surpasses budget for current method');
+			const methodSelect = screen.getByLabelText('Method');
+			await user.click(methodSelect);
+			const option = await screen.findByRole('option', { name: /card/i });
+			await user.click(option);
+			expect(invalidEntry).not.toBeInTheDocument();
 		});
 
 	});
