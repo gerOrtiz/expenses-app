@@ -6,9 +6,6 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Button,
-	Card,
-	CardBody,
-	CardFooter,
 	Typography,
 	Dialog,
 	Tabs,
@@ -16,7 +13,9 @@ import {
 	Tab,
 	TabsBody,
 	TabPanel,
-	IconButton
+	IconButton,
+	DialogHeader,
+	DialogBody
 } from "@material-tailwind/react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,7 +23,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 interface IncomeFormPropsI {
 	isOpen: boolean;
 	handleOpen: Dispatch<SetStateAction<boolean>>;
-	dataCallback?: () => void;
+	cardAmountRemaining?: number;
 }
 
 type IncomeFormValues = {
@@ -35,7 +34,7 @@ type IncomeFormValues = {
 
 
 
-export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI) {
+export default function AddIncomeDialog({ isOpen, handleOpen, cardAmountRemaining = 0 }: IncomeFormPropsI) {
 	const dialogRef = useStableDialogA11y(isOpen, 'income-dialog-label', 'income-dialog-description');
 	const [isWithdrawalView, setIsWithdrawalView] = useState<boolean>(true);
 	const { register, handleSubmit, reset, formState: { errors, isSubmitting }, getValues } =
@@ -107,11 +106,13 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 			<div className="flex flex-col items-left">
 				<label htmlFor="withdrawal" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
 				<input id="withdrawal" name="withdrawal" type="number" className={`formInput ${errors.withdrawal ? 'inputError' : ''}`} step={0.1}
-					{...register('withdrawal', { required: true, min: 0.1, valueAsNumber: true })} />
+					{...register('withdrawal', { required: true, min: 0.1, valueAsNumber: true, max: cardAmountRemaining })} />
 				{errors.withdrawal && errors.withdrawal.type === 'required' &&
 					(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
 				{errors.withdrawal && errors.withdrawal.type === 'min' &&
 					(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number`}</span>)}
+				{errors.withdrawal && errors.withdrawal.type === 'max' &&
+					(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount can't be higher than the remaining in card ($${cardAmountRemaining})`}</span>)}
 			</div>
 		</div>
 	</>);
@@ -121,19 +122,21 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 			size="xs"
 			open={isOpen}
 			handler={() => handleOpen(false)}
-			className="bg-transparent shadow-none min-w-[90%]"
+			className="bg-white shadow-none !max-w-screen-lg !w-96"
 			ref={dialogRef}
 		>
-			<form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit(onSubmit)} >
-				<Card className="mx-auto w-full max-w-[24rem]">
-					<CardBody className="flex flex-col gap-4">
-						<div className="flex w-full justify-between items-center">
-							<Typography variant="h5" className="text-blue-800" id="income-dialog-label">{`Add income`}</Typography>
-							<IconButton aria-label="Close modal" variant="text" size="sm" onClick={() => handleOpen(false)}>
-								<FontAwesomeIcon icon={faTimes} color="blue-gray" />
-							</IconButton>
-						</div>
-						<Typography variant="paragraph" id="income-dialog-description" color="blue-gray">{`Withdraw from card or directly add a new income for either payment method`}</Typography>
+			<DialogHeader className="p-6 pb-0">
+				<div className="flex w-full justify-between items-center">
+					<Typography variant="h5" className="text-blue-800" id="income-dialog-label">{`Add income`}</Typography>
+					<IconButton aria-label="Close modal" variant="text" size="sm" onClick={() => handleOpen(false)}>
+						<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+					</IconButton>
+				</div>
+			</DialogHeader>
+			<DialogBody className="min-w-full p-6">
+				<div className="w-full flex flex-col gap-4">
+					<Typography variant="paragraph" id="income-dialog-description" color="blue-gray">{`Withdraw from card or directly add a new income for either payment method`}</Typography>
+					<form className="mt-8 mb-2" onSubmit={handleSubmit(onSubmit)} >
 						<Tabs value="withdrawal">
 							<TabsHeader>
 								<Tab value="withdrawal" onClick={() => switchView(true)}>
@@ -152,8 +155,6 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 								</TabPanel>
 							</TabsBody>
 						</Tabs>
-					</CardBody>
-					<CardFooter className="pt-0">
 						<div className="flex w-full justify-end gap-4">
 							<Button variant="filled" className="filled"
 								loading={isSubmitting}
@@ -165,9 +166,9 @@ export default function AddIncomeDialog({ isOpen, handleOpen }: IncomeFormPropsI
 								{`Cancel`}
 							</Button>
 						</div>
-					</CardFooter>
-				</Card>
-			</form>
+					</form>
+				</div>
+			</DialogBody>
 		</Dialog>
 	</>);
 }

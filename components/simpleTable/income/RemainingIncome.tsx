@@ -80,6 +80,7 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 							<IconButton aria-label={`Add new income`} aria-haspopup={true}
 								variant="outlined"
 								className="block lg:hidden outlined"
+								onClick={() => setOpenIncomeDialog((cur) => !cur)}
 								size="sm">
 								<FontAwesomeIcon icon={faPlus} size="lg" />
 							</IconButton>
@@ -91,7 +92,7 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 						))}
 					</div>
 					{added && lastAdded &&
-						<div className="w-full lg:w-1/2 flex flex-wrap justify-center border border-blue-gray-100 shadow-sm rounded-lg items-center self-center p-5 mt-3 gap-0 lg:gap-3">
+						<div data-testid="added" className="w-full lg:w-1/2 flex flex-wrap justify-center border border-blue-gray-100 shadow-sm rounded-lg items-center self-center p-5 mt-3 gap-0 lg:gap-3">
 							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center lg:gap-5">
 								<Typography variant="h5" color="gray" className="col-span-1 text-left lg:text-center text-sm lg:text-base">
 									{`Latest income: `}
@@ -123,7 +124,7 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 				</section>
 			</CardBody>
 		</Card>
-		{openIncomeDialog && <AddIncomeDialog isOpen={openIncomeDialog} handleOpen={setOpenIncomeDialog} />}
+		{openIncomeDialog && <AddIncomeDialog isOpen={openIncomeDialog} handleOpen={setOpenIncomeDialog} cardAmountRemaining={remaining.card} />}
 		{openAddedIncomeDialog && <AddedIncomeDialog addedIncome={added} isOpen={openAddedIncomeDialog} handleOpen={handleOpenAddedDialog} />}
 	</>);
 }

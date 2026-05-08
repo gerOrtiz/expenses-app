@@ -8,6 +8,7 @@ import DeleteExpenseDialog from '../expenses/DeleteExpenseDialog';
 import { ExpenseItemI } from '@/interfaces/expenses';
 import EditExpenseDialog from '../expenses/EditExpenseDialog';
 import { useMoneyFilter } from '@/hooks/useMoneyFilter';
+import classes from "@/styles/text-stroke.module.css";
 
 
 interface SimpleTablePropsI {
@@ -112,7 +113,9 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 										<Typography variant="small" color="blue-gray" className="text-xs">
 											{typeFilter(expense.type)}
 										</Typography>
-										{expense.isPending && (<PaymentBadge />)}
+										{expense.isPending && (
+											<span className={`${classes.stroke} text-xs lg:text-sm text-indigo-500 font-semibold`}>{`Pending`}</span>
+										)}
 									</div>
 								</td>
 								<td className="p-2 group-last:rounded-br-md">

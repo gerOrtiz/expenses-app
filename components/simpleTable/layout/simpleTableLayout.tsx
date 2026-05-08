@@ -42,7 +42,7 @@ export default function SimpleTableLayoutComponent() {
 				</div>
 			)}
 		</div>
-		<section>
+		<section className="w-full min-h-max">
 			{isFetching && (<ExpensesPageSkeleton />)}
 			{!isFetching && data && (
 				data.data !== null ? (<SimpleTableDashboard tableData={data.data} />) : (<CreateSimpleTableComponent />)

@@ -81,7 +81,7 @@ export default function MainHeader() {
 						<Button variant="text" className="p-0" onClick={openDrawer} aria-label={`Open drawer`}>
 							<div className="flex gap-4 items-center">
 								<Image src={logoIcon} alt="Expenses logo" width={40} priority />
-								<FontAwesomeIcon icon={faChevronRight} size="1x" color="blue" />
+								<FontAwesomeIcon icon={faChevronRight} size="1x" className="text-indigo-600" />
 							</div>
 						</Button>
 						<div className="flex items-center">
@@ -112,6 +112,9 @@ export default function MainHeader() {
 											</Typography>
 										</Link>
 									</li> */}
+									<li>
+										<Link href="/dashboard">{`Home`}</Link>
+									</li>
 									<li>
 										<Link href="/dashboard">{`Dashboard`}</Link>
 									</li>
