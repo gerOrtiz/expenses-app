@@ -114,7 +114,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 											{typeFilter(expense.type)}
 										</Typography>
 										{expense.isPending && (
-											<span className={`${classes.stroke} text-xs lg:text-sm text-indigo-500 font-semibold`}>{`Pending`}</span>
+											<span className={`${classes.activeStroke} text-[10px] text-indigo-400 font-normal`}>{`Pending`}</span>
 										)}
 									</div>
 								</td>
@@ -208,7 +208,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 const PaymentBadge: React.FC = () => {
 	return (<>
 		<div className="w-2/3 lg:w-1/3 flex justify-center text-center p-1 rounded-xl bg-lime-400">
-			<Typography variant="small" color="blue-gray" className=" text-[10px] lg:text-[11px]">{`Payment`}</Typography>
+			<Typography variant="small" className="text-indigo-500 text-[10px] lg:text-[11px]">{`Payment`}</Typography>
 		</div>
 	</>);
 };

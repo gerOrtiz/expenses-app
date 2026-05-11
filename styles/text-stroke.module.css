@@ -2,3 +2,7 @@ span.stroke {
 	text-shadow:
 		4px 3px 10px rgba(87, 225, 133, 0.8);
 }
+
+span.activeStroke {
+	text-shadow: -3px 0px 2px var(--stroke-color), 3px 0px 2px var(--stroke-color), 0px -3px 2px var(--stroke-color), 0px 3px 2px var(--stroke-color);
+}

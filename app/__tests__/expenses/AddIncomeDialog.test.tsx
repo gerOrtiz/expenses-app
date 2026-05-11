@@ -30,7 +30,7 @@ describe('Income-Form', () => {
 		renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={400} />, queryClient);
 
 		const amount = await screen.findByRole('spinbutton', { name: /amount/i });
-		const submitButton = screen.getByRole('button', { name: /add/i });
+		const submitButton = screen.getByRole('button', { name: /withdraw/i });
 
 		await user.clear(amount);
 		await user.type(amount, '100');
@@ -140,13 +140,14 @@ describe('Income-Form', () => {
 			const user = userEvent.setup();
 			renderWithQuery(<AddIncomeDialog isOpen={true} handleOpen={jest.fn()} cardAmountRemaining={50} />, queryClient);
 			const amount = await screen.findByRole('spinbutton', { name: /amount/i });
-			const submitButton = screen.getByRole('button', { name: /add/i });
+			const submitButton = screen.getByRole('button', { name: /withdraw/i });
 			await user.clear(amount);
 			await user.type(amount, '100');
-			await user.click(submitButton);
+			await user.tab();
 			const alert = await screen.findByRole('alert');
 			expect(alert).toBeInTheDocument();
 			expect(alert).toHaveTextContent(`Amount can't be higher than the remaining in card ($50)`);
+			expect(submitButton).toBeDisabled();
 		});
 
 	});

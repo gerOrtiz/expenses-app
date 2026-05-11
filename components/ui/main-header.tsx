@@ -89,7 +89,7 @@ export default function MainHeader() {
 						</div>
 					</div>
 
-					<Drawer open={open} onClose={closeDrawer} className="p-4 shadow-2xl shadow-blue-gray-900/80" >
+					<Drawer open={open} onClose={closeDrawer} className="p-4 bg-white shadow-2xl shadow-blue-gray-900/80" >
 						<div className="flex flex-col w-full ">
 							<div className="w-full flex justify-between items-center mb-8 ">
 								<Image src={logoImg} alt="Expenses logo" width={150} priority />
@@ -125,7 +125,7 @@ export default function MainHeader() {
 										<Link href="/reports">{`Reports`}</Link>
 									</li>
 									<li>
-										<Button variant="outlined" color="blue" onClick={logoutHandler} >{`Logout`}</Button>
+										<Button variant="outlined" className="outlined" color="blue" onClick={logoutHandler} >{`Logout`}</Button>
 									</li>
 
 								</>)}
