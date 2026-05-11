@@ -13,7 +13,7 @@ export async function GET() {
 			status: 'active'
 		});
 		await client.close();
-		if (!table) return NextResponse.json({ data: null }, { status: 200 });
+		if (!table) return NextResponse.json({ data: null }, { status: 204 });
 		return NextResponse.json({ data: table }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -29,6 +29,7 @@ export async function POST(request: Request) { //Create new table
 		const { session, client, collection } = await setInitialValues();
 		const lastClosedQuery: { user_id: string, status: 'closed' } = { user_id: session.user.email, status: 'closed' };
 		const lastClosed = await collection.findOne(lastClosedQuery, { sort: { fDate: -1 } });
+		const newPendingArray = lastClosed ? lastClosed.pending.map(p => ({ amount: p.originalAmount, ...p })) : [];
 		const initialTableValues: Omit<ExpensesTableI, 'id' | '_id'> = {
 			user_id: session.user.email,
 			status: 'active',
@@ -39,7 +40,7 @@ export async function POST(request: Request) { //Create new table
 				total_pending: { cash: 0, card: 0 },
 				total_payments_made: { cash: 0, card: 0 }
 			},
-			pending: lastClosed ? lastClosed.pending : [],
+			pending: newPendingArray,
 			expenses: [],
 			added: [],
 			fDate: 0,

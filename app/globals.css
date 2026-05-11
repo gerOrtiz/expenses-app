@@ -7,6 +7,7 @@
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 149 228 254 / 47%;
 	--background-end-rgb: 255, 255, 255;
+	--stroke-color: rgba(209, 226, 60, 0.9);
 }
 
 /*

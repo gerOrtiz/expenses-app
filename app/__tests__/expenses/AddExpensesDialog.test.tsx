@@ -18,11 +18,11 @@ describe('Expenses Form', () => {
 		_id: '507f1f77bcf86cd799439011',
 		totals: {
 			total_expenses: { cash: 100, card: 500 },
-			total_pending: { cash: 0, card: 0 },
+			total_pending: { cash: 0, card: 1200 },
 			total_payments_made: { cash: 0, card: 0 }
 		},
-		remaining: { card: 400, cash: 300 },
-		income: { cash: 600, card: 1000 },
+		remaining: { card: 1200, cash: 300 },
+		income: { cash: 400, card: 1700 },
 		added: [],
 		expenses: [
 			{ id: '1T', amount: 100, description: 'Groceries', type: 'cash', date: new Date().getTime(), isPending: false },
@@ -166,7 +166,7 @@ describe('Expenses Form', () => {
 
 	});
 
-	describe('Server function', () => {
+	describe('Server functions', () => {
 		it('should reduce pending amount when expense is linked to pending', async () => {
 			const mockExpense = {
 				description: 'Test expense',
@@ -178,6 +178,26 @@ describe('Expenses Form', () => {
 			};
 			const result = await processAddNewExpense(mockExpense, mockTableData);
 			expect(result.pending[1].amount).toBe(507.5);
+			expect(result.totals.total_expenses.card).toBe(692.5);
+			expect(result.totals.total_pending.card).toBe(1007.5);
+			expect(result.totals.total_payments_made.card).toBe(192.5);
+			expect(result.remaining.card).toBe(1007.5);
+		});
+		it('should turn a pending amount 0 when a payment surpasses pending amount', async () => {
+			const mockExpense = {
+				description: 'Surpassing expense',
+				amount: 600,
+				type: 'card',
+				date: 0,
+				isPending: true,
+				pending_id: 'P3'
+			};
+			const result = await processAddNewExpense(mockExpense, mockTableData);
+			expect(result.pending[0].amount).toBe(0);
+			expect(result.totals.total_expenses.card).toBe(1100);
+			expect(result.totals.total_pending.card).toBe(700);
+			expect(result.totals.total_payments_made.card).toBe(600);
+			expect(result.remaining.card).toBe(600);
 		});
 	});
 

@@ -12,7 +12,7 @@ import { AddedIncomeI, ExpenseItemI, ExpensesTableI, PendingExpenseI, TotalsType
  * @returns An updated version of the table
  */
 export async function processAddIncome(newIncome: AddedIncomeI, existingTable: ExpensesTableI): Promise<ExpensesTableI> { //
-	const updatedTable = { ...existingTable };
+	const updatedTable: ExpensesTableI = JSON.parse(JSON.stringify(existingTable));
 	const addedArray = updatedTable.added || [];
 	const totalAdded = { cash: 0, card: 0, withdrawal: 0 };
 
@@ -45,15 +45,15 @@ export async function processAddIncome(newIncome: AddedIncomeI, existingTable: E
  * @returns An unpadated version of the expenses table
  */
 export async function processAddNewExpense(newClientExpense: ExpenseItemI, existingTable: ExpensesTableI): Promise<ExpensesTableI> { //
-	const updatedTable = { ...existingTable };
-	const expensesArray: ExpenseItemI[] = existingTable.expenses || [];
+	const updatedTable: ExpensesTableI = JSON.parse(JSON.stringify(existingTable));
+	const expensesArray: ExpenseItemI[] = updatedTable.expenses || [];
 	// const newId: number = expensesArray.length > 0 ? expensesArray[expensesArray.length - 1].id + 1 : 1;
 	const newId: string = expensesArray.length + 1 + newClientExpense.description.slice(0, 2).toLocaleUpperCase();
 
 	newClientExpense.id = newId;
 	expensesArray.push(newClientExpense);
 	const { totalExpenses, totalPendingPaid } = calculateExpensesTotals(expensesArray);
-	const { totalPending, pendingArray } = updatePendingAmount(expensesArray, existingTable.pending);
+	const { totalPending, pendingArray } = updatePendingAmount(expensesArray, updatedTable.pending);
 	updatedTable.expenses = expensesArray;
 	updatedTable.totals = updatedTable.totals || {
 		total_expenses: { cash: 0, card: 0 },
