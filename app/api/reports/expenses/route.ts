@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 		}
 		const table = await collection.findOne(query, { sort: { fDate: -1 } });
 		await client.close();
-		if (!table) return NextResponse.json({ data: null }, { status: 204 });
+		if (!table) return NextResponse.json({ data: null }, { status: 200 });
 		return NextResponse.json({ data: table }, { status: 200 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

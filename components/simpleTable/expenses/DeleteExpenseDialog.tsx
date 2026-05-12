@@ -1,4 +1,5 @@
 'use client';
+import { Text } from "@/components/ui/Text";
 import { useDeleteExpense } from "@/hooks/useDeleteExpense";
 import { useDeletePendingExpense } from "@/hooks/useDeletePendingExpense";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
@@ -6,7 +7,7 @@ import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, CardBody, Dialog, DialogBody, DialogFooter, IconButton, Typography } from "@material-tailwind/react";
+import { Button, Card, CardBody, Dialog, DialogBody, DialogFooter, IconButton } from "@material-tailwind/react";
 import { useState } from "react";
 
 interface DeleteDialogPropsI {
@@ -50,7 +51,7 @@ export default function DeleteExpenseDialog({ expense, date, isPending, onCancel
 			cancelHandler();
 		}
 	}
-	//Add Expense data for better UX
+
 	return (
 		<Dialog
 			size="xs"
@@ -58,55 +59,45 @@ export default function DeleteExpenseDialog({ expense, date, isPending, onCancel
 			handler={handleOpen}
 			className="bg-white shadow-none min-w-[90%]"
 		>
-			<DialogBody ref={dialogRef} className="w-full p-4">
+			<DialogBody ref={dialogRef} className="w-full p-4 pb-0">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h5" className="text-blue-800" id="delete-expense-label">
-							{`Delete expense`}
-						</Typography>
+						<Text variant="h4" id="delete-expense-label">{`Delete expense`}</Text>
 						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
-							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+							<FontAwesomeIcon icon={faTimes} color="blue" />
 						</IconButton>
 					</div>
-					<Typography color="blue-gray" variant="paragraph" id="delete-expense-description">
-						{isPending ? `You're about to delete this expense` : `You're about to delete this pending expense`}:
-					</Typography>
+					<Text variant="body" id="delete-expense-description">
+						{!isPending ? `You're about to delete this expense` : `You're about to delete this pending expense`}:
+					</Text>
 					<Card className="shadow-sm border border-blue-gray-100">
 						<CardBody className="p-4">
 							<div className="flex justify-between items-center">
 								<div className="flex flex-col">
-									<Typography variant="small" color="blue-gray" className="font-medium">
-										{expense.description}
-									</Typography>
-									{date && <Typography variant="small" color="gray" className="text-xs">
-										{formatDate(date)}
-									</Typography>}
+									<Text variant="label" className="font-medium">{expense.description}</Text>
+									{date && <Text variant="small">{formatDate(date)}</Text>}
 								</div>
 								<div className="flex items-end gap-1">
-									<Typography variant="small" color="blue-gray" className="font-normal">
-										{expense.type === 'cash' ? 'Cash' : 'Card'}:
-									</Typography>
-									<Typography
-										variant="small"
-										className="font-semibold text-blue-gray-800"
-									>
-										{formatValue(expense.amount)}
-									</Typography>
+									<Text variant="label">{expense.type === 'cash' ? 'Cash' : 'Card'}:</Text>
+									<Text variant="label" className="font-semibold">{formatValue(expense.amount)}</Text>
 								</div>
 							</div>
 						</CardBody>
 					</Card>
 					<div role="alert" className="flex w-full p-4 bg-red-100 rounded-md gap-4 items-center">
 						<FontAwesomeIcon aria-label="warning icon" icon={faTriangleExclamation} size="lg" color="yellow" />
-						<Typography className="font-semibold text-xs" color="blue-gray" variant="small" >
+						<Text variant="label" className="font-semibold text-blue-gray-700">
 							{isPending ?
 								`If there are linked payments to this pending expense, it will affect totals and reports. This action can't be undone.`
 								: `This action can't be undone.`}
-						</Typography>
+						</Text>
 					</div>
-					<Typography className="text-center" color="blue-gray" variant="small" >
+					<Text variant="label" className="text-center">
 						{`Do you wish to continue?`}
-					</Typography>
+					</Text>
+					{/* <span className="text-blue-gray-800 font-semibold text-sm lg:text-base text-center">
+						
+					</span> */}
 				</div>
 			</DialogBody>
 			<DialogFooter>

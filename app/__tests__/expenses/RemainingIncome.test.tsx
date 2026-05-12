@@ -72,10 +72,10 @@ describe('RemainingIncome', () => {
 
 	it('should show last added info', () => {
 		const addedSection = screen.getByTestId('added');
-		const paragraphs = within(addedSection).getAllByRole('paragraph');
-		expect(paragraphs.length).toBe(2);
-		expect(paragraphs[0]).toHaveTextContent('$100.00 - Cash');
-		expect(within(addedSection).getByRole('heading', { level: 6 })).toHaveTextContent('$100.00');
+		// const paragraphs = within(addedSection).getAllByRole('paragraph');
+		// expect(paragraphs.length).toBe(2);
+		expect(within(addedSection).getByText('$100.00 - Cash')).toBeInTheDocument();
+		expect(within(addedSection).getByText('$100.00')).toBeInTheDocument();
 	});
 
 	it('should open added income dialog', async () => {

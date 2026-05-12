@@ -11,8 +11,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	IconButton,
-	Tooltip,
-	Typography
+	Tooltip
 } from "@material-tailwind/react";
 import { useState } from "react";
 import ExpensesForm from "../expenses/AddExpensesDialog";
@@ -21,6 +20,7 @@ import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import DeleteExpenseDialog from "../expenses/DeleteExpenseDialog";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { EditPendingExpenseDialog } from "../expenses/EditPendingExpenseDialog";
+import { Text } from "@/components/ui/Text";
 
 interface PendingExpensesTablePropsI {
 	pendingArray: PendingExpenseI[];
@@ -75,15 +75,17 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 	}
 
 	return (<>
-		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-blue-100 border border-blue-gray-100">
-			<CardBody className="p-6 lg:p-4">
+		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-sm lg:shadow-md shadow-blue-100 border border-blue-gray-100">
+			<CardBody >
 				<div className="relative flex flex-col">
 					<div className="w-full flex justify-between items-center mb-3">
-						<Typography color="blue-gray" variant="lead" className="text-lg lg:text-xl">{`Pending expenses`}</Typography>
-						<Button aria-label={`Add pending expense`} variant="outlined" className="hidden outlined lg:block hover:-translate-y-1" size="sm" onClick={handleOpenAddPending}>
+						<Text variant="h3">{`Pending expenses`}</Text>
+						<Button aria-haspopup={true} aria-label={`Add pending expense`} variant="outlined"
+							className="hidden outlined lg:block transition ease-in-out hover:-translate-y-1 duration-200"
+							size="sm" onClick={handleOpenAddPending}>
 							{`Add`}
 						</Button>
-						<IconButton aria-label={`Add pending expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpenAddPending}>
+						<IconButton aria-haspopup={true} aria-label={`Add pending expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpenAddPending}>
 							<FontAwesomeIcon aria-label={`Plus symbol`} icon={faPlus} size="lg" />
 						</IconButton>
 					</div>
@@ -94,20 +96,8 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 									<th key={title}
 										aria-label={title ? title : `Edit column`}
 										className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-										<Typography
-											variant="small"
-											color="blue-gray"
-											className="hidden lg:block font-semibold leading-none opacity-70"
-										>
-											{title}
-										</Typography>
-										<Typography
-											variant="small"
-											color="blue-gray"
-											className="lg:hidden font-semibold leading-none opacity-70 text-xs "
-										>
-											{title}
-										</Typography>
+										<Text variant="label" className="hidden lg:block">{title}</Text>
+										<Text variant="small" className="p-1 lg:hidden">{title}</Text>
 									</th>
 								))}
 							</tr>
@@ -115,27 +105,21 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 						<tbody>
 							{pendingArray.map((p) => (
 								<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
-									<td className="p-2 lg:p-4 group-last:rounded-bl-md">
-										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
-											{p.description}
-										</Typography>
+									<td className="p-2 lg:p-4 group-last:rounded-bl-md border-b border-blue-50">
+										<Text variant="label" className="lg:text-[15px]">{p.description}</Text>
 									</td>
-									<td className="p-2 lg:p-4">
-										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
-											{formatValue(p.amount)}
-										</Typography>
+									<td className="p-2 lg:p-4 border-b border-blue-50">
+										<Text variant="label" className="lg:text-[15px]">	{formatValue(p.amount)}</Text>
 									</td>
-									<td className="p-2 lg:p-4">
-										<Typography variant="small" color="blue-gray" className="text-xs lg:text-[15px]">
-											{typeFilter(p.type)}
-										</Typography>
+									<td className="p-2 lg:p-4 border-b border-blue-50">
+										<Text variant="label" className="lg:text-[15px]">{typeFilter(p.type)}</Text>
 									</td>
-									<td className="p-2 lg:p-4 group-last:rounded-br-md">
+									<td className="p-2 lg:p-4 group-last:rounded-br-md border-b border-blue-50">
 										<div className="flex lg:hidden gap-1">
-											<IconButton aria-label={`Edit pending expense`} variant="text" color="blue" size="sm" onClick={() => handleEditClick(p)}>
+											<IconButton aria-haspopup={true} aria-label={`Edit pending expense`} variant="text" color="blue" size="sm" onClick={() => handleEditClick(p)}>
 												<FontAwesomeIcon icon={faPencil} />
 											</IconButton>
-											<IconButton aria-label={`Open delete dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => handleDeleteClick(p)} >
+											<IconButton aria-haspopup={true} aria-label={`Open delete dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => handleDeleteClick(p)} >
 												<FontAwesomeIcon icon={faTrash} />
 											</IconButton>
 										</div>
@@ -164,18 +148,14 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 			<Dialog ref={dialogRef} size="sm" open={openOptionsDialog} handler={handleCancel} >
 				<DialogHeader className="flex flex-col gap-4">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h5" className="text-blue-800" id="pending-options-label">
-							{`Pending expense edit options`}
-						</Typography>
+						<Text variant="h4" id="pending-options-label">{`Pending expense edit options`}</Text>
 						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleCancel}>
-							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+							<FontAwesomeIcon icon={faTimes} color="blue" />
 						</IconButton>
 					</div>
 				</DialogHeader>
 				<DialogBody className="p-2 text-center">
-					<Typography color="blue-gray" variant="paragraph" id="pending-options-description">
-						{`Choose action to perform: `}
-					</Typography>
+					<Text variant="body" id="pending-options-description">{`Choose action to perform: `}</Text>
 				</DialogBody>
 				<DialogFooter className="flex flex-row justify-center gap-4">
 					<Button variant="outlined" className="outlined" onClick={() => handleChoiceClick(true)} >{`Edit`}</Button>

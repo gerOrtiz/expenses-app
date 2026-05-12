@@ -54,10 +54,6 @@ export default function SummaryCard({ data }: { data: ExpensesTableI }) {
 
 	return (<>
 		<section className="w-full flex flex-col lg:flex-row items-stretch gap-5" aria-label={`Summary`}>
-			{/* <div className="flex w-full justify-center">
-				<Typography variant="h3" className="text-blue-800" >{`Summary`}</Typography>
-			</div> */}
-
 			<div className="w-full lg:w-1/2 flex flex-col border border-blue-100 bg-gray-50 rounded-md p-4">
 				<div className="flex flex-col items-start gap-3 mb-4">
 					<span className="text-sm text-blue-gray-900 font-semibold">{`Total balance`}</span>

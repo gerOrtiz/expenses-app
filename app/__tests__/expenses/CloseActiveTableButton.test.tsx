@@ -22,9 +22,9 @@ describe('Close table button', () => {
 		const actionButton = await screen.findByRole('button', { name: /close active table/i });
 		await user.click(actionButton);
 		const closePeriodButton = await screen.findByRole('button', { name: /Close period/i });
-		expect(screen.getByRole('heading', { level: 5 })).toHaveTextContent('Close expenses period');
+		expect(screen.getByRole('heading', { level: 4 })).toHaveTextContent('Close expenses period');
 		const alertDiv = screen.getByRole('alert');
-		expect(within(alertDiv).getByRole('paragraph')).toHaveTextContent(`This action can't be undone`);
+		expect(within(alertDiv).getByText(`This action can't be undone`)).toBeInTheDocument();
 		await user.click(closePeriodButton);
 
 		await waitFor(() => {

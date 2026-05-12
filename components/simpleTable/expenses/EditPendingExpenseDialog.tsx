@@ -1,5 +1,6 @@
 'use client';
 
+import { Text } from "@/components/ui/Text";
 import { useActiveExpenses } from "@/hooks/useActiveExpenses";
 import { useEditPendingExpense } from "@/hooks/useEditPendingExpense";
 import { useFulfillPendingExpense } from "@/hooks/useFulfillPendingExpense";
@@ -7,7 +8,7 @@ import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Dialog, DialogBody, DialogHeader, IconButton, Option, Select, Tab, TabPanel, Tabs, TabsBody, TabsHeader, Typography } from "@material-tailwind/react";
+import { Button, Dialog, DialogBody, DialogHeader, IconButton, Option, Select, Tab, TabPanel, Tabs, TabsBody, TabsHeader } from "@material-tailwind/react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface EditPendingDialogPropsI {
@@ -59,15 +60,13 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 		>
 			<DialogHeader>
 				<div className="flex w-full justify-between items-center">
-					<Typography variant="h5" className="text-blue-800" id="edit-pending-label">
-						{`Edit Pending Expense`}
-					</Typography>
+					<Text variant="h4" id="edit-pending-label">{`Edit Pending Expense`}</Text>
 					<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
-						<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+						<FontAwesomeIcon icon={faTimes} color="blue" />
 					</IconButton>
 				</div>
 			</DialogHeader>
-			<DialogBody className="pt-0">
+			<DialogBody className="p-4">
 				<Tabs value="edition">
 					<TabsHeader>
 						<Tab value="edition" >
@@ -77,23 +76,27 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 							<span className="font-semibold text-blue-800">{`Fulfill`}</span>
 						</Tab>
 					</TabsHeader>
-					<TabsBody>
-						<TabPanel value="edition" className="w-full">
-							<div className="flex flex-col w-full gap-3 p-1">
-								<Typography color="blue-gray" variant="paragraph" id="edit-pending-description">
-									{`Update pending expense details`}
-								</Typography>
+					<TabsBody
+						animate={{
+							initial: { y: 250 },
+							mount: { y: 0 },
+							unmount: { y: 250 },
+						}}
+					>
+						<TabPanel value="edition" className="w-full p-0">
+							<div className="flex flex-col w-full gap-3 pt-3 px-2">
+								<Text variant="body" id="edit-pending-description" >{`Update pending expense details`}</Text>
 								{hasLinkedExpenses && (
 									<div role="alert" className="flex w-full p-4 bg-red-100 rounded-md items-center">
-										<Typography className="font-semibold text-xs" color="blue-gray" variant="small"  >
+										<Text variant="small" className="font-semibold text-blue-gray-700">
 											{`This pending expense has linked payments and only description can be edited`}
-										</Typography>
+										</Text>
 									</div>
 								)}
 								<form className="mb-2 mt-2" onSubmit={handleSubmit(onSubmit)}>
 									<div className="mb-1 flex flex-col gap-3">
 										<div className="flex flex-col items-left">
-											<label htmlFor="description" className="text-xs text-gray-900 font-semibold ml-1">{'Description'}</label>
+											<label htmlFor="description" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Description'}</label>
 											<input id="description" name="description" type="text"
 												className={`formInput ${errors.description ? 'inputError' : ''}`}
 												{...register('description', { required: true, minLength: 3 })} />
@@ -103,7 +106,7 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 												(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Description requires at least 3 characters`}</span>)}
 										</div>
 										<div className="flex flex-col items-left">
-											<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+											<label htmlFor="amount" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 											<input id="amount" name="amount" type="number" disabled={hasLinkedExpenses || pending.fulfilled}
 												className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
 												{...register('amount', { required: true, min: 1, valueAsNumber: true })} />
@@ -114,7 +117,7 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 										</div>
 
 										<div className="flex flex-col items-left">
-											<label htmlFor="method-select" className="text-xs text-gray-900 font-semibold ml-1">{'Method'}</label>
+											<label htmlFor="method-select" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Method'}</label>
 											<Controller name="type"
 												control={control}
 												rules={{ required: true }}
@@ -160,11 +163,9 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 								</form>
 							</div>
 						</TabPanel>
-						<TabPanel value="fulfill" className="w-full">
+						<TabPanel value="fulfill" className="w-full p-0">
 							<div className="flex flex-col w-full gap-3 p-1">
-								<Typography variant="paragraph" className="text-sm font-semibold text-blue-800">
-									{`Mark this pending expense as fulfilled, this action turns its amount to 0`}
-								</Typography>
+								<Text variant="body" id="edit-pending-description" >{`Mark this pending expense as fulfilled, this action turns its amount to 0`}</Text>
 								<div className="w-full flex justify-center">
 									<Button variant="outlined" className="outlined" disabled={pending.fulfilled} onClick={onFulfill}>
 										{`Fulfill`}
