@@ -105,13 +105,7 @@ export default function MainHeader() {
 									</Link>
 								</li>)}
 								{session && status != 'loading' && (<>
-									{/* <li>
-										<Link href="/dashboard">
-											<Typography variant="h6" color="blue-gray" >
-												Dashboard
-											</Typography>
-										</Link>
-									</li> */}
+
 									<li>
 										<Link href="/dashboard">{`Home`}</Link>
 									</li>

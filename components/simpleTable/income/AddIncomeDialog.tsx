@@ -1,12 +1,12 @@
 'use client';
 
+import { Text } from "@/components/ui/Text";
 import { useAddIncome } from "@/hooks/useAddIncome";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	Button,
-	Typography,
 	Dialog,
 	Tabs,
 	TabsHeader,
@@ -76,9 +76,9 @@ export default function AddIncomeDialog({ isOpen, handleOpen, cardAmountRemainin
 	const newIncome = (<>
 		<form onSubmit={handleSubmit(onSubmit)} >
 			<div className="flex flex-col gap-3">
-				<span className="text-sm lg:text-[15px] text-blue-gray-800 antialiased text-center">{`Add a new income for either cash or card`}</span>
+				<span className="text-sm lg:text-[15px] text-blue-gray-600 antialiased text-center">{`Add a new income for either cash or card`}</span>
 				<div className="flex flex-col items-left">
-					<label htmlFor="cash" className="text-xs text-gray-900 font-semibold ml-1">{'Cash'}</label>
+					<label htmlFor="cash" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Cash'}</label>
 					<input id="cash" name="cash" type="number" className={`formInput ${errors.cash ? 'inputError' : ''}`} step={0.1}
 						{...register('cash', { required: true, min: 0, valueAsNumber: true, validate: validateAtLeastOnePositive })} />
 					{errors.cash && errors.cash.type === 'required' &&
@@ -90,7 +90,7 @@ export default function AddIncomeDialog({ isOpen, handleOpen, cardAmountRemainin
 
 				</div>
 				<div className="flex flex-col items-left">
-					<label htmlFor="card" className="text-xs text-gray-900 font-semibold ml-1">{'Card'}</label>
+					<label htmlFor="card" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Card'}</label>
 					<input id="card" name="card" type="number" className={`formInput ${errors.card ? 'inputError' : ''}`} step={0.01}
 						{...register('card', { required: true, min: 0, valueAsNumber: true })} />
 					{errors.card && errors.card.type === 'required' &&
@@ -117,12 +117,11 @@ export default function AddIncomeDialog({ isOpen, handleOpen, cardAmountRemainin
 	const newWithdrawal = (<>
 		<form onSubmit={submitWithdrawal(onSubmit)} >
 			<div className="flex flex-col gap-4">
-				<span className="text-sm lg:text-[15px] text-blue-gray-800 antialiased">
+				<span className="text-sm lg:text-[15px] text-blue-gray-600 antialiased">
 					{`This amount will be taken from your card income and goes to cash income.`}
 				</span>
-
 				<div className="flex flex-col items-left">
-					<label htmlFor="withdrawal" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+					<label htmlFor="withdrawal" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 					<input id="withdrawal" name="withdrawal" type="number" className={`formInput ${err.withdrawal ? 'inputError' : ''}`} step={0.1}
 						{...withdrawalRegister('withdrawal', { required: true, min: 0.1, valueAsNumber: true, max: cardAmountRemaining })} />
 					{err.withdrawal && err.withdrawal.type === 'required' &&
@@ -157,15 +156,15 @@ export default function AddIncomeDialog({ isOpen, handleOpen, cardAmountRemainin
 		>
 			<DialogHeader className="p-6 pb-0">
 				<div className="flex w-full justify-between items-center">
-					<Typography variant="h5" className="text-blue-800" id="income-dialog-label">{`Add income`}</Typography>
+					<Text variant="h4" id="income-dialog-label">{`Add income`}</Text>
 					<IconButton aria-label="Close modal" variant="text" size="sm" onClick={() => handleOpen(false)}>
-						<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+						<FontAwesomeIcon icon={faTimes} color="blue" />
 					</IconButton>
 				</div>
 			</DialogHeader>
 			<DialogBody className="min-w-full p-6 pb-1">
 				<div className="w-full flex flex-col gap-4">
-					<Typography variant="paragraph" id="income-dialog-description" color="blue-gray">{`Withdraw from card or directly add a new income for either payment method`}</Typography>
+					<Text variant="body" id="income-dialog-description">{`Withdraw from card or directly add a new income for either payment method`}</Text>
 					<div className="mt-2 mb-2">
 						<Tabs value="withdrawal">
 							<TabsHeader>

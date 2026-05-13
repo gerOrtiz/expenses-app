@@ -1,6 +1,6 @@
 'use client';
 import { IncomeI } from "@/interfaces/expenses";
-import { Button, Typography, Dialog, Card, CardBody, CardFooter, IconButton } from "@material-tailwind/react";
+import { Button, Dialog, Card, CardBody, CardFooter, IconButton } from "@material-tailwind/react";
 import Image from "next/image";
 import { useState } from "react";
 import emptyClipboard from "@/assets/empty-clipboard.jpg";
@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateTable } from "@/hooks/useCreateTable";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import logoImg from '@/assets/transparent-logo.png';
+import { Text } from "../ui/Text";
 
 
 export default function CreateSimpleTableComponent() {
@@ -41,15 +42,21 @@ export default function CreateSimpleTableComponent() {
 
 	return (<>
 
-		<div className="flex flex-col w-full items-center gap-4 p-5 lg:p-0 min-h-full relative">
+		<div className="flex flex-col w-full items-center gap-4 p-5 lg:p-0 h-fit mt-4 lg:mt-10">
 			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={300} />
-			<div className="flex flex-col gap-2 items-center ">
-				<Typography variant="h3" className="text-blue-800">{`Take control of your personal expenses`}</Typography>
-				<Typography variant="paragraph" color="blue-gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography>
-				<Button variant="filled" aria-haspopup="dialog" size="lg" className="filled hover:-translate-y-1" onClick={handleOpen}>{`Create new expenses table`}</Button>
+			<div className="flex flex-col gap-3 items-center ">
+				<Text variant="h3" >{`Take control of your personal expenses`}</Text>
+				{/* <Typography variant="h3" className="text-blue-800">{`Take control of your personal expenses`}</Typography> */}
+				<Text variant="body">{`Record your daily expenses and keep track of your budget`}</Text>
+				{/* <Typography variant="paragraph" color="blue-gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography> */}
+				<Button variant="filled" aria-haspopup="dialog" size="md"
+					className="filled mt-3 transition ease-in-out hover:scale-105 duration-200"
+					onClick={handleOpen}>
+					{`Create new expenses table`}
+				</Button>
 			</div>
 
-			<div className="w-full flex justify-center mt-10">
+			<div className="w-full flex justify-center mt-10 lg:mt-20">
 				<Image src={logoImg} alt="Expenses app logo" width={400} className="opacity-30" />
 			</div>
 		</div>
@@ -67,27 +74,19 @@ export default function CreateSimpleTableComponent() {
 				<Card className="mx-auto w-full ">
 					<CardBody className="flex flex-col gap-4">
 						<div className="flex w-full justify-between items-center">
-							<Typography variant="h4" className="text-blue-800" id="create-table-label">
-								{`New expenses table`}
-							</Typography>
-							<IconButton variant="text" aria-label="close" onClick={handleOpen} >
-								<FontAwesomeIcon icon={faTimes} color="blue-gray" size="lg" />
+							<Text variant="h4" id="create-table-label">{`New expenses table`}</Text>
+							<IconButton variant="text" aria-label="close" size="sm" onClick={handleOpen} >
+								<FontAwesomeIcon icon={faTimes} color="blue" />
 							</IconButton>
 						</div>
-						<Typography
-							variant="paragraph"
-							color="blue-gray"
-							id="create-table-description"
-						>
+						<Text variant="body" id="create-table-description" >
 							{`Enter initial amounts to get started`}
-						</Typography>
+						</Text>
 
 						<div className="flex flex-col gap-2">
-							<Typography className="lg:mb-1 mr-1 font-semibold" variant="paragraph">
-								{`Cash`}:
-							</Typography>
+							<Text variant="label" className="lg:mb-1 mr-1">{`Cash`}:</Text>
 							<div className="flex flex-col">
-								<label htmlFor="cash" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+								<label htmlFor="cash" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 								<input id="cash" name="cash" type="number" className={`formInput ${errors.cash ? 'inputError' : ''}`} step={0.1}
 									{...register('cash', { required: true, min: 0, valueAsNumber: true })} />
 								{errors.cash && errors.cash.type === 'required' &&
@@ -96,11 +95,10 @@ export default function CreateSimpleTableComponent() {
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number or zero`}</span>)}
 
 							</div>
-							<Typography className="lg:mb-1 mr-1 font-semibold" variant="paragraph">
-								{`Card`}:
-							</Typography>
+
+							<Text variant="label" className="lg:mb-1 mr-1">{`Card`}:</Text>
 							<div className="flex flex-col">
-								<label htmlFor="card" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+								<label htmlFor="card" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 								<input id="card" name="card" type="number" className={`formInput ${errors.card ? 'inputError' : ''}`} step={0.01}
 									{...register('card', { required: true, min: 0, valueAsNumber: true, validate: validateAtLeastOnePositive })} />
 								{errors.card && errors.card.type === 'required' &&
@@ -113,7 +111,7 @@ export default function CreateSimpleTableComponent() {
 						</div>
 
 					</CardBody>
-					<CardFooter className="pt-0 flex justify-center">
+					<CardFooter className="pt-0 flex justify-end">
 						<Button variant="filled" aria-disabled={isSubmitting || !isValid} className="filled" loading={isSubmitting} type="submit" disabled={isSubmitting || !isValid}>
 							{`Create table`}
 						</Button>

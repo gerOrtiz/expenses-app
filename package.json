@@ -1,6 +1,6 @@
 {
 	"name": "expenses-app",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -30,7 +30,8 @@
 		"react-icons": "^5.0.1",
 		"react-joyride": "^2.8.1",
 		"recharts": "^3.8.1",
-		"sharp": "^0.33.3"
+		"sharp": "^0.33.3",
+		"tailwind-merge": "^3.6.0"
 	},
 	"devDependencies": {
 		"@axe-core/react": "^4.10.1",

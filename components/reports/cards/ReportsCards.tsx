@@ -1,8 +1,9 @@
 'use client';
 
+import { Text } from "@/components/ui/Text";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { ExpensesTableI } from "@/interfaces/expenses";
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
 
 export default function ReportsCards({ tableData }: { tableData: ExpensesTableI }) {
 	const { formatValue } = useMoneyFilter();
@@ -24,16 +25,14 @@ export default function ReportsCards({ tableData }: { tableData: ExpensesTableI 
 	{ title: 'Number of payments', value: paymentsMade }, { title: '% spent', value: percentageSpent }];
 
 	return (<>
-		<div data-testid="report-cards" className="w-full lg:w-4/5 flex justify-self-center justify-center bg-gray-50 rounded-md p-4">
+		<div data-testid="report-cards" className="w-full lg:w-4/5 flex justify-self-center justify-center bg-gray-50 rounded-xl p-4">
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 items-stretch">
 				{cards.map((item) => (
 					<Card key={item.title} className="card col-span-1 shadow-blue-100 shadow-md border border-blue-100 flex w-full bg-gradient-to-tr from-blue-50 to-white">
 						<CardBody className="p-2 lg:p-6">
 							<div className="flex flex-col justify-center items-center">
-								<span className="text-xs lg:text-sm text-blue-gray-900 mb-1 lg:mb-2 font-semibold">{item.title}</span>
-								<Typography variant="h4" className="p-2 lg:p-4 text-lg lg:text-2xl text-indigo-600"  >
-									{item.value}
-								</Typography>
+								<Text variant="label" className="mb-1 lg:mb-2 font-semibold">{item.title}</Text>
+								<Text variant="h4" className="p-2 lg:p-4">{item.value}</Text>
 							</div>
 						</CardBody>
 					</Card>

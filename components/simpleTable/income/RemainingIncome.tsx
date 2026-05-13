@@ -5,8 +5,6 @@ import {
 	Card,
 	CardBody,
 	IconButton,
-	Typography,
-
 } from "@material-tailwind/react";
 import { useMemo, useState } from "react";
 import AddIncomeDialog from "../income/AddIncomeDialog";
@@ -16,6 +14,7 @@ import BalanceCard from "../cards/balanceCard";
 import AddedIncomeDialog from "./AddedIncome.dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Text } from "@/components/ui/Text";
 
 interface RemainingIncomePropsI {
 	remaining: TotalsType;
@@ -64,16 +63,14 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 
 		<Card className="border border-blue-gray-100 shadow-sm lg:w-3/4 w-full">
 			<CardBody className="w-full p-2 lg:p-4">
-				<section className="w-full flex flex-col items-start p-2">
+				<div className="w-full flex flex-col items-start p-2">
 					<div className="flex w-full justify-between mb-2">
 						<div>
-							<Typography variant="h3" color="blue-gray" className="mb-2 text-lg lg:text-xl">
-								{`Balance`}
-							</Typography>
+							<Text variant="h3" className="mb-2">{`Balance`}</Text>
 						</div>
 						<div>
 							<Button aria-label={`Add income`} aria-haspopup={true}
-								className="hidden lg:block outlined hover:-translate-y-1"
+								className="hidden lg:block outlined transition ease-in-out hover:-translate-y-1 duration-200"
 								variant="outlined" size="sm" onClick={() => setOpenIncomeDialog((cur) => !cur)}>
 								{`Add income`}
 							</Button>
@@ -93,35 +90,26 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 					</div>
 					{added && lastAdded &&
 						<div data-testid="added" className="w-full lg:w-1/2 flex flex-wrap justify-center border border-blue-gray-100 shadow-sm rounded-lg items-center self-center p-5 mt-3 gap-0 lg:gap-3">
-							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center lg:gap-5">
-								<Typography variant="h5" color="gray" className="col-span-1 text-left lg:text-center text-sm lg:text-base">
-									{`Latest income: `}
-								</Typography>
-								<Typography variant="lead" color="blue-gray" className="col-span-2 text-left lg:text-center font-semibold text-sm lg:text-base">
-									{lastAdded}
-								</Typography>
-								<Typography variant="h5" color="blue-gray" className=" col-span-2 text-left lg:text-center font-semibold text-sm lg:text-base">
-									{new Date(added[added.length - 1].date).toLocaleDateString()}
-									&nbsp;
-								</Typography>
-
+							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center gap-2 lg:gap-5">
+								<Text variant="h5" className="text-left lg:text-center text-blue-gray-600">{`Latest income: `}</Text>
+								<Text variant="h6" className="text-left lg:text-center ">{lastAdded}</Text>
+								<Text variant="h6" className="text-left lg:text-center text-blue-gray-600">{new Date(added[added.length - 1].date).toLocaleDateString()}</Text>
 							</div>
-							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center justify-center lg:gap-5">
-								<Typography variant="paragraph" color="gray" className="col-span-1 text-left font-semibold lg:text-center text-sm lg:text-base">
-									{`Total income: `}
-								</Typography>
-								<Typography variant="h6" color="blue-gray" className=" col-span-2 text-left lg:text-center text-sm lg:text-base">
-									{totalIncome}
-								</Typography>
+							<div className="w-1/2 lg:w-full flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-5">
+								<Text variant="h5" className="text-left lg:text-center text-blue-gray-600">{`Total income: `}</Text>
+								<Text variant="h6" className="text-left lg:text-center">{totalIncome}</Text>
 							</div>
-							<div className="mt-2 lg:mt-0">
-								<Button aria-label={`Show all income movements`} aria-haspopup={true} variant="outlined" className="outlined p-2 text-[11px] lg:text-sm hover:-translate-y-1" onClick={handleOpenAddedDialog}>
+							<div className="mt-4 lg:mt-0">
+								<Button aria-label={`Show all income movements`} aria-haspopup={true}
+									variant="outlined"
+									className="outlined p-2 text-[11px] lg:text-sm transition ease-in-out hover:-translate-y-1 duration-200"
+									onClick={handleOpenAddedDialog}>
 									{`Show more`}
 								</Button>
 							</div>
 						</div>
 					}
-				</section>
+				</div>
 			</CardBody>
 		</Card>
 		{openIncomeDialog && <AddIncomeDialog isOpen={openIncomeDialog} handleOpen={setOpenIncomeDialog} cardAmountRemaining={remaining.card} />}

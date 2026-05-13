@@ -14,7 +14,7 @@ export default function ReportsSkeleton() {
 				<div className="col-span-3 lg:col-span-1">
 					<div className="w-3/4 lg:w-full h-12 bg-gray-300 animate-pulse rounded-md" />
 				</div>
-				<div className="col-span-3 lg:col-span-1 justify-items-start lg:justify-items-end content-center">
+				<div className="col-span-3 lg:col-span-1 justify-items-start content-center">
 					<div className="w-2/5 h-10 bg-gray-300 animate-pulse rounded-md" />
 				</div>
 			</div>

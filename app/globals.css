@@ -103,7 +103,8 @@ textarea.formTextArea {
 	background: linear-gradient(90deg, #c3effe, #ffffff);
 	font-size: 1rem;
 	font-family: 'Montserrat', sans-serif;
-	color: #000000;
+	color: rgb(43, 56, 63);
+	;
 
 	&.inputError {
 		border: 1px solid red;
@@ -124,7 +125,7 @@ button.formInput {
 	background: linear-gradient(90deg, #c3effe, #ffffff);
 	font-size: 1rem;
 	font-family: 'Montserrat', sans-serif;
-	color: #000000;
+	color: rgb(43, 56, 63);
 
 	&:disabled {
 		color: #818181;
@@ -141,7 +142,7 @@ div.selectContainer {
 
 		li {
 			font-family: 'Montserrat', sans-serif;
-			color: #2a2b2c
+			color: rgb(43, 56, 63);
 		}
 	}
 }

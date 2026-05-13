@@ -1,7 +1,7 @@
 'use client';
 
 import { useReportsTable } from "@/hooks/useReportsTable";
-import { Button, Typography } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import ExpensesReportTable from "../tables/ExpensesReportTable";
 import ExpensesChart from "../charts/ExpensesChart";
 import TotalsCharts from "../charts/TotalsCharts";
@@ -13,6 +13,7 @@ import ReportsCards from "../cards/ReportsCards";
 import ReportsEmptyState from "./ReportsEmptyState";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import ReportsSkeleton from "@/components/loadingSkeletons/reportsSkeleton";
+import { Text } from "@/components/ui/Text";
 
 export default function ReportsLayout() {
 	const [rangeDates, setRangeDates] = useState<{ startDate: number, endDate: number }>({ startDate: undefined, endDate: undefined });
@@ -22,7 +23,7 @@ export default function ReportsLayout() {
 	const sDate = tableData ? tableData.sDate : rangeDates.startDate;
 	const fDate = tableData ? tableData.fDate : rangeDates.endDate;
 
-	const periodTitle = sDate !== undefined && fDate !== undefined ? `Period: ${new Date(sDate).toLocaleDateString()} - ${new Date(fDate).toLocaleDateString()}` : null;
+	const periodDate = sDate !== undefined && fDate !== undefined ? `${new Date(sDate).toLocaleDateString()} - ${new Date(fDate).toLocaleDateString()}` : null;
 
 	const handleDialogOpen = useCallback(() => setIsDateDialogOpen(op => !op), []);
 	const handleDateRangeSetting = useCallback((start: number, end: number) => {
@@ -34,15 +35,19 @@ export default function ReportsLayout() {
 
 	return (<>
 		<div className="w-full my-3 lg:my-4 p-4 lg:p-5 grid grid-cols-3 gap-2">
-			<div className="col-span-3 lg:col-span-1 text-left">
-				<Typography variant="h2" className="text-blue-800">{`Reports`}</Typography>
+			<div className="col-span-3 lg:col-span-1 flex items-center justify-start lg:justify-end">
+				<Text variant="h2">{`Reports`}</Text>
 			</div>
-			{periodTitle && (<>
-				<div className="col-span-3 lg:col-span-1 text-left lg:text-center content-center">
-					<Typography variant="h3" className="text-blue-700 text-2xl lg:text-3xl">{periodTitle}</Typography>
+			{periodDate && (<>
+				<div className="col-span-3 lg:col-span-1 justify-start lg:justify-center flex items-center w-full">
+					<Text variant="h3">{`Period: `}<span className="text-blue-gray-700">{periodDate}</span></Text>
 				</div>
-				<div className="col-span-3 lg:col-span-1 justify-self-start lg:justify-self-end content-center">
-					<Button variant="outlined" className="outlined px-3 py-2 lg:px-6 lg:py-3 hover:-translate-y-1" onClick={handleDialogOpen}>{`Change dates`}</Button>
+				<div className="col-span-3 lg:col-span-1 w-full flex items-center justify-start">
+					<Button variant="outlined"
+						className="outlined p-3 transition ease-in-out hover:-translate-y-1 duration-200"
+						onClick={handleDialogOpen}>
+						{`Change dates`}
+					</Button>
 				</div>
 			</>)}
 
@@ -53,12 +58,12 @@ export default function ReportsLayout() {
 			</section>
 
 			<section className="w-full mt-4 lg:mt-8 p-3 lg:p-8">
-				<h3 className="sr-only">{`Totals`}</h3>
+				<h4 className="sr-only">{`Totals`}</h4>
 				<TotalsCharts totals={tableData.totals} />
 			</section>
 
 			<section className="w-full flex flex-col gap-8 mt-4 lg:mt-8 p-4 lg:p-8">
-				<h3 className="sr-only">{`Expenses Table`}</h3>
+				<h3 className="sr-only">{`Expenses`}</h3>
 				<div className="w-full flex flex-col lg:flex-row gap-5">
 					<div className="w-full lg:w-7/12">
 						<ExpensesReportTable expenses={tableData.expenses} />

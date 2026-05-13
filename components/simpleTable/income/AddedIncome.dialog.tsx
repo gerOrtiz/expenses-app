@@ -1,10 +1,11 @@
 'use client';
+import { Text } from "@/components/ui/Text";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { AddedIncomeI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dialog, Typography, DialogBody, IconButton, Card, CardBody } from "@material-tailwind/react";
+import { Dialog, DialogBody, IconButton, Card, CardBody, DialogFooter, Button } from "@material-tailwind/react";
 
 interface AddedIncomeDialogPropsI {
 	addedIncome: AddedIncomeI[];
@@ -34,24 +35,19 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h5" className="text-blue-800" id="income-dialog-label">
-							{`Added Income`}
-						</Typography>
-						<IconButton variant="text" aria-label="close" onClick={handleOpen}>
-							<FontAwesomeIcon icon={faTimes} size="lg" color="blue-gray" />
+						<Text variant="h4" id="income-dialog-label">{`Added Income`}</Text>
+						<IconButton variant="text" aria-label="close" size="sm" onClick={handleOpen}>
+							<FontAwesomeIcon icon={faTimes} size="1x" color="blue" />
 						</IconButton>
 					</div>
-
-					<Typography variant="paragraph" id="income-dialog-description" color="blue-gray" className="mt-1">
-						{`History of income additions and withdrawals`}
-					</Typography>
+					<Text variant="body" id="income-dialog-description" className="mt-1">{`History of income additions and withdrawals`}</Text>
 
 					<div className="mt-3 max-h-96 overflow-y-auto">
 						{addedIncome.length === 0 ? (
 							<div className="text-center py-8">
-								<Typography color="gray" variant="paragraph">
+								<Text variant="label">
 									{`No income additions yet`}
-								</Typography>
+								</Text>
 							</div>
 						) : (
 							<div className="space-y-3">
@@ -60,52 +56,34 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 										<CardBody className="p-4">
 											<div className="flex justify-between items-center">
 												<div className="flex flex-col">
-													<Typography variant="small" color="blue-gray" className="font-medium">
+													<Text variant="label" className="font-medium text-blue-gray-800">
 														{formatDate(income.date)}
-													</Typography>
-													<Typography variant="small" color="gray" className="text-xs">
-														{income.isWithdrawal ? 'Withdrawal' : 'Income Addition'}
-													</Typography>
+													</Text>
+													<Text variant="small">{income.isWithdrawal ? 'Withdrawal' : 'Income Addition'} </Text>
 												</div>
 												<div className="flex flex-col items-end gap-1">
 													{income.cash > 0 && (
 														<div className="flex flex-col items-center gap-2">
 															<div className="flex item-center gap-2">
-																<Typography variant="small" color="blue-gray" className="font-normal">
-																	{`Cash`}:
-																</Typography>
-																<Typography
-																	variant="small"
-																	className="font-semibold text-green-800"
-																>
+																<Text variant="label">{`Cash`}:</Text>
+																<Text variant="label" className="font-semibold text-green-800">
 																	{'+'}{formatValue(income.cash)}
-																</Typography>
+																</Text>
 															</div>
 															{income.isWithdrawal && (<div className="flex item-center gap-2">
-																<Typography variant="small" color="blue-gray" className="font-normal">
-																	{`Card`}:
-																</Typography>
-																<Typography
-																	variant="small"
-																	className="font-semibold text-red-700"
-																>
+																<Text variant="label">{`Card`}:</Text>
+																<Text variant="label" className="font-semibold text-red-700">
 																	{'-'}{formatValue(income.cash)}
-																</Typography>
+																</Text>
 															</div>)}
 														</div>
 													)}
 													{income.card > 0 && (
 														<div className="flex items-center gap-2">
-															<Typography variant="small" color="blue-gray" className="font-normal">
-																{`Card`}:
-															</Typography>
-															<Typography
-																variant="small"
-																color={income.isWithdrawal ? "red" : "green"}
-																className="font-medium"
-															>
+															<Text variant="label">{`Card`}:</Text>
+															<Text variant="label" className="font-semibold text-green-800">
 																{'+'}{formatValue(income.card)}
-															</Typography>
+															</Text>
 														</div>
 													)}
 												</div>
@@ -118,6 +96,11 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 					</div>
 				</div>
 			</DialogBody>
+			<DialogFooter className="flex justify-end">
+				<Button variant="outlined" className="outlined" onClick={handleOpen}	>
+					{`Close`}
+				</Button>
+			</DialogFooter>
 		</Dialog>
 	);
 }

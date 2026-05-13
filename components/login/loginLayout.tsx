@@ -3,9 +3,10 @@
 import { useState } from "react";
 import SignUpForm from "./signUpForm";
 import LoginForm from "./loginForm";
-import { Button, Card, CardBody, CardFooter, CardHeader, Typography } from "@material-tailwind/react";
+import { Button, Card, CardBody, CardFooter, CardHeader } from "@material-tailwind/react";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
+import { Text } from "../ui/Text";
 
 export default function LoginLayout() {
 	const [isSigningUp, setIsSigningUp] = useState(false);
@@ -28,7 +29,8 @@ export default function LoginLayout() {
 		<div className="w-full min-h-[300px] p-2">
 			<Card className="mt-5">
 				<CardHeader floated={false} shadow={false}  >
-					<Typography variant="h3" >{isSigningUp ? `Sign up` : `Login`}</Typography>
+					<Text variant="h3">{isSigningUp ? `Sign up` : `Login`}</Text>
+
 				</CardHeader>
 				<CardBody className="flex flex-col gap-6">
 					<Button
@@ -46,7 +48,6 @@ export default function LoginLayout() {
 
 					<div className="flex items-center gap-3">
 						<hr className="flex-1 border-blue-gray-100" />
-						{/* <Typography variant="small" className="text-blue-gray-400">or continue with email</Typography> */}
 						<span className="text-blue-gray-800 text-sm ">{`or continue with email`} </span>
 						<hr className="flex-1 border-blue-gray-100" />
 					</div>
@@ -55,9 +56,11 @@ export default function LoginLayout() {
 				</CardBody>
 				<CardFooter>
 					<div className="flex flex-col lg:flex-row justify-center items-center gap-3" >
-						<Typography variant="paragraph">{isSigningUp ? `Already have an account?` : `Don't have an account?`} </Typography>
+						<Text variant="body">{isSigningUp ? `Already have an account?` : `Don't have an account?`}</Text>
 						<Button variant="text" onClick={onChangeView} className="p-0 group hover:bg-transparent">
-							<Typography variant="paragraph" className="normal-case underline-offset-4 group-hover:underline transiton-all duration-100">{isSigningUp ? `Login here` : `Sign up here`} </Typography>
+							<Text variant="body" className="normal-case underline-offset-4 group-hover:underline transiton-all duration-100">
+								{isSigningUp ? `Login here` : `Sign up here`}
+							</Text>
 						</Button>
 					</div>
 				</CardFooter>

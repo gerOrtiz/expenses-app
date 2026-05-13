@@ -1,4 +1,5 @@
 'use client';
+import { Text } from "@/components/ui/Text";
 import { useActiveTable } from "@/hooks/useActiveTable";
 import { useEditExpense } from "@/hooks/useEditExpense";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
@@ -6,7 +7,7 @@ import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Dialog, Typography, Select, Option, DialogBody, IconButton, Checkbox } from "@material-tailwind/react";
+import { Button, Dialog, Select, Option, DialogBody, IconButton, Checkbox } from "@material-tailwind/react";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -98,22 +99,18 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 			<DialogBody ref={dialogRef} className="w-full p-4">
 				<div className="flex flex-col w-full gap-3 p-1">
 					<div className="flex w-full justify-between items-center">
-						<Typography variant="h5" className="text-blue-800" id="edit-expense-label">
-							{`Edit Expense`}
-						</Typography>
+						<Text variant="h4" id="edit-expense-label">{`Edit Expense`}</Text>
 						<IconButton variant="text" aria-label={`Close edit dialog`} size="sm" onClick={handleOpen}>
-							<FontAwesomeIcon icon={faTimes} color="blue-gray" />
+							<FontAwesomeIcon icon={faTimes} color="blue" />
 						</IconButton>
 					</div>
-
-					<Typography color="blue-gray" variant="paragraph" id="edit-expense-description">
+					<Text variant="body" id="edit-expense-description">
 						{`Update this expense details`}
-					</Typography>
-
+					</Text>
 					<form className="mt-2 mb-2" onSubmit={handleSubmit(onSubmit)}>
 						<div className="mb-1 flex flex-col gap-3">
 							<div className="flex flex-col items-left">
-								<label htmlFor="description" className="text-xs text-gray-900 font-semibold ml-1">{'Description'}</label>
+								<label htmlFor="description" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Description'}</label>
 								<input id="description" name="description" type="text" className={`formInput ${errors.description ? 'inputError' : ''}`} {...register('description', { required: true, minLength: 3 })} />
 								{errors.description && errors.description.type === 'required' &&
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
@@ -121,7 +118,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Description requires at least 3 characters`}</span>)}
 							</div>
 							<div className="flex flex-col items-left">
-								<label htmlFor="amount" className="text-xs text-gray-900 font-semibold ml-1">{'Amount'}</label>
+								<label htmlFor="amount" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
 									{...register('amount', { required: true, min: 1, valueAsNumber: true })} />
 								{errors.amount && errors.amount.type === 'required' &&
@@ -131,7 +128,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 							</div>
 
 							<div className="flex flex-col items-left">
-								<label htmlFor="method-select" className="text-xs text-gray-900 font-semibold ml-1">{'Method'}</label>
+								<label htmlFor="method-select" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Method'}</label>
 								<Controller name="type"
 									control={control}
 									rules={{ required: true }}
@@ -161,7 +158,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 										checked={isPendingPayment}
 										onChange={handlePendingFlag}
 										crossOrigin={undefined} />
-									<Typography id="payment-label" variant="small" className=" text-blue-gray-900 font-light">{`Is a pending payment?`}</Typography>
+									<Text id="payment-label" variant="label" className="text-blue-gray-900 font-light">{`Is a pending payment?`}</Text>
 								</div>
 
 							)
