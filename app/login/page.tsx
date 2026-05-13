@@ -31,7 +31,7 @@ export default async function UserFormPage() {
 				<div className="lg:w-1/2 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
 					<LoginLayout />
 				</div>
-				<div className="flex justify-center items-center w-full my-8">
+				<div className="flex justify-center items-center w-3/4 lg:w-full my-8">
 					<Image src={logoImg} alt="Expenses app logo" width={400} className="opacity-40" />
 				</div>
 			</main>

@@ -18,7 +18,7 @@ const variantStyles: Record<TextVariant, string> = {
 	h6: 'text-base font-semibold text-blue-700',
 	body: 'text-base font-normal text-blue-gray-700',
 	label: 'text-xs lg:text-sm font-normal text-blue-gray-600',
-	small: 'text-xs font-normal text-blue-gray-600',
+	small: 'text-[11px] lg:text-xs font-normal text-blue-gray-600',
 };
 
 const variantElements: Record<TextVariant, keyof JSX.IntrinsicElements> = {

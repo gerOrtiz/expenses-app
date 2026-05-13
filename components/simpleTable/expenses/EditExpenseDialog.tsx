@@ -107,7 +107,11 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 					<Text variant="body" id="edit-expense-description">
 						{`Update this expense details`}
 					</Text>
-					<form className="mt-2 mb-2" onSubmit={handleSubmit(onSubmit)}>
+					<div className="flex items-center justify-start gap-2">
+						<Text variant="label" className="text-blue-gray-800 lg:text-xs font-semibold">{`Date added:`}</Text>
+						<Text variant="label" className="text-blue-800 text-sm">{new Date(expense.date).toLocaleDateString()}</Text>
+					</div>
+					<form className=" mb-2" onSubmit={handleSubmit(onSubmit)}>
 						<div className="mb-1 flex flex-col gap-3">
 							<div className="flex flex-col items-left">
 								<label htmlFor="description" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Description'}</label>
@@ -150,6 +154,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 									}
 								/>
 							</div>
+
 							{(hasPendingExpenses) && (
 								<div className="flex gap-2 items-center">
 									<Checkbox id="payment"
