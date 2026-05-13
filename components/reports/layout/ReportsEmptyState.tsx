@@ -1,8 +1,8 @@
 'use client';
 
-import { Typography } from "@material-tailwind/react";
 import Image from "next/image";
 import noData from "@/assets/no-data.jpg";
+import { Text } from "@/components/ui/Text";
 
 export default function ReportsEmptyState() {
 	return (
@@ -14,10 +14,8 @@ export default function ReportsEmptyState() {
 			</div>
 
 			<div className="flex flex-col items-center gap-2 text-center">
-				<Typography variant="h2" className="font-medium text-blue-800" >{`No data available`}</Typography>
-				<p className="text-normal text-blue-gray-600 max-w-sm leading-relaxed">
-					{`Try with a different date range or come back when you close an expenses period`}
-				</p>
+				<Text variant="h2">{`No data available`}</Text>
+				<Text variant="body" className="max-w-sm leading-relaxed">		{`Try with a different date range or come back when you close an expenses period`}</Text>
 			</div>
 		</div>
 	)

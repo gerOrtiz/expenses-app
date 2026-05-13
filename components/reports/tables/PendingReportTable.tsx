@@ -1,8 +1,9 @@
 'use client';
 
+import { Text } from "@/components/ui/Text";
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { PendingExpenseI } from "@/interfaces/expenses";
-import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { Card, CardBody } from "@material-tailwind/react";
 
 const TABLE_HEAD = [`Description`, `Amount`, `Method`];
 const typeFilter = (type: string): string => {
@@ -15,7 +16,7 @@ export default function PendingReportTable({ pendingExpenses }: { pendingExpense
 		<div className="p-0">
 			<Card className="mb-1 w-full overflow-x-hidden overflow-y-auto shadow-blue-100 border border-blue-gray-100 ">
 				<CardBody className="flex flex-col gap-5 p-2 lg:p-6">
-					<Typography variant="h4" className="text-blue-gray-600">{`Pending expenses`}</Typography>
+					<Text variant="h3">{`Pending expenses`}</Text>
 					<div className="w-full p-1 lg:p-0">
 						<table className="table w-full table-auto text-left">
 							<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
@@ -24,34 +25,23 @@ export default function PendingReportTable({ pendingExpenses }: { pendingExpense
 										<th aria-label={title ? title : `Edit column`}
 											key={title}
 											className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-											<span
-												className="text-xs lg:text-sm text-blue-gray-800 font-semibold leading-none opacity-70"
-											>
-												{title}
-											</span>
+											<Text variant="label" className="hidden lg:block">{title}</Text>
+											<Text variant="small" className="p-1 lg:hidden">{title}</Text>
 										</th>
 									))}
 								</tr>
 							</thead>
 							<tbody>
-								{pendingExpenses.map((pending) => (
-									<tr key={pending.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
-										<td className="p-4 group-last:rounded-bl-md">
-											<Typography variant="small" color="blue-gray" className="text-[13px] lg:text-[15px]">
-												{pending.description}
-											</Typography>
+								{pendingExpenses.map((p) => (
+									<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
+										<td className="p-2 lg:p-4 group-last:rounded-bl-md border-b border-blue-50">
+											<Text variant="label" className="lg:text-[15px]">{p.description}</Text>
 										</td>
-										<td className="p-4">
-											<Typography variant="small" color="blue-gray" className="text-[13px] lg:text-[15px]">
-												{formatValue(pending.amount)}
-											</Typography>
+										<td className="p-2 lg:p-4 border-b border-blue-50">
+											<Text variant="label" className="lg:text-[15px]">	{formatValue(p.amount)}</Text>
 										</td>
-										<td className="p-4">
-											<div className="w-full flex flex-col lg:flex-row items-center justify-start  gap-2">
-												<Typography variant="small" color="blue-gray" className="text-[13px] lg:text-[15px]">
-													{typeFilter(pending.type)}
-												</Typography>
-											</div>
+										<td className="p-2 lg:p-4 border-b border-blue-50">
+											<Text variant="label" className="lg:text-[15px]">{typeFilter(p.type)}</Text>
 										</td>
 									</tr>
 								))}
