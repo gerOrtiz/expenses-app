@@ -8,11 +8,12 @@ import logoImg from '@/assets/transparent-logo.png';
 import logoIcon from '@/assets/logo.png';
 import logoTitle from '@/assets/transparent-title.png';
 
-import { Button, Drawer, IconButton, Spinner, Typography } from "@material-tailwind/react";
+import { Button, Drawer, IconButton, Menu, MenuHandler, MenuItem, MenuList, Spinner, Typography } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faTimes, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Text } from "./Text";
 
 export default function MainHeader() {
 	const { data: session, status } = useSession();
@@ -70,7 +71,28 @@ export default function MainHeader() {
 									<Link className={classes.link} href="/reports">{`Reports`}</Link>
 								</li>
 								<li>
-									<Button variant="outlined" color="blue" className="outlined hover:-translate-y-1" onClick={logoutHandler} >{`Logout`}</Button>
+									{/* <Button variant="outlined" color="blue" className="outlined hover:-translate-y-1" onClick={logoutHandler} >{`Logout`}</Button> */}
+									<Menu
+										animate={{
+											mount: { y: 0 },
+											unmount: { y: 25 },
+										}}
+									>
+										<MenuHandler>
+											<div className="flex gap-2 items-center">
+												<IconButton aria-label={`User options`} className="rounded-full" size="sm" variant="outlined" color="blue">
+													<FontAwesomeIcon icon={faUser} size="xl" />
+												</IconButton>
+												<Text variant="label" className="text-blue-800">{session.user.name}</Text>
+											</div>
+										</MenuHandler>
+										<MenuList>
+											<MenuItem className="flex items-center" onClick={logoutHandler}>
+												<Text variant="label">{`Logout`}</Text>
+											</MenuItem>
+										</MenuList>
+									</Menu>
+
 								</li>
 							</>)}
 						</ul>

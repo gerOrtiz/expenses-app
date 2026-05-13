@@ -95,8 +95,8 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<tbody>
 						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80">
-								<td className="p-2 text-center text-nowrap text-ellipsis group-last:rounded-bl-md border-b border-blue-50">
-									<Text variant="small">{expense.description}</Text>
+								<td className="p-2 text-center max-w-24  group-last:rounded-bl-md border-b border-blue-50">
+									<Text variant="small" className="block text-ellipsis overflow-hidden whitespace-nowrap w-full">{expense.description}</Text>
 								</td>
 								<td className="p-2 border-b border-blue-50">
 									<Text variant="small">{formatValue(expense.amount)}</Text>
@@ -109,12 +109,14 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 										)}
 									</div>
 								</td>
-								<td className="p-2 group-last:rounded-br-md border-b border-blue-50">
+								<td className=" group-last:rounded-br-md border-b border-blue-50">
 									<div className="grid-cols-2 ">
-										<IconButton aria-haspopup={true} aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm" className="rounded-full mr-1" onClick={() => editRow(expense)}>
+										<IconButton aria-haspopup={true} aria-label={`Open edit expense dialog`} variant="text" color="blue" size="sm"
+											className="rounded-full mr-1 w-5 h-5" onClick={() => editRow(expense)}>
 											<FontAwesomeIcon icon={faPencil} />
 										</IconButton>
-										<IconButton aria-haspopup={true} aria-label={`Open delete expense dialog`} variant="text" size="sm" color="blue" className="rounded-full" onClick={() => deleteExpense(index)}>
+										<IconButton aria-haspopup={true} aria-label={`Open delete expense dialog`} variant="text" size="sm" color="blue"
+											className="rounded-full w-5 h-5" onClick={() => deleteExpense(index)}>
 											<FontAwesomeIcon icon={faTrash} />
 										</IconButton>
 									</div>
@@ -138,7 +140,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<tbody>
 						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
-								<td className="p-4 group-last:rounded-bl-md border-b border-blue-50">
+								<td className="p-4 max-w-72 group-last:rounded-bl-md border-b border-blue-50">
 									<Text variant="label" className="lg:text-[15px] ">{expense.description}</Text>
 								</td>
 								<td className="p-4 border-b border-blue-50">
@@ -183,7 +185,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 
 const PaymentBadge: React.FC = () => {
 	return (<>
-		<div className="w-2/3 lg:w-1/3 flex justify-center text-center p-1 rounded-xl bg-lime-400">
+		<div className="w-2/3 lg:w-2/5 flex justify-center text-center py-1 px-2 rounded-xl bg-lime-400">
 			<Text variant="small" className="text-indigo-500 text-[10px] lg:text-[11px]">{`Payment`}</Text>
 		</div>
 	</>);
