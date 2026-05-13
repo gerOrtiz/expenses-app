@@ -42,7 +42,7 @@ describe('SummaryCard', () => {
 		expect(displayedData[0]).toHaveTextContent('$600.00');
 		expect(displayedData[1]).toHaveTextContent('37.50%');
 		expect(displayedData[2]).toHaveTextContent('$0.00');
-		expect(displayedData[3]).toHaveTextContent('2');
+		expect(displayedData[3]).toHaveTextContent('$500.00');
 
 	});
 

@@ -1,12 +1,14 @@
 'use client';
 
+import { Text } from "@/components/ui/Text";
+import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { ExpensesTableI } from "@/interfaces/expenses";
-import { Typography } from "@material-tailwind/react";
-import { Bar, BarChart, CartesianGrid, Label, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { bars, chartColors, chartLabel, tooltipColors } from "@/lib/constants/chartColors";
+import { Bar, BarChart, CartesianGrid, Label, Legend, Pie, PieChart, RenderableText, ResponsiveContainer, Tooltip, TooltipValueType, XAxis, YAxis } from "recharts";
 
 export default function DashboardCharts({ data }: { data: ExpensesTableI | null }) {
+	const { formatValue } = useMoneyFilter();
 	if (!data) return null;
-
 	const charts = ['Budget', 'Total Spent', 'Pending status'];
 
 	const budgetData = [{ category: 'Income', cash: data.income.cash, card: data.income.card },
@@ -14,18 +16,23 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 	{ category: 'Pending', cash: data.totals.total_pending.cash, card: data.totals.total_pending.card },
 	{ category: 'Remaining', cash: data.remaining.cash, card: data.remaining.card }
 	];
-	const spentData = [{ name: 'Cash', value: data.totals.total_expenses.cash, fill: '#845ec2' },
-	{ name: 'Card', value: data.totals.total_expenses.card, fill: '#296073' }
+	const spentData = [{ name: 'Cash', value: data.totals.total_expenses.cash, fill: chartColors.cash },
+	{ name: 'Card', value: data.totals.total_expenses.card, fill: chartColors.card }
 	];
 	const pendingSummary = [{ status: 'Paid', cash: data.totals.total_payments_made.cash, card: data.totals.total_payments_made.card },
 	{ status: 'Remaining', cash: data.totals.total_pending.cash, card: data.totals.total_pending.card }
 	];
 
+	const formatAmounts = (val: RenderableText | TooltipValueType) => {
+		return formatValue(Number(val));
+	};
+
 	return (
 		<section className="w-full items-center grid grid-cols-3 gap-4" aria-label={`Charts`}>
 			{charts.map((title, index) => (
-				<div key={title} className="col-span-3 lg:col-span-1 border border-blue-gray-500 shadow rounded-lg w-full h-auto flex flex-col gap-4 justify-center items-center">
-					<Typography variant="h5" className="text-blue-800 mt-2">{title}</Typography>
+				<div key={title} className="col-span-3 lg:col-span-1 border border-blue-gray-100 shadow rounded-xl w-full h-auto flex flex-col gap-4 justify-center items-center">
+					{/* <Typography variant="h5" className="text-blue-800 mt-2">{title}</Typography> */}
+					<Text variant="h5" className="mt-2">{title}</Text>
 					<ResponsiveContainer width="100%" height={300}>
 						{index === 0 && (
 							<BarChart
@@ -35,21 +42,27 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 								<CartesianGrid strokeDasharray="3 3" />
 								<XAxis dataKey="category" fontSize={13} />
 								<YAxis width="auto" fontSize={13} />
-								<Tooltip contentStyle={{ backgroundColor: '#220862', borderRadius: 8 }} labelStyle={{ color: "white" }} />
+								<Tooltip cursor={{ fill: tooltipColors.cursor }}
+									contentStyle={{ border: tooltipColors.border, borderRadius: 8, textTransform: 'capitalize' }}
+									labelStyle={{ color: tooltipColors.label }}
+									itemStyle={{ color: tooltipColors.items }}
+									formatter={formatAmounts}
+								/>
 								{/* <Legend /> */}
-								<Bar dataKey="cash" fill="#8884d8" isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: 'blue' }} />
-								<Bar dataKey="card" fill="#82ca9d" isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: 'green' }} />
+								<Bar dataKey="cash" fill={chartColors.cash} isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: bars.cashStroke }} />
+								<Bar dataKey="card" fill={chartColors.card} isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: bars.cardStroke }} />
 							</BarChart>
 						)}
 						{index === 1 && (
 							<PieChart >
 								<Pie data={spentData} dataKey="value" nameKey="name"
 									fontSize={13}
-									label
 									outerRadius="80%" innerRadius="50%" isAnimationActive={true} animationEasing="ease-in-out" />
-								<Label position="center" fill="#666">{title}</Label>
-								<Tooltip contentStyle={{ borderRadius: 8, backgroundColor: 'whitesmoke' }} />
-								<Legend verticalAlign="top" />
+								<Label position="center" fill={chartLabel.fill}>{title}</Label>
+								<Tooltip contentStyle={{ border: tooltipColors.border, borderRadius: 8, textTransform: 'capitalize' }}
+									labelStyle={{ color: tooltipColors.label }}
+									itemStyle={{ color: tooltipColors.items }} formatter={formatAmounts} />
+								<Legend verticalAlign="top" labelStyle={{ color: chartLabel.fill }} />
 							</PieChart>
 						)}
 						{index === 2 && (
@@ -61,11 +74,16 @@ export default function DashboardCharts({ data }: { data: ExpensesTableI | null 
 								<CartesianGrid strokeDasharray="3 3" />
 								<XAxis dataKey="status" fontSize={13} />
 								<YAxis width="auto" fontSize={13} />
-								<Tooltip contentStyle={{ backgroundColor: '#220862', borderRadius: 8 }} labelStyle={{ color: "white" }} />
+								<Tooltip cursor={{ fill: tooltipColors.cursor }}
+									contentStyle={{ border: tooltipColors.border, borderRadius: 8, textTransform: 'capitalize' }}
+									labelStyle={{ color: tooltipColors.label }}
+									itemStyle={{ color: tooltipColors.items }}
+									formatter={formatAmounts}
+								/>
 
 								{/* <Legend /> */}
-								<Bar dataKey="cash" fill="#6ea1c7" isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: 'purple' }} />
-								<Bar dataKey="card" fill="#ed7485" isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: 'red' }} />
+								<Bar dataKey="cash" fill={chartColors.cash} isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: bars.cashStroke }} />
+								<Bar dataKey="card" fill={chartColors.card} isAnimationActive={true} radius={[10, 10, 0, 0]} activeBar={{ stroke: bars.cardStroke }} />
 							</BarChart>
 						)}
 					</ResponsiveContainer>
