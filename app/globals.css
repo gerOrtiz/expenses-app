@@ -152,3 +152,24 @@ div.selectContainer {
 		text-wrap: balance;
 	}
 }
+
+@media(hover:hover) {
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(194, 239, 254, .8);
+		border-left: 2px solid cyan;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border: 1px solid rgb(74, 134, 190);
+		background: rgb(74, 134, 190);
+		border-radius: 100vmax;
+
+		&:hover {
+			background: cyan;
+		}
+	}
+}

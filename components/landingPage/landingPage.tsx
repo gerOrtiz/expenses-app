@@ -42,7 +42,7 @@ function LandingpPage() {
 
 		<section id="hero" className={`${classes.hero} relative flex flex-col justify-center w-full h-max lg:h-screen overflow-hidden`}>
 			<h1 className="sr-only">Expenses App</h1>
-			<div className="flex flex-col lg:flex-row w-full min-h-screen bg-cyan-100">
+			<div className="flex flex-col lg:flex-row w-full min-h-screen heroSection">
 				<div className="flex flex-col items-center justify-center w-full lg:w-1/2 lg:h-full mt-20 p-3 lg:mt-0 lg:p-0">
 					<div className="w-full lg:w-11/12 flex flex-col gap-7 text-left p-6 lg:p-4">
 						<Text variant="h2" className="drop-shadow-lg">{`Know exactly what you have left, before you spend it`}</Text>
@@ -99,11 +99,11 @@ function LandingpPage() {
 
 		<section id="features" className="max-w-full px-6 mt-20">
 			{/* Dashboard */}
-			<div className="w-full flex flex-col-reverse lg:flex-row py-20">
+			<div className="w-full flex flex-col-reverse lg:flex-row py-20 feature-row">
 				<div className="w-full lg:w-1/2 flex flex-col justify-center">
 					<div className="w-full flex items-center justify-center p-3">
 						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
-							<Image src={dashboard} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+							<Image src={dashboard} alt={`Dashboard preview`} width={500} className="w-full rounded-2xl" />
 						</div>
 					</div>
 				</div>
@@ -119,7 +119,7 @@ function LandingpPage() {
 				</div>
 			</div>
 			{/* Expenses */}
-			<div className="w-full flex flex-col lg:flex-row py-20">
+			<div className="w-full flex flex-col lg:flex-row py-20 feature-row">
 				<div className="w-full lg:w-1/2 flex justify-center items-center">
 					<div className="w-full flex flex-col text-center p-4 gap-2">
 						<Text variant="h3" className="text-[1.65rem] drop-shadow-md">{`Don't just trust your memory`}</Text>
@@ -132,17 +132,17 @@ function LandingpPage() {
 				<div className="w-full lg:w-1/2 flex flex-col justify-center">
 					<div className="w-full flex items-center justify-center p-3">
 						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
-							<Image src={expensesTable} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+							<Image src={expensesTable} alt={`Expenses preview`} width={500} className="w-full rounded-2xl" />
 						</div>
 					</div>
 				</div>
 			</div>
 			{/* Reports */}
-			<div className="w-full flex flex-col-reverse lg:flex-row py-20">
+			<div className="w-full flex flex-col-reverse lg:flex-row py-20 feature-row">
 				<div className="w-full lg:w-1/2 flex flex-col justify-center">
 					<div className="w-full flex items-center justify-center p-3">
 						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
-							<Image src={reportsModule} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+							<Image src={reportsModule} alt={`Reports preview`} width={500} className="w-full rounded-2xl" />
 						</div>
 					</div>
 				</div>
@@ -159,7 +159,7 @@ function LandingpPage() {
 			</div>
 		</section>
 
-		<section id="how it works" className="w-full bg-cyan-100">
+		<section id="how it works" className="w-full bg-cyan-100 pb-4 lg:pb-2">
 			<div className="container lg:py-16 mx-auto text-center  p-3">
 				<Text variant="h3" className="mb-12">{`How it works`}</Text>
 				<div className="flex flex-wrap justify-center gap-8">
