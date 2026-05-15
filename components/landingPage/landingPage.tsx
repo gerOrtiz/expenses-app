@@ -1,28 +1,35 @@
 'use client';
-import calculatorImg from "@/assets/calculator.jpg";
-import moneyImg from "@/assets/money.jpg";
-import reports from "@/assets/reports.jpg";
-import tax from "@/assets/tax.jpg";
-import savings from "@/assets/savings.jpg";
-import { Button, Card, CardBody, CardHeader, Typography } from "@material-tailwind/react";
+import expensesTable from "@/screenshots/expenses-desktop1.png";
+import expensesTableMobile from "@/screenshots/expenses-mobile-fit.png";
+import dashboard from "@/screenshots/dashboard.png";
+import reportsModule from "@/screenshots/reports.png";
+import { Button } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import classes from "./landingPage.module.css";
+import { Text } from "../ui/Text";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartPie, faLock, faReceipt, faWallet } from "@fortawesome/free-solid-svg-icons";
 
 
-const descriptions = [
+const stepCards = [
 	{
-		title: `Smart Expense Management`,
-		description: `Easily record and categorize all your daily expenses. Track cash and card payments, manage pending expenses, and see where your money goes in real-time`
+		title: `1. Create your budget`,
+		description: `Set your income, define your pending expenses, and you're ready to go.`,
+		icon: faWallet
 	}, {
-		title: `Complete Financial Picture`,
-		description: `Monitor your account balances, track income additions, and withdrawals. Get a clear view of your financial health with automated balance calculations.`
+		title: `2. Log your expenses`,
+		description: `Add each expense as it happens: cash or card. The app keeps the running total for you.`,
+		icon: faReceipt
 	}, {
-		title: `Insights & Analytics`,
-		description: `Generate detailed reports and visualizations of your spending patterns. Identify trends, set budgets, and make data-driven financial decisions.`
+		title: `3. Stay in control`,
+		description: `Close a period and see exactly where your money went. Then do better next month.`,
+		icon: faChartPie
 	}
 ];
+
+const browserBarColors = ['bg-red-500', 'bg-yellow-300', 'bg-green-400'];
 
 function LandingpPage() {
 	const router = useRouter();
@@ -33,146 +40,148 @@ function LandingpPage() {
 
 	return (<>
 
-		<section id="hero" className={`${classes.hero} relative flex flex-col justify-center w-full h-screen overflow-hidden`}>
+		<section id="hero" className={`${classes.hero} relative flex flex-col justify-center w-full h-max lg:h-screen overflow-hidden`}>
 			<h1 className="sr-only">Expenses App</h1>
-			<Image src={savings} alt="Calculating finances" fill className="hidden lg:flex w-full object-cover -z-10" priority />
-			<Image src={tax} alt="Calculating finances" fill className="lg:hidden flex w-full object-cover -z-10" priority />
-
-			<div
-				className={`${classes.callToAction} p-4 lg:p-8 m-0 lg:mr-8 bg-transparent lg:bg-white/[0.3] w-11/12 lg:w-1/2 self-center lg:self-end gap-4`}>
-				<Typography variant="h2" color="black"  >{`Take full control of your finances in one place`}</Typography>
-				<Typography variant="lead" color="gray" className={`${classes.description} text-center`}  >
-					{`Say goodbye to financial stress. Expenses app is here to help you with you money management. Whether you're budgeting, tracking expenses or saving for something. Let Expenses App be your guide to achieve it.`}
-				</Typography>
-				<div className="w-full flex justify-center gap-6">
-					<Link href="#about">
-						<Button variant="outlined" className="outlined" >{`Learn more`}</Button>
-					</Link>
-					<Button variant="filled" className="filled" onClick={handleGetStartedClick}>{`Get started`}</Button>
-				</div>
-			</div>
-
-		</section>
-
-
-		<section id="about" className="max-w-full flex flex-col mt-8 p-6 m-6">
-			<div className="lg:w-3/5 sm:w-full flex flex-col gap-4 self-center">
-				<Typography variant="h2" color="black"  >{`Take Control of Your Personal Finances`}</Typography>
-				<Typography variant="paragraph" color="gray" className=" text-lg" >
-					{`Track expenses, manage your money, and make informed financial decisions with our comprehensive expense tracking platform.`}
-				</Typography>
-			</div>
-			<div className="w-full grid lg:grid-cols-3 sm:grid-cols-1 lg:gap-4 sm:gap-1 mt-7">
-				{descriptions.map((item, index) => (
-					<div key={item.title} className="col-span-1 h-auto">
-						<Card className="mt-6 h-full flex flex-col gap-5 shadow-lg">
-							<CardHeader color="blue-gray" className=" h-56"  >
-								<Image src={index === 0 ? calculatorImg : index === 1 ? moneyImg : reports} alt={index === 0 ? 'calculator' : index === 1 ? 'money' : 'reports'} className="w-full" />
-							</CardHeader>
-							<CardBody className="flex flex-col gap-4 justify-center" >
-								<Typography color="black" variant="h5"  >
-									{item.title}
-								</Typography>
-								<Typography  >
-									{item.description}
-								</Typography>
-							</CardBody>
-						</Card>
+			<div className="flex flex-col lg:flex-row w-full min-h-screen bg-cyan-100">
+				<div className="flex flex-col items-center justify-center w-full lg:w-1/2 lg:h-full mt-20 p-3 lg:mt-0 lg:p-0">
+					<div className="w-full lg:w-11/12 flex flex-col gap-7 text-left p-6 lg:p-4">
+						<Text variant="h2" className="drop-shadow-lg">{`Know exactly what you have left, before you spend it`}</Text>
+						<Text variant="body" className="lg:text-lg">{`Set your budget, track your expenses, and let the app do the math. No spreadsheets, no surprises at the end of the month.`}</Text>
+						<div className="w-full flex justify-center gap-6 mt-3">
+							<Link href="#features">
+								<Button variant="outlined" className="outlined transition ease-in-out hover:-translate-y-1 duration-200" >
+									{`How it works`}
+								</Button>
+							</Link>
+							<Button variant="filled" className="filled transition ease-in-out hover:scale-105 duration-200"
+								onClick={handleGetStartedClick}>
+								{`Get started`}
+							</Button>
+						</div>
 					</div>
-				))}
-				{/* <div className="col-span-1 h-auto">
-					<Card className="mt-6 h-auto">
-						<CardHeader color="blue-gray" className=" h-56"  >
-							<Image src={calculatorImg} alt="Calculator" className="w-full" />
-						</CardHeader>
-						<CardBody  >
-							<Typography color="blue-gray" variant="h5"  >
-								{`Smart Expense Management`}
-							</Typography>
-							<Typography  >
-								{`Easily record and categorize all your daily expenses. Track cash and card payments, manage pending expenses, and see where your money goes in real-time`}
-							</Typography>
-						</CardBody>
-					</Card>
 				</div>
-				<div className="col-span-1 ">
-					<Card className="mt-6 "  >
-						<CardHeader color="blue-gray" className="relative h-56"  >
-							<Image src={moneyImg} alt="money" className="w-full" />
-						</CardHeader>
-						<CardBody  >
-							<Typography color="blue-gray" variant="h5"  >
-								{`Complete Financial Picture`}
-							</Typography>
-							<Typography  >
-								{`Monitor your account balances, track income additions, and withdrawals. Get a clear view of your financial health with automated balance calculations.`}
-							</Typography>
-						</CardBody>
-					</Card>
+				<div className="flex flex-col items-center justify-center w-full h-full lg:w-1/2 pb-3" >
+					<div className={`${classes.frameContainer} hidden lg:block`}>
+						<div className={`${classes.browserBar} grid grid-cols-3`}>
+							<div className="flex col-span-1 w-full">
+								<div className="w-2/3 p-3 flex items-center gap-2">
+									{[1, 2, 3].map((item, index) => (
+										<span key={item} className={`${browserBarColors[index]} rounded-full w-3 h-3`} />
+									))}
+								</div>
+							</div>
+							<div className="col-span-1 w-full py-1 content-center">
+								<div className={`flex w-full  rounded-md py-1 ${classes.navBar}`}>
+									<Text variant="small" className="font-light text-blue-gray-800 ml-2">{`expenses-app-2.vercel.app`}</Text>
+								</div>
+							</div>
+						</div>
+						<div className="w-full">
+							<Image src={expensesTable} width={400} className="w-full rounded-3xl" alt={`Expenses module`} />
+						</div>
+					</div>
+					<div className={`block lg:hidden ${classes.framerMobile}`}>
+						<div className={`${classes.addressBar} flex justify-center items-center`}>
+							<div className={`${classes.nav} flex w-full rounded-xl items-center justify-center gap-1`}>
+								<FontAwesomeIcon icon={faLock} size="xs" className="mt-0.5" />
+								<Text variant="small" className="font-light text-white text-[10px]">expenses-app-2.vercel.app</Text>
+							</div>
+						</div>
+						<div className="w-full">
+							<Image src={expensesTableMobile} className="max-h-full w-full rounded-3xl" alt={`Expenses mobile`} />
+						</div>
+					</div>
+
 				</div>
-				<div className="col-span-1">
-					<Card className="mt-6"  >
-						<CardHeader color="blue-gray" className="relative h-56"  >
-							<Image src={reports} alt="reports" className="w-full" />
-						</CardHeader>
-						<CardBody  >
-							<Typography color="blue-gray" variant="h5"  >
-								{`Insights & Analytics`}
-							</Typography>
-							<Typography  >
-								{`Generate detailed reports and visualizations of your spending patterns. Identify trends, set budgets, and make data-driven financial decisions.`}
-							</Typography>
-						</CardBody>
-					</Card>
-				</div> */}
 			</div>
 		</section>
 
-		<section id="how it works" className="lg:py-16">
-			<div className="container mx-auto text-center">
-				<Typography variant="h2" className="mb-12" >How It Works</Typography>
 
+		<section id="features" className="max-w-full px-6 mt-20">
+			{/* Dashboard */}
+			<div className="w-full flex flex-col-reverse lg:flex-row py-20">
+				<div className="w-full lg:w-1/2 flex flex-col justify-center">
+					<div className="w-full flex items-center justify-center p-3">
+						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
+							<Image src={dashboard} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+						</div>
+					</div>
+				</div>
+				<div className="w-full lg:w-1/2 flex justify-center items-center">
+					<div className="w-full flex flex-col text-center p-4 gap-2">
+						<Text variant="h3" className="text-[1.65rem] drop-shadow-md">{`Your spending, finally visible`}</Text>
+						<Text variant="body" className="font-medium">
+							{`Your bank tells you what's left.
+							 The dashboard tells you the full story, how much you've spent, how much is pending, and where your money actually went.
+							  No math required.`}
+						</Text>
+					</div>
+				</div>
+			</div>
+			{/* Expenses */}
+			<div className="w-full flex flex-col lg:flex-row py-20">
+				<div className="w-full lg:w-1/2 flex justify-center items-center">
+					<div className="w-full flex flex-col text-center p-4 gap-2">
+						<Text variant="h3" className="text-[1.65rem] drop-shadow-md">{`Don't just trust your memory`}</Text>
+						<Text variant="body" className="font-medium">
+							{`Even the sharpest memory can miss a $20 purchase from three days ago.
+							 Log your expenses as you go and let the app keep track every cash payment, every card transaction, all in one place. Your budget period, always up to date.`}
+						</Text>
+					</div>
+				</div>
+				<div className="w-full lg:w-1/2 flex flex-col justify-center">
+					<div className="w-full flex items-center justify-center p-3">
+						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
+							<Image src={expensesTable} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+						</div>
+					</div>
+				</div>
+			</div>
+			{/* Reports */}
+			<div className="w-full flex flex-col-reverse lg:flex-row py-20">
+				<div className="w-full lg:w-1/2 flex flex-col justify-center">
+					<div className="w-full flex items-center justify-center p-3">
+						<div className="rounded-2xl shadow-sm lg:shadow-md shadow-blue-100 border border-blue-200">
+							<Image src={reportsModule} alt={`Dashboard view`} width={500} className="w-full rounded-3xl" />
+						</div>
+					</div>
+				</div>
+				<div className="w-full lg:w-1/2 flex justify-center items-center">
+					<div className="w-full flex flex-col text-center p-4 gap-2">
+						<Text variant="h3" className="text-[1.65rem] drop-shadow-md">{`See the full picture`}</Text>
+						<Text variant="body" className="font-medium">
+							{`You already know rent is your biggest expense. 
+							But what's second? Reports breaks down a closed period so you can see exactly where your money went and sometimes the answer is surprising. 
+							That daily coffee, those weekend snacks, the small purchases you barely noticed. Seeing them all together is where the real financial awareness begins.`}
+						</Text>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="how it works" className="w-full bg-cyan-100">
+			<div className="container lg:py-16 mx-auto text-center  p-3">
+				<Text variant="h3" className="mb-12">{`How it works`}</Text>
 				<div className="flex flex-wrap justify-center gap-8">
-					<div className="step-card bg-white rounded-lg shadow-md p-8 w-64">
-						<div className="icon-container mb-6">
-							<div className="rounded-full bg-blue-100 p-4 inline-flex">
-								<svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-								</svg>
+					{stepCards.map((card) => (
+						<div key={card.title} className="bg-white border border-blue-gray-50 rounded-lg shadow-md shadow-blue-gray-400 p-8 w-64">
+							<div className="mb-6">
+								<div className="rounded-full w-16 h-16 bg-blue-100 p-4 inline-flex items-center justify-center">
+									<FontAwesomeIcon icon={card.icon} color="blue" size="xl" />
+								</div>
 							</div>
+							<Text variant="h4" className="mb-2">{card.title}</Text>
+							{/* <p className="text-gray-600">{card.description}</p> */}
+							<Text variant="body" className="text-gray-600">{card.description}</Text>
 						</div>
-						<Typography variant="h5" className="font-semibold mb-2">1. Create an Account</Typography>
-						<p className="text-gray-600">Sign up in seconds and set up your personal finance dashboard</p>
-					</div>
+					))}
 
-					<div className="step-card bg-white rounded-lg shadow-md p-8 w-64">
-						<div className="icon-container mb-6">
-							<div className="rounded-full bg-blue-100 p-4 inline-flex">
-								<svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-								</svg>
-							</div>
-						</div>
-						<Typography variant="h5" className="font-semibold mb-2" >2. Track Expenses</Typography>
-						<p className="text-gray-600">Add your daily expenses and categorize them with just a few clicks</p>
-					</div>
-
-					<div className="step-card bg-white rounded-lg shadow-md p-8 w-64">
-						<div className="icon-container mb-6">
-							<div className="rounded-full bg-blue-100 p-4 inline-flex">
-								<svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-								</svg>
-							</div>
-						</div>
-						<Typography variant="h5" className="font-semibold mb-2" >3. Gain Financial Clarity</Typography>
-						<p className="text-gray-600">View detailed reports and visualize your spending habits</p>
-					</div>
 				</div>
 
 				<div className="mt-12">
-					<Button className="filled py-3 px-8 rounded-lg" onClick={handleGetStartedClick} >
-						Get Started Now
+					<Button variant="filled" className="filled py-3 px-8 rounded-lg transition ease-in-out hover:scale-105 duration-200"
+						onClick={handleGetStartedClick} >
+						{`Get Started Now`}
 					</Button>
 				</div>
 			</div>
