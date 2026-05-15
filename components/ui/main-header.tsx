@@ -102,7 +102,7 @@ export default function MainHeader() {
 					<div className="flex w-full justify-between">
 						<Button variant="text" className="p-0" onClick={openDrawer} aria-label={`Open drawer`}>
 							<div className="flex gap-4 items-center">
-								<Image src={logoIcon} alt="Expenses logo" width={40} priority />
+								<Image src={logoIcon} alt="Expenses icon" width={40} priority />
 								<FontAwesomeIcon icon={faChevronRight} size="1x" className="text-indigo-600" />
 							</div>
 						</Button>
@@ -114,7 +114,7 @@ export default function MainHeader() {
 					<Drawer open={open} onClose={closeDrawer} className="p-4 bg-white shadow-2xl shadow-blue-gray-900/80" >
 						<div className="flex flex-col w-full ">
 							<div className="w-full flex justify-between items-center mb-8 ">
-								<Image src={logoImg} alt="Expenses logo" width={150} priority />
+								<Image src={logoImg} alt="Expenses logo mobile" width={150} priority />
 								<IconButton variant="text" onClick={closeDrawer} aria-label="Close menu" >
 									<FontAwesomeIcon icon={faTimes} color="gray" size="lg" />
 								</IconButton>

@@ -1,0 +1,56 @@
+@property --angle {
+	syntax: '<angle>';
+	inherits: false;
+	initial-value: 0deg;
+}
+
+@keyframes rotateGradient {
+	from {
+		--angle: 0deg;
+	}
+
+	to {
+		--angle: 120deg;
+	}
+}
+
+@keyframes reveal {
+	from {
+		opacity: 0;
+		transform: translateY(80px) scale(0.8);
+		filter: blur(12px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: blur(0);
+	}
+}
+
+.heroSection {
+	--angle: 0deg;
+	animation: rotateGradient 1.2s ease forwards;
+	background: linear-gradient(var(--angle),
+			#b2ebf2,
+			#80deea,
+			#00bcd4,
+			#4dd0e1);
+}
+
+.feature-row {
+	opacity: 1;
+	transform: none;
+	filter: none;
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.feature-row {
+			animation: reveal linear both;
+			animation-timeline: view();
+			animation-range-start: entry 10%;
+			animation-range-end: entry 90%;
+		}
+	}
+}
