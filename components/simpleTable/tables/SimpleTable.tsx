@@ -84,10 +84,10 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 						<tr>
 							{MOBILE_TABLE_HEAD.map((title) => (
-								<th aria-label={title ? title : `Edit column`}
+								<th aria-label={title ? title : `Edit`}
 									key={title}
 									className="p-2 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-									<Text variant="small" className="p-1">{title}</Text>
+									<Text variant="small" className={`p-1 ${title ? '' : 'sr-only'}`}>{title || 'Edit'}</Text>
 								</th>
 							))}
 						</tr>
@@ -105,7 +105,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 									<div className="w-full flex flex-col items-center justify-start gap-2">
 										<Text variant="small">{typeFilter(expense.type)}</Text>
 										{expense.isPending && (
-											<span className={`${classes.activeStroke} text-[10px] text-indigo-400 font-normal`}>{`Pending`}</span>
+											<span className={`${classes.activeStroke} text-[10px] text-indigo-700 font-normal`}>{`Pending`}</span>
 										)}
 									</div>
 								</td>
@@ -129,10 +129,10 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 						<tr>
 							{TABLE_HEAD.map((title) => (
-								<th aria-label={title ? title : `Edit column`}
+								<th aria-label={title ? title : `Edit`}
 									key={title}
 									className="p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-									<Text variant="label" >{title}</Text>
+									<Text variant="label" className={title ? '' : 'sr-only'}>{title || 'Edit'}</Text>
 								</th>
 							))}
 						</tr>

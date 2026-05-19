@@ -68,7 +68,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 		setOpenOptionsDialog(false);
 	}
 
-	const TABLE_HEAD = [`Description`, `Amount`, `Method`, ""];
+	const TABLE_HEAD = [`Description`, `Amount`, `Method`, 'Actions'];
 
 	const typeFilter = (type: string) => {
 		return type == 'cash' ? `Cash` : `Card`;
@@ -92,12 +92,12 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 					<table className="w-full max-w-full table-auto text-left">
 						<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 							<tr>
-								{TABLE_HEAD.map((title) => (
+								{TABLE_HEAD.map((title, index) => (
 									<th key={title}
-										aria-label={title ? title : `Edit column`}
+										aria-label={title}
 										className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-										<Text variant="label" className="hidden lg:block">{title}</Text>
-										<Text variant="small" className="p-1 lg:hidden">{title}</Text>
+										<Text variant="label" className={`hidden lg:block ${title === 'Actions' ? 'sr-only' : ''}`}>{title}</Text>
+										<Text variant="small" className={`p-1 lg:hidden ${title === 'Actions' ? 'sr-only' : ''}`}>{title}</Text>
 									</th>
 								))}
 							</tr>
