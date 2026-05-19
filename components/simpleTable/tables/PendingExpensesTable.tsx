@@ -92,7 +92,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 					<table className="w-full max-w-full table-auto text-left">
 						<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 							<tr>
-								{TABLE_HEAD.map((title, index) => (
+								{TABLE_HEAD.map((title) => (
 									<th key={title}
 										aria-label={title}
 										className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
