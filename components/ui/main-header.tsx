@@ -79,12 +79,18 @@ export default function MainHeader() {
 										}}
 									>
 										<MenuHandler>
-											<div className="flex gap-2 items-center">
+											<Button variant="text" className="flex gap-2 items-center p-1 normal-case">
+												<div className="w-7 h-7 p-1 flex items-center justify-center rounded-full border border-blue-700 text-blue-700">
+													<FontAwesomeIcon icon={faUser} size="lg" />
+												</div>
+												<Text variant="label" className="text-blue-700">{session.user.name}</Text>
+											</Button>
+											{/* <div className="flex gap-2 items-center">
 												<IconButton aria-label={`User options`} className="rounded-full" size="sm" variant="outlined" color="blue">
 													<FontAwesomeIcon icon={faUser} size="xl" />
 												</IconButton>
 												<Text variant="label" className="text-blue-800">{session.user.name}</Text>
-											</div>
+											</div> */}
 										</MenuHandler>
 										<MenuList>
 											<MenuItem className="flex items-center" onClick={logoutHandler}>

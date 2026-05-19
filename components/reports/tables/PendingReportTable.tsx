@@ -22,7 +22,7 @@ export default function PendingReportTable({ pendingExpenses }: { pendingExpense
 							<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 								<tr>
 									{TABLE_HEAD.map((title) => (
-										<th aria-label={title ? title : `Edit column`}
+										<th aria-label={title}
 											key={title}
 											className="p-2 lg:p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
 											<Text variant="label" className="hidden lg:block">{title}</Text>
