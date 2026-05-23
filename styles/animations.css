@@ -10,7 +10,7 @@
 	}
 
 	to {
-		--angle: 120deg;
+		--angle: 140deg;
 	}
 }
 
@@ -30,7 +30,7 @@
 
 .heroSection {
 	--angle: 0deg;
-	animation: rotateGradient 1.2s ease forwards;
+	animation: rotateGradient 1.8s ease forwards;
 	background: linear-gradient(var(--angle),
 			#b2ebf2,
 			#80deea,
