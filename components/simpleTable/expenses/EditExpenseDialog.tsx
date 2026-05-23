@@ -8,7 +8,7 @@ import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, Select, Option, DialogBody, IconButton, Checkbox } from "@material-tailwind/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface EditExpenseDialogPropsI {
@@ -29,7 +29,7 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 	const [isPendingPayment, setIsPendingPayment] = useState(expense.isPending);
 	const dialogRef = useStableDialogA11y(isOpen, 'edit-expense-label', 'edit-expense-description');
 	const { formatValue } = useMoneyFilter();
-	const { register, handleSubmit, control, reset, watch, setValue, formState: { errors, isValid, isSubmitting } } =
+	const { register, handleSubmit, control, reset, watch, setValue, trigger, formState: { errors, isValid, isSubmitting } } =
 		useForm<ExpenseFormType>({
 			mode: 'onTouched',
 			values: { description: expense.description, amount: expense.amount, type: expense.type, isPending: expense.isPending, pending_id: expense.pending_id }
@@ -37,7 +37,8 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 	const { mutation } = useEditExpense();
 	const { data } = useActiveTable();
 	const currentTable = data && data.data ? data.data : null;
-
+	const starterMethod = useRef<string>(expense.type);
+	const maxAmount = useRef<number>(currentTable ? currentTable.remaining[starterMethod.current] + expense.amount : Infinity);
 	const onSubmit: SubmitHandler<ExpenseFormType> = async (data) => {
 
 		const editedRow: ExpenseItemI = {
@@ -77,17 +78,23 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 	useEffect(() => {
 		if (!currentTable || !currentTable.pending) return;
 		if (currentTable.pending.length === 0) return;
+		maxAmount.current = watchType === starterMethod.current ? currentTable.remaining[watchType] + expense.amount : currentTable.remaining[watchType];
+		trigger('amount');
 		const hasPending = hasTypePendingExpenses(currentTable.pending, watchType);
 		if (watchType !== expense.type) setIsPendingPayment(false);
 
 		if (!hasPending) {
 			setHasPendingExpenses(false);
-
+			setIsPendingPayment(false);
 		} else {
 			setHasPendingExpenses(true);
 			setValue('pending_id', filteredPending[0].id);
 		}
-	}, [currentTable, watchType, setValue, filteredPending, expense.type]);
+	}, [currentTable, watchType, setValue, filteredPending, expense.type, trigger]);
+
+	useEffect(() => {
+		if (mutation.isError) throw mutation.error;
+	}, [mutation.isError]);
 
 	return (
 		<Dialog
@@ -124,11 +131,16 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 							<div className="flex flex-col items-left">
 								<label htmlFor="amount" className="text-xs text-blue-gray-800 font-semibold ml-1">{'Amount'}</label>
 								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
-									{...register('amount', { required: true, min: 1, valueAsNumber: true })} />
+									{...register('amount', {
+										required: true,
+										min: { value: 0.1, message: 'Amount must be a positive number' },
+										valueAsNumber: true,
+										validate: (value) => value <= maxAmount.current || 'Amount surpasses budget for current method'
+									})} />
 								{errors.amount && errors.amount.type === 'required' &&
 									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`This field is required`}</span>)}
-								{errors.amount && errors.amount.type === 'min' &&
-									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{`Amount must be a positive number or zero`}</span>)}
+								{errors.amount && errors.amount.message &&
+									(<span role="alert" className="text-xs text-red-700 font-normal mt-1 text-left">{errors.amount.message}</span>)}
 							</div>
 
 							<div className="flex flex-col items-left">

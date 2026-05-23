@@ -88,8 +88,8 @@ export async function PATCH() { //close table
 		});
 		await client.close();
 		return NextResponse.json({ data: 'Expenses table closed successfully!' }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 

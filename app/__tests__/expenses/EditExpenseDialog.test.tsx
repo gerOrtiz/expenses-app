@@ -204,7 +204,7 @@ describe('Edit expenses form', () => {
 			const invalidEntries = await screen.findAllByRole('alert');
 			expect(invalidEntries.length).toBe(2);
 			expect(invalidEntries[0]).toHaveTextContent('Description requires at least 3 characters');
-			expect(invalidEntries[1]).toHaveTextContent('Amount must be a positive number or zero');
+			expect(invalidEntries[1]).toHaveTextContent('Amount must be a positive number');
 			const addButton = screen.getByRole('button', { name: /save/i });
 			expect(addButton).toBeDisabled();
 

@@ -17,9 +17,12 @@ export function useEditPendingExpense() {
 		},
 		onError: (error) => {
 			console.error(error);
-			throw new Error(error.message);
 		},
 		onSuccess: async (data) => {
+			if (!data.ok) {
+				const message = await data.json();
+				throw new Error(message.error)
+			}
 			const res = await data.json();
 			queryClient.setQueryData(['activeTable'], res);
 		}

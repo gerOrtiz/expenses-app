@@ -4,17 +4,12 @@ import { processAddNewExpense, processDeleteExpenses, processUpdateExpenses } fr
 import { ObjectId } from "mongodb";
 import { NextResponse, NextRequest } from "next/server";
 
-// function sanitizeDocument(currentTable_id: string, updatedTable: ExpensesTableI) {
-// 	updatedTable.id = currentTable_id;
-// 	delete updatedTable._id;
-// }
 
 export async function POST(request: Request) {
 	try {
 		const body = await request.json() as { newClientExpense: ExpenseItemI };
 		if (!body.newClientExpense.description || isNaN(body.newClientExpense.amount)) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
-		// const table_id = convertToObjectId(body.currentTable_id);
 		const existingTable: ExpensesTableI = await collection.findOne({ status: 'active', user_id: session.user.email }) as ExpensesTableI;
 		if (!existingTable || !existingTable._id) return NextResponse.json({ error: 'No active table found' }, { status: 404 });
 		let updatedTable: ExpensesTableI = await processAddNewExpense(body.newClientExpense, existingTable);
@@ -29,8 +24,8 @@ export async function POST(request: Request) {
 		});
 		await client.close();
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 
@@ -39,7 +34,6 @@ export async function PUT(request: Request) {
 		const body = await request.json() as { clientExpense: ExpenseItemI };
 		if (isNaN(body.clientExpense.amount)) return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
-		// const table_id = convertToObjectId(body.currentTable_id);
 		const existingTable: ExpensesTableI = await collection.findOne({ status: 'active', user_id: session.user.email }) as ExpensesTableI;
 		if (!existingTable || !existingTable._id) return NextResponse.json({ error: 'No active table found' }, { status: 404 });
 		const updatedTable = await processUpdateExpenses(body.clientExpense, existingTable);
@@ -53,20 +47,17 @@ export async function PUT(request: Request) {
 			},
 		});
 		await client.close();
-		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 
 export async function DELETE(request: NextRequest) {
 	try {
-		// const body = await request.json() as {  clientExpenseId: string };
 		const clientExpenseId = request.nextUrl.searchParams.get('id');
 		if (!clientExpenseId || typeof clientExpenseId !== 'string') return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
 		const { session, client, collection } = await setInitialValues();
-		// const table_id = convertToObjectId(body.currentTable_id);
 		const existingTable: ExpensesTableI = await collection.findOne({ user_id: session.user.email, status: 'active' }) as ExpensesTableI;
 		if (!existingTable || !existingTable._id) return NextResponse.json({ error: 'No active table found' }, { status: 404 });
 		const updatedTable = await processDeleteExpenses(clientExpenseId, existingTable);
@@ -80,10 +71,9 @@ export async function DELETE(request: NextRequest) {
 			}
 		});
 		await client.close();
-		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 
 	}
 }

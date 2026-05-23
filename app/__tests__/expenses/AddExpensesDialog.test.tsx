@@ -62,6 +62,7 @@ describe('Expenses Form', () => {
 			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test pending');
+			await user.clear(amountInput);
 			await user.type(amountInput, '100');
 			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });
@@ -98,6 +99,7 @@ describe('Expenses Form', () => {
 			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test expense');
+			await user.clear(amountInput);
 			await user.type(amountInput, '100');
 			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /cash/i });
@@ -134,6 +136,7 @@ describe('Expenses Form', () => {
 			const methodSelect = screen.getByLabelText('Method');
 
 			await user.type(descriptionInput, 'Test expense');
+			await user.clear(amountInput);
 			await user.type(amountInput, '100');
 			await user.click(methodSelect);
 			const option = await screen.findByRole('option', { name: /card/i });

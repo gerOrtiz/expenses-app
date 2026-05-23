@@ -36,7 +36,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 	const maxAmount = useRef<number>(isPending ? Infinity : currentTable ? currentTable.remaining.cash : Infinity);
 	const dialogRef = useStableDialogA11y(isOpen, 'expense-label', 'expense-description');
 	const { register, handleSubmit, control, reset, watch, trigger, setValue, formState: { isValid, isSubmitting, errors } } =
-		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: '', type: 'cash', amount: 0, pending_id: '' } });
+		useForm<ExpenseFormType>({ mode: 'onTouched', values: { description: '', type: 'cash', amount: 1, pending_id: '' } });
 	const { mutation: pendingMutation } = useAddPendingExpense();
 	const { mutation: expenseMutation } = useAddExpense();
 
@@ -60,8 +60,8 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 			res = await expenseMutation.mutateAsync({ newClientExpense: expenseObj });
 		}
 		if (res.ok) {
-			reset();
 			handleOpen();
+			reset();
 		}
 	};
 
@@ -94,6 +94,11 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 			setValue('pending_id', filteredPending[0].id);
 		}
 	}, [isPending, currentTable, watchType, filteredPending, setValue, trigger]);
+
+	useEffect(() => {
+		if (expenseMutation.isError) throw expenseMutation.error;
+		else if (pendingMutation.isError) throw pendingMutation.error;
+	}, [expenseMutation.isError, pendingMutation.isError]);
 
 
 	return (<>
@@ -128,7 +133,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 								<input id="amount" name="amount" type="number" className={`formInput ${errors.amount ? 'inputError' : ''}`} step={0.01}
 									{...register('amount', {
 										required: true,
-										min: { value: 0, message: 'Amount must be a positive number' },
+										min: { value: 0.1, message: 'Amount must be a positive number' },
 										valueAsNumber: true,
 										validate: (value) => value <= maxAmount.current || 'Amount surpasses budget for current method'
 									})} />

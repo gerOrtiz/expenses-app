@@ -34,7 +34,8 @@ body {
 
 .not-found,
 .error {
-	margin-top: 5rem;
+	min-height: 80svh;
+	align-items: center;
 }
 
 .not-found h1,
@@ -56,8 +57,8 @@ body {
 .not-found p,
 .error p {
 	font-size: 1.5rem;
-	font-weight: 500;
-	color: #ddd8d8;
+	/* font-weight: 500;
+	color: #ddd8d8; */
 }
 
 /* Buttons */
