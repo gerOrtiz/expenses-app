@@ -122,7 +122,7 @@ export default function MainHeader() {
 							<div className="w-full flex justify-between items-center mb-8 ">
 								<Image src={logoImg} alt="Expenses logo mobile" width={150} priority />
 								<IconButton variant="text" onClick={closeDrawer} aria-label="Close menu" >
-									<FontAwesomeIcon icon={faTimes} color="gray" size="lg" />
+									<FontAwesomeIcon icon={faTimes} color="gray" size="lg" className="text-indigo-600" />
 								</IconButton>
 
 							</div>
@@ -135,16 +135,16 @@ export default function MainHeader() {
 								{session && status != 'loading' && (<>
 
 									<li>
-										<Link href="/dashboard">{`Home`}</Link>
+										<Link href="/" onClick={closeDrawer} className="text-indigo-600 underline underline-offset-2">{`Home`}</Link>
 									</li>
 									<li>
-										<Link href="/dashboard">{`Dashboard`}</Link>
+										<Link href="/dashboard" onClick={closeDrawer} className="text-indigo-600 underline underline-offset-2">{`Dashboard`}</Link>
 									</li>
 									<li>
-										<Link href="/simple-table">{`Expenses`}</Link>
+										<Link href="/simple-table" onClick={closeDrawer} className="text-indigo-600 underline underline-offset-2">{`Expenses`}</Link>
 									</li>
 									<li>
-										<Link href="/reports">{`Reports`}</Link>
+										<Link href="/reports" onClick={closeDrawer} className="text-indigo-600 underline underline-offset-2">{`Reports`}</Link>
 									</li>
 									<li>
 										<Button variant="outlined" className="outlined" color="blue" onClick={logoutHandler} >{`Logout`}</Button>
