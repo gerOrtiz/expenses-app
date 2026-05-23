@@ -16,9 +16,12 @@ export function useCloseActiveTable() {
 		},
 		onError: (err) => {
 			console.error(err);
-			throw new Error(err.message);
 		},
-		onSuccess: () => {
+		onSuccess: async (data) => {
+			if (!data.ok) {
+				const message = await data.json();
+				throw new Error(message.error)
+			}
 			queryClient.invalidateQueries({ queryKey: ['activeTable'] });
 		}
 	});

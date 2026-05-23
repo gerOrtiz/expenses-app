@@ -17,8 +17,11 @@ export function useDeleteExpense() {
 		},
 		onError: (err) => {
 			console.error(err);
-			throw new Error(err.message);
 		}, onSuccess: async (data) => {
+			if (!data.ok) {
+				const message = await data.json();
+				throw new Error(message.error)
+			}
 			const res = await data.json();
 			queryClient.setQueryData(['activeTable'], res);
 		}

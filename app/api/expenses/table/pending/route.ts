@@ -18,8 +18,8 @@ export async function POST(request: Request) {
 		});
 		await client.close();
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 
@@ -42,8 +42,8 @@ export async function PUT(request: Request) {
 		await client.close();
 		// sanitizeDocument(body.currentTable_id, updatedTable);
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 
@@ -61,8 +61,8 @@ export async function PATCH(request: NextRequest) {
 		});
 		await client.close();
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }
 
@@ -84,7 +84,7 @@ export async function DELETE(request: NextRequest) {
 		});
 		await client.close();
 		return NextResponse.json({ data: updatedTable }, { status: 200 });
-	} catch (error) {
-		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	} catch (err) {
+		return NextResponse.json({ error: err || 'Internal server error' }, { status: 500 });
 	}
 }

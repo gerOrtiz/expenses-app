@@ -5,7 +5,7 @@ import { useStableDialogA11y } from "@/hooks/useStableDialogA11y";
 import { faTimes, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogFooter, IconButton } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text } from "../ui/Text";
 
 export default function CloseActiveTableButton() {
@@ -21,6 +21,10 @@ export default function CloseActiveTableButton() {
 			setOpenConfirmationDialog(false);
 		}
 	};
+
+	useEffect(() => {
+		if (mutation.isError) throw mutation.error;
+	}, [mutation.isError]);
 	return (<>
 		<Button aria-label={`Close active table`} aria-haspopup={true} variant="filled"
 			className="filled transition ease-in-out hover:scale-105 duration-200" onClick={handleOpen} >

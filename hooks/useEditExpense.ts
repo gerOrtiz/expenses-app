@@ -2,7 +2,6 @@
 
 import { ExpenseItemI } from "@/interfaces/expenses";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ObjectId } from "mongodb";
 
 export function useEditExpense() {
 	const queryClient = useQueryClient();
@@ -18,9 +17,12 @@ export function useEditExpense() {
 		},
 		onError: (error) => {
 			console.error(error);
-			throw new Error(error.message);
 		},
 		onSuccess: async (data) => {
+			if (!data.ok) {
+				const message = await data.json();
+				throw new Error(message.error)
+			}
 			const res = await data.json();
 			queryClient.setQueryData(['activeTable'], res);
 		}

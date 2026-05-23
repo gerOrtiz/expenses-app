@@ -8,7 +8,7 @@ import { ExpenseItemI, PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, CardBody, Dialog, DialogBody, DialogFooter, IconButton } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface DeleteDialogPropsI {
 	expense: ExpenseItemI | PendingExpenseI;
@@ -51,6 +51,11 @@ export default function DeleteExpenseDialog({ expense, date, isPending, onCancel
 			cancelHandler();
 		}
 	}
+
+	useEffect(() => {
+		if (expenseMutation.isError) throw expenseMutation.error;
+		else if (pendingMutation.isError) throw pendingMutation.error;
+	}, [expenseMutation.isError, pendingMutation.isError])
 
 	return (
 		<Dialog

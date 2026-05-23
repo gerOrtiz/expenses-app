@@ -9,6 +9,7 @@ import { PendingExpenseI } from "@/interfaces/expenses";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Dialog, DialogBody, DialogHeader, IconButton, Option, Select, Tab, TabPanel, Tabs, TabsBody, TabsHeader } from "@material-tailwind/react";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface EditPendingDialogPropsI {
@@ -50,6 +51,11 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 	};
 
 	const hasLinkedExpenses = (expenses.length === 0 ? false : expenses.some(e => e.isPending && e.pending_id && e.pending_id === pending.id));
+
+	useEffect(() => {
+		if (editMutation.isError) throw editMutation.error;
+		else if (fulfillMutation.isError) throw fulfillMutation.error;
+	}, [editMutation.isError, fulfillMutation.isError])
 
 	return (
 		<Dialog size="xs"
