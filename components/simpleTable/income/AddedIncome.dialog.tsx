@@ -42,7 +42,7 @@ export default function AddedIncomeDialog({ addedIncome, isOpen, handleOpen }: A
 					</div>
 					<Text variant="body" id="income-dialog-description" className="mt-1">{`History of income additions and withdrawals`}</Text>
 
-					<div className="mt-3 max-h-96 overflow-y-auto">
+					<div className="mt-3 max-h-96 overflow-y-auto px-1">
 						{addedIncome.length === 0 ? (
 							<div className="text-center py-8">
 								<Text variant="label">

@@ -1,6 +1,7 @@
 'use server';
 
-import { AddedIncomeI, ExpenseItemI, ExpensesTableI, PendingExpenseI, TotalsType } from "@/interfaces/expenses";
+import { AddedIncomeI, ExpenseItemI, ExpensesTableI, IncomeI, PendingExpenseI, TotalsI, TotalsType } from "@/interfaces/expenses";
+import { Session } from "next-auth";
 
 /**Server functions called from API routes */
 
@@ -146,7 +147,12 @@ export async function processAddPending(newClientPendingExpense: PendingExpenseI
 	return updatedTable;
 }
 
-
+/**
+ * 
+ * @param pendingExpense An edited pending expense object
+ * @param existingTable The current open table for the client
+ * @returns An updated version of the expenses table
+ */
 export async function processUpdatePendingExpenses(pendingExpense: PendingExpenseI, existingTable: ExpensesTableI): Promise<ExpensesTableI> {
 	const updatedTable = JSON.parse(JSON.stringify(existingTable));
 	const pendingArray: PendingExpenseI[] = updatedTable.pending;
@@ -208,8 +214,40 @@ export async function processDeletePendingExpense(pendingExpenseId: string, exis
 
 /**End pending expenses functions */
 
-//Pure computational sever functions
+/**Start new expenses period functions */
+/**
+ * 
+ * @param lastClosedTable Expenses table from previous period (ExpensesTableI[])
+ * @param session auth session
+ * @param initialIncome IncomeI granted by user
+ * @returns new Expenses Table object (ExpensesTableI) to be stored
+ */
+export async function processStartNewPeriod(lastClosedTable: ExpensesTableI | null, session: Session, initialIncome: IncomeI): Promise<Omit<ExpensesTableI, 'id' | '_id'>> {
+	let newPendingArray: PendingExpenseI[] = [];
+	let totalPending: TotalsType = { cash: 0, card: 0 };
+	if (lastClosedTable) {
+		newPendingArray = lastClosedTable.pending.map(p => ({ ...p, amount: p.originalAmount }));
+		totalPending = getPendingTotal(newPendingArray);
+	}
+	return {
+		user_id: session.user.email,
+		status: 'active',
+		income: { ...initialIncome },
+		sDate: new Date().getTime(),
+		totals: {
+			total_expenses: { cash: 0, card: 0 },
+			total_pending: totalPending,
+			total_payments_made: { cash: 0, card: 0 }
+		},
+		pending: newPendingArray,
+		expenses: [],
+		added: [],
+		fDate: 0,
+		remaining: { ...initialIncome }
+	};
+}
 
+//Pure computational sever functions
 /**
  * 
  * @param expenses An array of expenses
