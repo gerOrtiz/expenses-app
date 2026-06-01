@@ -170,10 +170,10 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 							</div>
 						</TabPanel>
 						<TabPanel value="fulfill" className="w-full p-0">
-							<div className="flex flex-col w-full gap-3 p-1">
+							<div className="flex flex-col w-full gap-4 p-3 text-center mt-2">
 								<Text variant="body" id="edit-pending-description" >{`Mark this pending expense as fulfilled, this action turns its amount to 0`}</Text>
 								<div className="w-full flex justify-center">
-									<Button variant="outlined" className="outlined" disabled={pending.fulfilled} onClick={onFulfill}>
+									<Button variant="outlined" className="outlined" disabled={pending.fulfilled || fulfillMutation.isPending} loading={fulfillMutation.isPending} onClick={onFulfill}>
 										{`Fulfill`}
 									</Button>
 								</div>

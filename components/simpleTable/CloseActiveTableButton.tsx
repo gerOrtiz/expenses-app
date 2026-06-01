@@ -65,7 +65,7 @@ export default function CloseActiveTableButton() {
 			</DialogBody>
 			<DialogFooter className="pt-0">
 				<div className="w-full flex gap-4 items-center justify-end">
-					<Button variant="filled" className="filled" onClick={handleCloseTable} >{`Close period`}</Button>
+					<Button variant="filled" className="filled" onClick={handleCloseTable} disabled={mutation.isPending} loading={mutation.isPending} >{`Close period`}</Button>
 					<Button variant="outlined" className="outlined" onClick={handleOpen}>{`Cancel`}</Button>
 				</div>
 			</DialogFooter>
