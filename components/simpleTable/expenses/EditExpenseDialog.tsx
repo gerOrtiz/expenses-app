@@ -90,11 +90,11 @@ export default function EditExpenseDialog({ expense, isOpen, handleOpen }: EditE
 			setHasPendingExpenses(true);
 			setValue('pending_id', filteredPending[0].id);
 		}
-	}, [currentTable, watchType, setValue, filteredPending, expense.type, trigger]);
+	}, [currentTable, watchType, setValue, filteredPending, expense, trigger]);
 
 	useEffect(() => {
 		if (mutation.isError) throw mutation.error;
-	}, [mutation.isError]);
+	}, [mutation]);
 
 	return (
 		<Dialog

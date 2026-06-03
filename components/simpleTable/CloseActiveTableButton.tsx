@@ -24,7 +24,7 @@ export default function CloseActiveTableButton() {
 
 	useEffect(() => {
 		if (mutation.isError) throw mutation.error;
-	}, [mutation.isError]);
+	}, [mutation]);
 	return (<>
 		<Button aria-label={`Close active table`} aria-haspopup={true} variant="filled"
 			className="filled transition ease-in-out hover:scale-105 duration-200" onClick={handleOpen} >

@@ -14,6 +14,7 @@ import ReportsEmptyState from "./ReportsEmptyState";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import ReportsSkeleton from "@/components/loadingSkeletons/reportsSkeleton";
 import { Text } from "@/components/ui/Text";
+import { getActualPayments } from "@/utils/reports-utils";
 
 export default function ReportsLayout() {
 	const [rangeDates, setRangeDates] = useState<{ startDate: number, endDate: number }>({ startDate: undefined, endDate: undefined });
@@ -22,7 +23,7 @@ export default function ReportsLayout() {
 	const tableData: ExpensesTableI | null = useMemo(() => data ? data.data : null, [data]);
 	const sDate = tableData ? tableData.sDate : rangeDates.startDate;
 	const fDate = tableData ? tableData.fDate : rangeDates.endDate;
-
+	const payments: Map<string, number> | null = tableData ? getActualPayments(tableData.expenses) : null;
 	const periodDate = sDate !== undefined && fDate !== undefined ? `${new Date(sDate).toLocaleDateString()} - ${new Date(fDate).toLocaleDateString()}` : null;
 
 	const handleDialogOpen = useCallback(() => setIsDateDialogOpen(op => !op), []);
@@ -68,22 +69,19 @@ export default function ReportsLayout() {
 					<div className="w-full lg:w-7/12">
 						<ExpensesReportTable expenses={tableData.expenses} />
 					</div>
-					<div className="w-full lg:w-2/5">
+					<div className="flex w-full flex-col justify-center lg:w-2/5">
 						<ExpensesChart expenses={tableData.expenses} />
-					</div>
-				</div>
-			</section>
-
-			<section>
-				<h3 className="sr-only">{`Pending and movements`}</h3>
-				<div className="flex w-full justify-center">
-					<div className="w-3/4 lg:w-2/3 flex flex-wrap gap-6 justify-center lg:justify-normal">
-						<div className="basis-full lg:basis-1/2">
-							<PendingReportTable pendingExpenses={tableData.pending} />
-						</div>
-						<div className="basis-11/12 lg:basis-2/5">
-							<MovementsList movements={tableData.added} />
-						</div>
+						<section>
+							<h3 className="sr-only">{`Pending and movements`}</h3>
+							<div className="w-full flex flex-col items-center gap-5">
+								<div className="w-full">
+									<PendingReportTable pendingExpenses={tableData.pending} payments={payments} />
+								</div>
+								<div className="w-3/4 lg:2/5">
+									<MovementsList movements={tableData.added} />
+								</div>
+							</div>
+						</section>
 					</div>
 				</div>
 			</section>

@@ -30,9 +30,10 @@ export default function ExpensesReportTable({ expenses }: { expenses: ExpenseIte
 		)
 	);
 
+
 	return (<>
 		<div className="p-0">
-			<Card className="mb-1 w-full overflow-x-hidden overflow-y-auto shadow-sm lg:shadow-md shadow-blue-100 border border-blue-gray-100">
+			<Card className="mb-1 w-full overflow-x-hidden max-h-screen overflow-y-auto shadow-sm lg:shadow-md shadow-blue-100 border border-blue-gray-100">
 				<CardBody className="flex flex-col gap-5 p-2 lg:p-6">
 					<Text variant="h3">{`Period expenses`}</Text>
 					<div className="w-3/4 lg:w-1/2 flex items-center self-center">

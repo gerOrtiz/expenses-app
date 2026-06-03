@@ -49,7 +49,8 @@ export async function processAddNewExpense(newClientExpense: ExpenseItemI, exist
 	const updatedTable: ExpensesTableI = JSON.parse(JSON.stringify(existingTable));
 	const expensesArray: ExpenseItemI[] = updatedTable.expenses || [];
 	// const newId: number = expensesArray.length > 0 ? expensesArray[expensesArray.length - 1].id + 1 : 1;
-	const newId: string = expensesArray.length + 1 + newClientExpense.description.slice(0, 2).toLocaleUpperCase();
+	const newId: string = (expensesArray.length + 1) + newClientExpense.description.slice(0, 2).toLocaleUpperCase() +
+		'-' + (Math.floor(Math.random() * 100));
 
 	newClientExpense.id = newId;
 	expensesArray.push(newClientExpense);
@@ -137,7 +138,8 @@ export async function processAddPending(newClientPendingExpense: PendingExpenseI
 	const updatedTable = JSON.parse(JSON.stringify(existingTable));
 	const pendingArray: PendingExpenseI[] = updatedTable.pending || [];
 	// const newId: number = pendingArray.length > 0 ? pendingArray[pendingArray.length - 1].id + 1 : 1;
-	const newId: string = pendingArray.length + 1 + newClientPendingExpense.description.slice(0, 2).toLocaleUpperCase();
+	const newId: string = pendingArray.length + 1 + newClientPendingExpense.description.slice(0, 2).toLocaleUpperCase() +
+		'-' + (Math.floor(Math.random() * 10));
 	newClientPendingExpense.id = newId;
 	pendingArray.push(newClientPendingExpense);
 	const totalPending = getPendingTotal(pendingArray);

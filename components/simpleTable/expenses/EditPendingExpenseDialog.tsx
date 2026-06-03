@@ -55,7 +55,7 @@ export function EditPendingExpenseDialog({ pending, isOpen, handleOpen }: EditPe
 	useEffect(() => {
 		if (editMutation.isError) throw editMutation.error;
 		else if (fulfillMutation.isError) throw fulfillMutation.error;
-	}, [editMutation.isError, fulfillMutation.isError])
+	}, [editMutation, fulfillMutation])
 
 	return (
 		<Dialog size="xs"
