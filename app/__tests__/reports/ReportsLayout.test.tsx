@@ -127,12 +127,14 @@ describe('Reports Layout', () => {
 			expect(expensesTableHeaders[2]).toHaveTextContent(/method/i);
 			expect(expensesTableHeaders[3]).toHaveTextContent(/date/i);
 			expect(within(tables[0]).getAllByRole('row').length).toBe(3);
-
+			//
 			expect(within(tables[1]).getAllByRole('row').length).toBe(1);
-			const pendingTabaleHeaders = within(tables[0]).getAllByRole('columnheader');
+			const pendingTabaleHeaders = within(tables[1]).getAllByRole('columnheader');
 			expect(pendingTabaleHeaders[0]).toHaveTextContent(/description/i);
-			expect(pendingTabaleHeaders[1]).toHaveTextContent(/amount/i);
-			expect(pendingTabaleHeaders[2]).toHaveTextContent(/method/i);
+			expect(pendingTabaleHeaders[1]).toHaveTextContent(/initial/i);
+			expect(pendingTabaleHeaders[2]).toHaveTextContent(/remained/i);
+			expect(pendingTabaleHeaders[3]).toHaveTextContent(/paid/i);
+			expect(pendingTabaleHeaders[4]).toHaveTextContent(/method/i);
 
 		});
 

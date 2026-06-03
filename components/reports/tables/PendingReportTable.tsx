@@ -5,12 +5,16 @@ import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { PendingExpenseI } from "@/interfaces/expenses";
 import { Card, CardBody } from "@material-tailwind/react";
 
-const TABLE_HEAD = [`Description`, `Amount`, `Method`];
+const TABLE_HEAD = [`Description`, `Initial`, `Remained`, `Paid`, `Method`];
 const typeFilter = (type: string): string => {
 	return type == 'cash' ? `Cash` : `Card`;
 };
-export default function PendingReportTable({ pendingExpenses }: { pendingExpenses: PendingExpenseI[] }) {
+export default function PendingReportTable({ pendingExpenses: pending, payments }: { pendingExpenses: PendingExpenseI[], payments: Map<string, number> }) {
 	const { formatValue } = useMoneyFilter();
+	const pendingExpenses = pending.map((p) => {
+		const paid = payments.has(p.id) ? payments.get(p.id) : 0;
+		return { ...p, paid };
+	});
 
 	return (<>
 		<div className="p-0">
@@ -18,7 +22,7 @@ export default function PendingReportTable({ pendingExpenses }: { pendingExpense
 				<CardBody className="flex flex-col gap-5 p-2 lg:p-6">
 					<Text variant="h3">{`Pending expenses`}</Text>
 					<div className="w-full p-1 lg:p-0">
-						<table className="table w-full table-auto text-left">
+						<table className="flex flex-col w-full text-left">
 							<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
 								<tr>
 									{TABLE_HEAD.map((title) => (
@@ -35,10 +39,16 @@ export default function PendingReportTable({ pendingExpenses }: { pendingExpense
 								{pendingExpenses.map((p) => (
 									<tr key={p.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
 										<td className="p-2 lg:p-4 group-last:rounded-bl-md border-b border-blue-50">
-											<Text variant="label" className="lg:text-[15px]">{p.description}</Text>
+											<Text variant="label" className="block text-ellipsis overflow-hidden whitespace-nowrap w-full lg:text-[15px]">{p.description}</Text>
+										</td>
+										<td className="p-2 lg:p-4 border-b border-blue-50">
+											<Text variant="label" className="lg:text-[15px]">	{formatValue(p.originalAmount)}</Text>
 										</td>
 										<td className="p-2 lg:p-4 border-b border-blue-50">
 											<Text variant="label" className="lg:text-[15px]">	{formatValue(p.amount)}</Text>
+										</td>
+										<td className="p-2 lg:p-4 border-b border-blue-50">
+											<Text variant="label" className="lg:text-[15px]">	{formatValue(p.paid)}</Text>
 										</td>
 										<td className="p-2 lg:p-4 border-b border-blue-50">
 											<Text variant="label" className="lg:text-[15px]">{typeFilter(p.type)}</Text>

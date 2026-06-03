@@ -55,7 +55,7 @@ export default function DeleteExpenseDialog({ expense, date, isPending, onCancel
 	useEffect(() => {
 		if (expenseMutation.isError) throw expenseMutation.error;
 		else if (pendingMutation.isError) throw pendingMutation.error;
-	}, [expenseMutation.isError, pendingMutation.isError])
+	}, [expenseMutation, pendingMutation])
 
 	return (
 		<Dialog
