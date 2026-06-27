@@ -16,9 +16,9 @@ const formatDate = (timestamp: number) => {
 export default function MovementsList({ movements }: { movements: AddedIncomeI[] }) {
 	const { formatValue } = useMoneyFilter();
 	const totalAdded: { cash: number, card: number, withdrawal: number } = movements.reduce((acc, currentValue) => {
-		acc['cash'] = acc['cash'] || 0 + currentValue.cash;
-		acc['card'] = acc['card'] || 0 + currentValue.card;
-		acc['withdrawal'] = acc['withdrawal'] || 0 + (currentValue.isWithdrawal ? currentValue.cash : 0);
+		acc['cash'] += currentValue.cash;
+		acc['card'] += currentValue.card;
+		acc['withdrawal'] += (currentValue.isWithdrawal ? currentValue.cash : 0);
 		return acc;
 	}, { card: 0, cash: 0, withdrawal: 0 });
 

@@ -75,7 +75,7 @@ export default function AddExpensesDialog({ isPending, isOpen, handleOpen }: Exp
 		if (currentTable.pending.length === 0) return [];
 		const typeHasPending = hasTypePendingExpenses(currentTable.pending, watchType);
 		if (!typeHasPending) return [];
-		const newArray = currentTable.pending.filter((pendingExpense) => pendingExpense.type === watchType && !pendingExpense.fulfilled);
+		const newArray = currentTable.pending.filter((pendingExpense) => pendingExpense.type === watchType);
 		return newArray;
 	}, [isPending, watchType, currentTable]);
 
