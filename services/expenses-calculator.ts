@@ -228,7 +228,7 @@ export async function processStartNewPeriod(lastClosedTable: ExpensesTableI | nu
 	let newPendingArray: PendingExpenseI[] = [];
 	let totalPending: TotalsType = { cash: 0, card: 0 };
 	if (lastClosedTable) {
-		newPendingArray = lastClosedTable.pending.map(p => ({ ...p, amount: p.originalAmount }));
+		newPendingArray = lastClosedTable.pending.map(p => ({ ...p, amount: p.originalAmount, fulfilled: false }));
 		totalPending = getPendingTotal(newPendingArray);
 	}
 	return {
