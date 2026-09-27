@@ -20,11 +20,11 @@ interface RemainingIncomePropsI {
 	remaining: TotalsType;
 	totals: TotalsI;
 	added: AddedIncomeI[];
-	// dataCallback?: (data: ExpensesTableI) => void;
+	income: TotalsType;
 }
 
 
-export default function RemainingIncome({ remaining, totals, added }: RemainingIncomePropsI) {
+export default function RemainingIncome({ remaining, totals, added, income }: RemainingIncomePropsI) {
 	const totalPending = totals.total_pending.cash + totals.total_pending.card;
 	let positiveBalance = (remaining.cash + remaining.card) - totalPending;
 	const [openIncomeDialog, setOpenIncomeDialog] = useState(false);
@@ -55,8 +55,8 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 		return cashAmountFormat.formatValue(totalAdded);
 	}, [added, cashAmountFormat]);
 
-	const summaryArray = [{ name: 'Cash', value: remaining.cash }, { name: 'Card', value: remaining.card },
-	{ name: 'Total', value: remaining.cash + remaining.card },
+	const summaryArray = [{ name: 'Cash', value: remaining.cash, alt: income.cash }, { name: 'Card', value: remaining.card, alt: income.card },
+	{ name: 'Total', value: remaining.cash + remaining.card, alt: income.cash + income.card },
 	{ name: 'Total after payments', value: positiveBalance }];
 
 	return (<>
@@ -85,7 +85,7 @@ export default function RemainingIncome({ remaining, totals, added }: RemainingI
 					</div>
 					<div className="w-full flex lg:flex-nowrap flex-wrap  gap-2 lg:gap-5 justify-center p-0 lg:p-2 mb-2 ">
 						{summaryArray.map((item, index) => (
-							<BalanceCard key={index} text={item.name} value={item.value} />
+							<BalanceCard key={index} text={item.name} value={item.value} alt={item.alt ?? null} />
 						))}
 					</div>
 					{added && lastAdded &&

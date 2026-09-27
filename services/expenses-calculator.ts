@@ -81,7 +81,7 @@ export async function processUpdateExpenses(clientExpense: ExpenseItemI, existin
 	const expensesArray: ExpenseItemI[] = existingTable.expenses;
 	const index = expensesArray.findIndex(o => o.id == clientExpense.id);
 	if (index === -1) return updatedTable;
-	const copy = expensesArray[index];
+	const copy = { ...expensesArray[index] };
 	expensesArray[index] = clientExpense;
 	// console.log(expensesArray);
 	const { totalExpenses, totalPendingPaid } = calculateExpensesTotals(expensesArray);

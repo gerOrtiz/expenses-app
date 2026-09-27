@@ -31,7 +31,7 @@ export default function SimpleTableDashboard({ tableData }: TableWrapperPropsI) 
 
 	return (<>
 		<section className="flex flex-col w-full items-center mt-3 mb-3 p-4 lg:p-1">
-			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} added={tableData.added} />
+			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} added={tableData.added} income={tableData.income} />
 		</section>
 		<div className="grid grid-flow-row gap-y-5 lg:gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 p-4 lg:p-0">
 			<section className="flex flex-col overflow-hidden gap-6 md:col-span-2 xl:col-span-2">

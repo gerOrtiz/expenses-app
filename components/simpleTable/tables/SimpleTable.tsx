@@ -1,8 +1,8 @@
 'use client';
-import { faPencil, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faPlus, faSearch, faSort, faSortDown, faSortUp, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, CardBody, IconButton } from '@material-tailwind/react';
-import { useEffect, useState } from 'react';
+import { Button, Card, CardBody, IconButton, Input } from '@material-tailwind/react';
+import { useDeferredValue, useEffect, useReducer, useRef, useState } from 'react';
 import AddExpensesDialog from '../expenses/AddExpensesDialog';
 import DeleteExpenseDialog from '../expenses/DeleteExpenseDialog';
 import { ExpenseItemI } from '@/interfaces/expenses';
@@ -16,18 +16,40 @@ interface SimpleTablePropsI {
 	expenses: ExpenseItemI[];
 	// dataCallback?: (data: ExpensesTableI) => void;
 }
+type FieldsType = "description" | "amount" | "method" | "date";
+type SortInterface = Record<FieldsType, 'idle' | 'asc' | 'desc'> & { selected: FieldsType | null };
+interface SortAction {
+	type: FieldsType;
+}
 
 const dateFilter = (date: number) => {
 	return new Date(date).toLocaleDateString();
 }
 
+const sortReducer = (sortObj: SortInterface, action: SortAction) => {
+	const type = action.type;
+	const sort = sortObj[type] === 'idle' ? 'asc' : sortObj[type] === 'asc' ? 'desc' : 'idle';
+	const copy = { ...sortObj };
+	for (const [key] of Object.entries(copy)) {
+		if (key === type) copy[key] = sort;
+		else if (key === 'selected') copy.selected = type;
+		else copy[key] = 'idle';
+	}
+	return copy;
+};
+
 export default function SimpleTable({ expenses }: SimpleTablePropsI) {
-	const [expensesList, setExpensesList] = useState<ExpenseItemI[] | null>(null);
+	const expensesList = useRef<ExpenseItemI[]>();
+	const [filteredList, setFilteredList] = useState<ExpenseItemI[] | null>(null);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [indexBeingEdited, setIndexBeingEdited] = useState<number>(-1);
 	const [isOpen, setOpen] = useState<boolean>(false);
 	const [openEditDialog, setOpenEditDialog] = useState(false);
 	const [expenseToEdit, setExpenseToEdit] = useState<ExpenseItemI | null>(null);
+	const [sortFields, dispatch] = useReducer(sortReducer,
+		{ description: 'idle', amount: 'idle', method: 'idle', date: 'idle', selected: null });
+	const [searchValue, setSearchValue] = useState('');
+	const deferedSearch = useDeferredValue(searchValue);
 	const { formatValue } = useMoneyFilter();
 
 	const TABLE_HEAD = [`Description`, `Amount`, `Method`, `Date`, ''];
@@ -59,12 +81,56 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 		setIsDeleting(false);
 	}
 
+	const onSortChange = (id: FieldsType) => {
+		dispatch({ type: id });
+	};
+
 	useEffect(() => {
 		if (expenses) {
 			const sortedExpenses = expenses.reverse();
-			setExpensesList(sortedExpenses);
+			expensesList.current = JSON.parse(JSON.stringify(sortedExpenses));
 		}
 	}, [expenses]);
+
+	useEffect(() => {
+		const filteredData = expensesList.current.filter(item => {
+			return Object.entries(item).some(([key, val]) => {
+				if (!deferedSearch) return true;
+				if (key !== 'id') {
+					if (typeof val === 'string') return String(val).toLowerCase().includes(deferedSearch.toLowerCase());
+					else if (typeof val === 'number') return parseFloat(deferedSearch) === val;
+					return false;
+				}
+			});
+		});
+		if (sortFields.selected && sortFields[sortFields.selected] !== 'idle') {
+			const type = sortFields.selected === 'method' ? 'type' : sortFields.selected;
+			if (sortFields[sortFields.selected] === 'asc') {
+				filteredData.sort((a, b) => {
+					if (a[type] < b[type]) {
+						return -1;
+					}
+					if (a[type] > b[type]) {
+						return 1;
+					}
+					return 0;
+				});
+			} else {
+				filteredData.sort((a, b) => {
+					if (b[type] < a[type]) {
+						return -1;
+					}
+					if (b[type] > a[type]) {
+						return 1;
+					}
+					return 0;
+				});
+			}
+		}
+		setFilteredList(filteredData);
+	}, [expensesList, deferedSearch, sortFields]);
+
+
 
 	return (<>
 		<Card className="mb-1 w-full overflow-x-hidden overflow-y-auto shadow-sm lg:shadow-md shadow-blue-100 border border-blue-gray-100 ">
@@ -76,9 +142,27 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 						onClick={handleOpen}>
 						{`Add`}
 					</Button>
-					<IconButton aria-label={`Add expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpen}>
+					<IconButton aria-haspopup={true} aria-label={`Add expense`} variant="outlined" size="sm" className="lg:hidden block  outlined" onClick={handleOpen}>
 						<FontAwesomeIcon aria-label={`Plus symbol`} icon={faPlus} size="lg" />
 					</IconButton>
+				</div>
+				<div className="w-full flex items-center justify-center my-4">
+
+					<div className="w-3/4 lg:w-1/2 flex items-center self-center">
+						<label htmlFor="search" className="sr-only">{`Search inside expenses table`}</label>
+						<Input id="search" type="text" labelProps={{ className: 'hidden', 'aria-hidden': true, 'aria-label': 'Ignore' }}
+							containerProps={{ className: 'min-w-[100px]' }}
+							className="!border !border-gray-300 rounded-lg  bg-gradient-to-r from-blue-100 to-white !text-blue-gray-800 !text-base placeholder:opacity-100 placeholder:text-blue-gray-300
+							placeholder:text-sm placeholder:lg:text-base"
+							icon={searchValue === '' ?
+								<FontAwesomeIcon aria-label="Search icon" icon={faSearch} className="text-blue-gray-800" /> :
+								<IconButton aria-label="Delete search param" className="h-5 w-5 p-2" variant="text" onClick={() => setSearchValue('')}><FontAwesomeIcon icon={faTimes} className="text-red-300" size="lg" /></IconButton>}
+							value={searchValue}
+							placeholder={`Search description or amount`}
+							onChange={(ev) => setSearchValue(ev.target.value)}
+							crossOrigin={undefined}
+						/>
+					</div>
 				</div>
 				<table className="lg:hidden w-full min-w-max table-auto text-center">
 					<thead className="bg-gradient-to-tr from-white to-blue-50 shadow-md ">
@@ -87,13 +171,20 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 								<th aria-label={title ? title : `Edit`}
 									key={title}
 									className="p-2 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-									<Text variant="small" className={`p-1 ${title ? '' : 'sr-only'}`}>{title || 'Edit'}</Text>
+									<div className="flex items-center justify-between">
+										<Text variant="small" className={`p-1 ${title ? '' : 'sr-only'}`}>{title || 'Edit'}</Text>
+										{title &&
+											<IconButton className="rounded-full" aria-label={`Sort ${title}`} variant="text" size="sm" color="blue" onClick={() => onSortChange((title.toLowerCase()) as FieldsType)}>
+												<FontAwesomeIcon size="xs" icon={sortFields[title.toLowerCase()] === 'idle' ? faSort : sortFields[title.toLowerCase()] === 'asc' ? faSortUp : faSortDown} />
+											</IconButton>}
+									</div>
+
 								</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
-						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
+						{filteredList && filteredList.length > 0 && filteredList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80">
 								<td className="p-2 text-center max-w-24  group-last:rounded-bl-md border-b border-blue-50">
 									<Text variant="small" className="block text-ellipsis overflow-hidden whitespace-nowrap w-full">{expense.description}</Text>
@@ -132,13 +223,19 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 								<th aria-label={title ? title : `Edit`}
 									key={title}
 									className="p-4 first:rounded-tl-md first:rounded-bl-md last:rounded-tr-md last:rounded-br-md">
-									<Text variant="label" className={title ? '' : 'sr-only'}>{title || 'Edit'}</Text>
+									<div className="flex items-center justify-between">
+										<Text variant="label" className={title ? '' : 'sr-only'}>{title || 'Edit'}</Text>
+										{title &&
+											<IconButton className="rounded-full" aria-label={`Sort ${title}`} variant="text" size="sm" color="blue" onClick={() => onSortChange((title.toLowerCase()) as FieldsType)}>
+												<FontAwesomeIcon icon={sortFields[title.toLowerCase()] === 'idle' ? faSort : sortFields[title.toLowerCase()] === 'asc' ? faSortUp : faSortDown} />
+											</IconButton>}
+									</div>
 								</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
-						{expensesList && expensesList.length > 0 && expensesList.map((expense, index) => (
+						{filteredList && filteredList.length > 0 && filteredList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
 								<td className="p-4 max-w-72 group-last:rounded-bl-md border-b border-blue-50">
 									<Text variant="label" className="lg:text-[15px] ">{expense.description}</Text>
@@ -175,7 +272,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 				</table>
 			</CardBody>
 		</Card>
-		{isDeleting && <DeleteExpenseDialog expense={expensesList[indexBeingEdited]} date={expensesList[indexBeingEdited].date} onCancel={cancelChanges} />}
+		{isDeleting && <DeleteExpenseDialog expense={expensesList.current[indexBeingEdited]} date={expensesList.current[indexBeingEdited].date} onCancel={cancelChanges} />}
 		{isOpen && <AddExpensesDialog isPending={false} isOpen handleOpen={handleOpen} />}
 		{openEditDialog && <EditExpenseDialog expense={expenseToEdit} isOpen={openEditDialog} handleOpen={handleOpenEditDialog} />}
 	</>);
