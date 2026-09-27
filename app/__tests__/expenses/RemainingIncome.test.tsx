@@ -37,7 +37,7 @@ describe('RemainingIncome', () => {
 	};
 
 	beforeEach(() => {
-		render(<RemainingIncome remaining={mockTableData.remaining} totals={mockTableData.totals} added={mockTableData.added} />)
+		render(<RemainingIncome remaining={mockTableData.remaining} totals={mockTableData.totals} added={mockTableData.added} income={mockTableData.income} />)
 	});
 	afterEach(() => {
 		cleanup();
@@ -59,16 +59,39 @@ describe('RemainingIncome', () => {
 
 	it('should display accurate data in cards', () => {
 		const headings = screen.getAllByRole('heading', { level: 4 });
-		expect(headings.length).toBe(4);
+		expect(headings.length).toBe(7);
 		//Remaining cash
 		expect(headings[0]).toHaveTextContent('$300.00');
+		//Initial cash
+		expect(headings[1]).toHaveTextContent('$600.00');
 		//Remaining card
-		expect(headings[1]).toHaveTextContent('$400.00');
+		expect(headings[2]).toHaveTextContent('$400.00');
+		//Initial card
+		expect(headings[3]).toHaveTextContent('$1,000.00');
 		//Total remaining
-		expect(headings[2]).toHaveTextContent('$700.00');
+		expect(headings[4]).toHaveTextContent('$700.00');
+		//Initial total amount
+		expect(headings[5]).toHaveTextContent('$1,600.00');
 		//After payments: total remaining- (pending cash + pending card)
-		expect(headings[3]).toHaveTextContent('$350.00');
+		expect(headings[6]).toHaveTextContent('$350.00');
 	});
+
+	it('should flip cards forth and back', async () => {
+		const cardsHolders = screen.getAllByTestId('flipping-card');
+		expect(cardsHolders.length).toBe(4);
+		for (let index = 0; index < cardsHolders.length; index++) {
+			if (index === 3) expect(cardsHolders[index]).not.toHaveClass('flip-card');
+			else expect(cardsHolders[index]).toHaveClass('flip-card');
+		}
+		const flipButton = within(cardsHolders[0]).getByRole('button', { name: 'flip card' });
+		expect(flipButton).toBeInTheDocument();
+		const user = userEvent.setup();
+		await user.click(flipButton);
+		expect(cardsHolders[0]).toHaveClass('flipped');
+		const flipBackButton = within(cardsHolders[0]).getByRole('button', { name: 'flip card back' });
+		await user.click(flipBackButton);
+		expect(cardsHolders[0]).not.toHaveClass('flipped');
+	})
 
 	it('should show last added info', () => {
 		const addedSection = screen.getByTestId('added');

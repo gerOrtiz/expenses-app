@@ -2,11 +2,11 @@
 
 import { useMoneyFilter } from "@/hooks/useMoneyFilter";
 import { ExpenseItemI } from "@/interfaces/expenses";
-import { Card, CardBody, Input } from "@material-tailwind/react";
+import { Card, CardBody, IconButton, Input } from "@material-tailwind/react";
 import classes from "@/styles/text-stroke.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useDeferredValue, useState } from "react";
+import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { Text } from "@/components/ui/Text";
 
 const TABLE_HEAD = [`Description`, `Amount`, `Method`, `Date`];
@@ -15,7 +15,10 @@ const dateFilter = (date: number) => {
 }
 
 export default function ExpensesReportTable({ expenses }: { expenses: ExpenseItemI[] }) {
-	const expensesRecord: ExpenseItemI[] = JSON.parse(JSON.stringify(expenses));
+	// const expensesCopy: ExpenseItemI[] = JSON.parse(JSON.stringify(expenses));
+	const expensesCopy = useRef<ExpenseItemI[]>(JSON.parse(JSON.stringify(expenses)));
+	const [filteredData, setFilteredData] = useState<ExpenseItemI[]>([])
+	const inputRef = useRef<HTMLInputElement>();
 	const { formatValue } = useMoneyFilter();
 	const [searchValue, setSearchValue] = useState('');
 	const deferedSearch = useDeferredValue(searchValue);
@@ -24,12 +27,19 @@ export default function ExpensesReportTable({ expenses }: { expenses: ExpenseIte
 		return type == 'cash' ? `Cash` : `Card`;
 	};
 
-	const filteredData = expensesRecord.filter((item) =>
-		Object.values(item).some((val) =>
-			String(val).toLowerCase().includes(deferedSearch.toLowerCase())
-		)
-	);
-
+	useEffect(() => {
+		const filtered = expensesCopy.current.filter(item => {
+			return Object.entries(item).some(([key, val]) => {
+				if (!deferedSearch) return true;
+				if (key !== 'id') {
+					if (typeof val === 'string') return String(val).toLowerCase().includes(deferedSearch.toLowerCase());
+					else if (typeof val === 'number') return parseFloat(deferedSearch) === val;
+					return false;
+				}
+			});
+		});
+		setFilteredData(filtered);
+	}, [expensesCopy, deferedSearch]);
 
 	return (<>
 		<div className="p-0">
@@ -40,9 +50,13 @@ export default function ExpensesReportTable({ expenses }: { expenses: ExpenseIte
 						<label htmlFor="search" className="sr-only">{`Search inside expenses table`}</label>
 						<Input id="search" type="text" labelProps={{ className: 'hidden', 'aria-hidden': true, 'aria-label': 'Ignore' }}
 							containerProps={{ className: 'min-w-[100px]' }}
-							className="!border !border-gray-300 rounded-lg  bg-gradient-to-r from-blue-100 to-white !text-blue-gray-800 !text-base "
-							icon={<FontAwesomeIcon icon={faSearch} className="text-blue-gray-800" />}
+							inputRef={inputRef}
+							className="!border !border-gray-300 rounded-lg  bg-gradient-to-r from-blue-100 to-white !text-blue-gray-800 !text-base placeholder:opacity-100 placeholder:text-blue-gray-300"
+							icon={searchValue === '' ?
+								<FontAwesomeIcon aria-label="Search icon" icon={faSearch} className="text-blue-gray-800" /> :
+								<IconButton aria-label="Delete search" className="h-5 w-5 p-2" variant="text" onClick={() => setSearchValue('')}><FontAwesomeIcon icon={faTimes} className="text-red-300" size="lg" /></IconButton>}
 							value={searchValue}
+							placeholder={`Search for a description or an amount`}
 							onChange={(ev) => setSearchValue(ev.target.value)}
 							crossOrigin={undefined}
 						/>
@@ -62,8 +76,9 @@ export default function ExpensesReportTable({ expenses }: { expenses: ExpenseIte
 								</tr>
 							</thead>
 							<tbody>
+
 								{filteredData.length > 0 ? filteredData.map((expense) => (
-									<tr key={expense.id} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
+									<tr key={expense.description + expense.date} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
 										<td className="p-2 lg:p-4 group-last:rounded-bl-md border-b border-blue-50">
 											<Text variant="label" className="lg:text-[15px]">{expense.description}</Text>
 										</td>
@@ -86,6 +101,8 @@ export default function ExpensesReportTable({ expenses }: { expenses: ExpenseIte
 									(<tr>
 										<td colSpan={4} className="text-center p-4 h-64"><Text variant="h4">{`No data found`}</Text></td>
 									</tr>)}
+
+
 							</tbody>
 						</table>
 					</div>
