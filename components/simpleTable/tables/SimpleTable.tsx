@@ -39,7 +39,7 @@ const sortReducer = (sortObj: SortInterface, action: SortAction) => {
 };
 
 export default function SimpleTable({ expenses }: SimpleTablePropsI) {
-	const expensesList = useRef<ExpenseItemI[]>();
+	const [expensesList, setExpensesList] = useState<ExpenseItemI[] | null>(null);
 	const [filteredList, setFilteredList] = useState<ExpenseItemI[] | null>(null);
 	const [isDeleting, setIsDeleting] = useState<boolean>(false);
 	const [indexBeingEdited, setIndexBeingEdited] = useState<number>(-1);
@@ -87,13 +87,14 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 
 	useEffect(() => {
 		if (expenses) {
-			const sortedExpenses = expenses.reverse();
-			expensesList.current = JSON.parse(JSON.stringify(sortedExpenses));
+			const sortedExpenses = [...expenses].reverse();
+			setExpensesList(sortedExpenses);
 		}
 	}, [expenses]);
 
 	useEffect(() => {
-		const filteredData = expensesList.current.filter(item => {
+		if (!expensesList) return;
+		const filteredData = expensesList.filter(item => {
 			return Object.entries(item).some(([key, val]) => {
 				if (!deferedSearch) return true;
 				if (key !== 'id') {
@@ -237,20 +238,20 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 					<tbody>
 						{filteredList && filteredList.length > 0 && filteredList.map((expense, index) => (
 							<tr key={index} className="even:bg-blue-50/50 hover:bg-blue-100/80 group">
-								<td className="p-4 max-w-72 group-last:rounded-bl-md border-b border-blue-50">
-									<Text variant="label" className="lg:text-[15px] ">{expense.description}</Text>
+								<td className=" max-w-72 group-last:rounded-bl-md border-b border-blue-50">
+									<Text variant="label" className="lg:text-[15px] group-hover:font-semibold">{expense.description}</Text>
 								</td>
-								<td className="p-4 border-b border-blue-50">
-									<Text variant="label" className="lg:text-[15px]">{formatValue(expense.amount)} </Text>
+								<td className=" border-b border-blue-50">
+									<Text variant="label" className="lg:text-[15px] group-hover:font-semibold">{formatValue(expense.amount)} </Text>
 								</td>
-								<td className="p-4 border-b border-blue-50">
+								<td className=" border-b border-blue-50">
 									<div className="w-full flex items-center justify-center gap-2">
-										<Text variant="label" className="lg:text-[15px]">{typeFilter(expense.type)}</Text>
+										<Text variant="label" className="lg:text-[15px] group-hover:font-semibold">{typeFilter(expense.type)}</Text>
 										{expense.isPending && (<PaymentBadge />)}
 									</div>
 								</td>
-								<td className="p-4 border-b border-blue-50" >
-									<Text variant="label" className="lg:text-[15px]">{dateFilter(expense.date)}</Text>
+								<td className=" border-b border-blue-50" >
+									<Text variant="label" className="lg:text-[15px] group-hover:font-semibold">{dateFilter(expense.date)}</Text>
 								</td>
 								<td className="p-4 group-last:rounded-br-md border-b border-blue-50">
 									<div className="grid-cols-2 ">
@@ -272,7 +273,7 @@ export default function SimpleTable({ expenses }: SimpleTablePropsI) {
 				</table>
 			</CardBody>
 		</Card>
-		{isDeleting && <DeleteExpenseDialog expense={expensesList.current[indexBeingEdited]} date={expensesList.current[indexBeingEdited].date} onCancel={cancelChanges} />}
+		{isDeleting && <DeleteExpenseDialog expense={expensesList[indexBeingEdited]} date={expensesList[indexBeingEdited].date} onCancel={cancelChanges} />}
 		{isOpen && <AddExpensesDialog isPending={false} isOpen handleOpen={handleOpen} />}
 		{openEditDialog && <EditExpenseDialog expense={expenseToEdit} isOpen={openEditDialog} handleOpen={handleOpenEditDialog} />}
 	</>);

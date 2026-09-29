@@ -128,7 +128,7 @@ export default function MainHeader() {
 							</div>
 							<ul className="flex flex-col gap-5">
 								{!session && status != 'loading' && (<li>
-									<Link href="/login">
+									<Link href="/login" onClick={closeDrawer}>
 										<Typography variant="h6" color="blue-gray" >{`Login / Signup`}</Typography>
 									</Link>
 								</li>)}
