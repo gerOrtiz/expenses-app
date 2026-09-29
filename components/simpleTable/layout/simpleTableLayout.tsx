@@ -4,9 +4,9 @@ import ExpensesPageSkeleton from "@/components/loadingSkeletons/expensesPageSkel
 import CreateSimpleTableComponent from "../createSimpleTableComponent";
 import ExpensesForm from "../expenses/AddExpensesDialog";
 import CloseActiveTableButton from "../CloseActiveTableButton";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+// import Link from "next/link";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@material-tailwind/react";
 import { useState } from "react";
 import { useActiveTable } from "@/hooks/useActiveTable";

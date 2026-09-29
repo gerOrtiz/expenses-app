@@ -2,7 +2,7 @@
 import { faPencil, faPlus, faSearch, faSort, faSortDown, faSortUp, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Card, CardBody, IconButton, Input } from '@material-tailwind/react';
-import { useDeferredValue, useEffect, useReducer, useRef, useState } from 'react';
+import { useDeferredValue, useEffect, useReducer, useState } from 'react';
 import AddExpensesDialog from '../expenses/AddExpensesDialog';
 import DeleteExpenseDialog from '../expenses/DeleteExpenseDialog';
 import { ExpenseItemI } from '@/interfaces/expenses';
