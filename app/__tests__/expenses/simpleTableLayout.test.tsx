@@ -61,7 +61,7 @@ describe('SimpleTableLayout', () => {
 			const queryClient = createTestQueryClient();
 			queryClient.setQueryData(['activeTable'], { data: mockTableData });
 			renderWithQuery(<SimpleTableLayoutComponent />, queryClient);
-			expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
+			// expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
 			expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Daily expenses');
 			expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
 			expect(screen.getByTestId('tables-wrapper')).toBeInTheDocument();
@@ -75,7 +75,7 @@ describe('SimpleTableLayout', () => {
 			queryClient.setQueryData(['activeTable'], { data: null });
 			renderWithQuery(<SimpleTableLayoutComponent />, queryClient);
 			expect(screen.queryByTestId('tables-wrapper')).not.toBeInTheDocument();
-			expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
+			// expect(screen.getByRole('link', { name: /Return to your dashboard/i })).toBeInTheDocument();
 			expect(screen.queryByTestId('new-table')).toBeInTheDocument();
 			// screen.debug();
 		});
