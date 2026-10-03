@@ -44,7 +44,7 @@ export default function SummaryCard({ data }: { data: ExpensesTableI }) {
 		const percentage = (totalSpent / totalIncome) * 100;
 		const newSummary: SummaryObjectI = {
 			periodExpenses: formatValue(totalSpent), percentageSpent: percentage.toFixed(2),
-			currentBalance: formatValue(totalRemaining), lastExpense: formatValue(expensesTable.expenses.at(-1).amount),
+			currentBalance: formatValue(totalRemaining), lastExpense: formatValue(expensesTable.expenses.length > 0 ? expensesTable.expenses.at(-1).amount : 0),
 			pendingCommitment: formatValue(totalPending)
 		};
 		return newSummary;

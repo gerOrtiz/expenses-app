@@ -7,6 +7,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader } from "@material-tailwi
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { Text } from "../ui/Text";
+import DemoLogin from "../ui/DemoLogin";
 
 export default function LoginLayout() {
 	const [isSigningUp, setIsSigningUp] = useState(false);
@@ -24,24 +25,27 @@ export default function LoginLayout() {
 		}
 	}
 
+
 	return (<>
 		<h2 className="sr-only">{isSigningUp ? `Create an account` : `Sign in`}</h2>
 		<div className="w-full min-h-[300px] p-2">
-			<Card className="mt-5">
-				<CardHeader floated={false} shadow={false}  >
-					<Text variant="h3">{isSigningUp ? `Sign up` : `Login`}</Text>
+			<div className="w-full flex lg:hidden justify-center mb-2 px-6">
+				<DemoLogin type="text" />
+			</div>
 
+			<Card className="mt-0 lg:mt-5  border border-blue-100 shadow-sm lg:shadow-md shadow-blue-100" >
+				<CardHeader className="my-4" floated={false} shadow={false}  >
+					<Text variant="h3">{isSigningUp ? `Sign up` : `Login`}</Text>
 				</CardHeader>
 				<CardBody className="flex flex-col gap-6">
 					<Button
 						variant="outlined"
 						onClick={handleGoogleSignIn}
-						className="outlined w-full lg:w-3/5 flex items-center justify-center self-center gap-3 normal-case text-sm border-blue-gray-200 text-blue-gray-700"
+						className="outlined w-full lg:w-3/5 flex items-center justify-center self-center gap-3 normal-case text-sm "
 					>
 						<FcGoogle size={20} aria-hidden="true" />
 						{`Continue with Google`}
 					</Button>
-
 					{googleError && (
 						<span role="alert" className="text-red-500 text-sm text-center">{googleError}</span>
 					)}

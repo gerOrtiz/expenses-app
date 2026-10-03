@@ -18,6 +18,12 @@ jest.mock('../../../components/login/signUpForm', () => {
 	};
 });
 
+jest.mock('../../../components/ui/DemoLogin', () => {
+	return function MockDemoLogin() {
+		return <button>Try the demo</button>;
+	}
+})
+
 
 describe('Login Layout', () => {
 

@@ -57,7 +57,7 @@ describe('CreateSimpleTableComponent', () => {
 			const user = userEvent.setup();
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			// Open the dialog
-			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			const openButton = screen.getByRole('button', { name: /Create new table/i });
 			await user.click(openButton);
 			const cashInput = screen.getAllByRole('spinbutton', { name: /amount/i })[0];
 
@@ -78,7 +78,7 @@ describe('CreateSimpleTableComponent', () => {
 			const user = userEvent.setup();
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			// Open the dialog
-			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			const openButton = screen.getByRole('button', { name: /Create new table/i });
 			await user.click(openButton);
 			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1];
 
@@ -98,7 +98,7 @@ describe('CreateSimpleTableComponent', () => {
 			const user = userEvent.setup();
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			// Open the dialog
-			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			const openButton = screen.getByRole('button', { name: /Create new table/i });
 			await user.click(openButton);
 			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1];
 
@@ -113,7 +113,7 @@ describe('CreateSimpleTableComponent', () => {
 			const user = userEvent.setup();
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			// Open the dialog
-			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			const openButton = screen.getByRole('button', { name: /Create new table/i });
 			await user.click(openButton);
 			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1];
 			await user.clear(cardInput);
@@ -131,7 +131,7 @@ describe('CreateSimpleTableComponent', () => {
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			const user = userEvent.setup();
 			// Open dialog
-			await user.click(screen.getByRole('button', { name: /create new expenses table/i }));
+			await user.click(screen.getByRole('button', { name: /Create new table/i }));
 
 			const cashInput = screen.getAllByRole('spinbutton', { name: /amount/i })[0] as HTMLInputElement;
 			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1] as HTMLInputElement;
@@ -169,7 +169,7 @@ describe('CreateSimpleTableComponent', () => {
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			const user = userEvent.setup();
 			// Open the dialog
-			const openButton = screen.getByRole('button', { name: /create new expenses table/i });
+			const openButton = screen.getByRole('button', { name: /Create new table/i });
 			await user.click(openButton);
 
 			// Fill form
@@ -210,7 +210,7 @@ describe('CreateSimpleTableComponent', () => {
 			renderWithQuery(<CreateSimpleTableComponent />, queryClient);
 			const user = userEvent.setup();
 			// Open dialog and fill form
-			await user.click(screen.getByRole('button', { name: /create new expenses table/i }));
+			await user.click(screen.getByRole('button', { name: /Create new table/i }));
 
 			const cashInput = screen.getAllByRole('spinbutton', { name: /amount/i })[0];
 			const cardInput = screen.getAllByRole('spinbutton', { name: /amount/i })[1];

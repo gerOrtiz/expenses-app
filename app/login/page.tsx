@@ -16,22 +16,12 @@ export default async function UserFormPage() {
 	if (session) redirect('/dashboard');
 	return (
 		<>
-			{/* <header className={classes.header}>
-        <h1 className="text-5xl mb-4 text-blue-900">
-          Registrate o incia sesión
-        </h1>
-        <p className="text-blue-950">{isSigningUp ? '¿Ya tienes una cuenta?' : '¿Aún no tienes una cuenta?'} <span className={classesNames} onClick={setSigningHandler}>{isSigningUp ? 'Inicia sesión' : 'Registrate'}</span></p>
-      </header>
-      <main className={classes.main}>
-        {isSigningUp && <SignUpForm></SignUpForm>}
-        {!isSigningUp && <LoginForm></LoginForm>}
-      </main> */}
 			<main className="container flex flex-col py-2 justify-self-center justify-between items-center min-h-[90vh]">
 				<h1 className="sr-only">Login screen</h1>
-				<div className="lg:w-1/2 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 my-6 items-center overflow-auto">
+				<div className="lg:w-1/2 w-full text-center flex flex-col p-0 lg:mx-6 mx-4 lg:my-10 my-2 items-center overflow-auto">
 					<LoginLayout />
 				</div>
-				<div className="flex justify-center items-center w-3/4 lg:w-full my-8">
+				<div className="flex justify-center items-center w-3/4 lg:w-full my-4 lg:my-10">
 					<Image src={logoImg} alt="Expenses app logo" width={400} className="opacity-40" />
 				</div>
 			</main>

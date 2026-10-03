@@ -33,7 +33,7 @@ export default function SimpleTableDashboard({ tableData }: TableWrapperPropsI) 
 		<section className="flex flex-col w-full items-center mt-3 mb-3 p-4 lg:p-1">
 			<RemainingIncome remaining={tableData.remaining} totals={tableData.totals} added={tableData.added} income={tableData.income} />
 		</section>
-		<div className="grid grid-flow-row gap-y-5 lg:gap-y-10 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 p-4 lg:p-0">
+		<div className="grid grid-flow-row gap-y-4 lg:gap-y-8 gap-x-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 p-4 lg:p-0">
 			<section className="flex flex-col overflow-hidden gap-6 md:col-span-2 xl:col-span-2">
 				{tableData.expenses && tableData.expenses.length > 0 && <SimpleTable expenses={tableData.expenses} />}
 				{(!tableData.expenses || tableData.expenses.length <= 0) && (
@@ -57,7 +57,7 @@ export default function SimpleTableDashboard({ tableData }: TableWrapperPropsI) 
 					</div>
 				)}
 			</section>
-			<div className="flex flex-col overflow-hidden gap-6 md:col-span-1 xl:col-span-1 p-0 lg:p-3 mt-0 lg:mt-2">
+			<div className="flex flex-col overflow-hidden gap-6 md:col-span-1 xl:col-span-1 p-0 lg:p-1 mt-0 ">
 				{Boolean((tableData.expenses && tableData.expenses.length > 0) || (tableData.pending && tableData.pending.length > 0)) && (
 					<div className="w-full">
 						{tableData.totals && <TotalsTables data={tableData.totals} />}

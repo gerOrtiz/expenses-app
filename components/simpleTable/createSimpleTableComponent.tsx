@@ -42,17 +42,17 @@ export default function CreateSimpleTableComponent() {
 
 	return (<>
 
-		<div className="flex flex-col w-full items-center gap-4 p-5 lg:p-0 h-fit mt-4 lg:mt-10">
-			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={300} />
+		<div className="flex flex-col w-full items-center gap-8 py-8 lg:py-16 px-6 h-fit ">
+			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={200} />
 			<div className="flex flex-col gap-3 items-center ">
-				<Text variant="h3" >{`Take control of your personal expenses`}</Text>
+				<Text variant="h2" >{`Take control of your personal expenses`}</Text>
 				{/* <Typography variant="h3" className="text-blue-800">{`Take control of your personal expenses`}</Typography> */}
 				<Text variant="body">{`Record your daily expenses and keep track of your budget`}</Text>
 				{/* <Typography variant="paragraph" color="blue-gray" className="font-semibold">{`Record your daily expenses and keep track of your budget`}</Typography> */}
 				<Button variant="filled" aria-haspopup="dialog" size="md"
 					className="filled mt-3 transition ease-in-out hover:scale-105 duration-200"
 					onClick={handleOpen}>
-					{`Create new expenses table`}
+					{`Create new table`}
 				</Button>
 			</div>
 

@@ -10,9 +10,9 @@ import Link from "next/link";
 
 export default function DashboardEmptyState() {
 	return (
-		<div className="flex flex-col items-center gap-8 py-8 lg:py-16 px-6">
+		<div className="flex flex-col items-center gap-6 lg:gap-8 py-4 lg:py-16 px-2 lg:px-6 ">
 
-			<div className="flex items-center justify-center w-44 h-44 rounded-full border border-blue-gray-100 bg-blue-50">
+			<div className="flex items-center justify-center w-40 lg:w-44 h-40 lg:h-44 rounded-full border border-blue-gray-100 bg-blue-50">
 				{/* <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="16" y="20" width="56" height="64" rx="4" fill="#B5D4F4" stroke="#378ADD" strokeWidth="1.5" />
 					<rect x="28" y="22" width="16" height="8" rx="2" fill="#378ADD" />
@@ -46,7 +46,7 @@ export default function DashboardEmptyState() {
 			<Text variant="label">
 				{`You'll be taken to the expenses module to get started.`}
 			</Text>
-			<div className="w-full flex justify-center mt-10">
+			<div className="w-full flex justify-center mt-6 lg:mt-10">
 				<Image src={logoImg} alt="Expenses app logo" width={400} className="opacity-30" />
 			</div>
 		</div>
