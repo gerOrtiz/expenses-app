@@ -1,7 +1,11 @@
+jest.mock('next-auth/react');
+
 import SimpleTableLayoutComponent from "@/components/simpleTable/layout/simpleTableLayout";
 import { ExpensesTableI } from "@/interfaces/expenses";
 import { createTestQueryClient, renderWithQuery } from "@/utils/test-utils";
-import { screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 
 jest.mock('../../../components/simpleTable/CloseActiveTableButton', () => {
 	return function MockCloseTableButton() {
@@ -24,6 +28,7 @@ jest.mock('../../../components/loadingSkeletons/expensesPageSkeleton', () => {
 	};
 });
 
+const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
 
 
 describe('SimpleTableLayout', () => {
@@ -47,6 +52,19 @@ describe('SimpleTableLayout', () => {
 		fDate: 0,
 		status: 'active'
 	};
+	const ORIGINAL_ENV = process.env;
+
+	beforeEach(() => {
+		const mockData: Session = { user: { id: '1', email: 'test@test.com' }, expires: '6000' };
+		mockUseSession.mockReturnValue({ data: mockData, status: 'authenticated', update: jest.fn() });
+		process.env = { ...ORIGINAL_ENV };
+	});
+
+	afterEach(() => {
+		cleanup();
+		jest.clearAllMocks();
+		process.env = ORIGINAL_ENV;
+	});
 
 	describe('Loading State', () => {
 		it('displays loading skeleton', async () => {
@@ -66,6 +84,13 @@ describe('SimpleTableLayout', () => {
 			expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
 			expect(screen.getByTestId('tables-wrapper')).toBeInTheDocument();
 			expect(screen.queryByTestId('new-table')).not.toBeInTheDocument();
+		});
+		it('hides "close table" button', () => {
+			process.env.NEXT_PUBLIC_DEMO_USER = 'test@test.com';
+			const queryClient = createTestQueryClient();
+			queryClient.setQueryData(['activeTable'], { data: mockTableData });
+			renderWithQuery(<SimpleTableLayoutComponent />, queryClient);
+			expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
 		});
 	});
 

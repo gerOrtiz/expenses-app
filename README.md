@@ -100,7 +100,7 @@ API routes never trust client-sent table IDs. The active expenses table is alway
 
 ## Testing
 
-84 unit tests across 17 suites covering core business logic, input validation, and data mutations. Pure server functions are tested directly without HTTP layer overhead.
+87 unit tests across 17 suites covering core business logic, input validation, and data mutations. Pure server functions are tested directly without HTTP layer overhead.
 
 ```bash
 npm run test
@@ -117,7 +117,8 @@ npm install
 # Set up environment variables
 cp .env.example .env.local
 # Fill in: MONGODB_URI, NEXTAUTH_SECRET, NEXTAUTH_URL,
-#          GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+#          GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXT_PUBLIC_HCAPTCHA_SITE_KEY,
+#          HCAPTCHA_SECRET_KEY, NEXT_PUBLIC_DEMO_USER, NEXT_PUBLIC_DEMO_PASSWORD
 
 # Run development server
 npm run dev

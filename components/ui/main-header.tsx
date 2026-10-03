@@ -14,6 +14,7 @@ import { faChevronRight, faTimes, faUser } from "@fortawesome/free-solid-svg-ico
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Text } from "./Text";
+import DemoLogin from "./DemoLogin";
 
 export default function MainHeader() {
 	const { data: session, status } = useSession();
@@ -56,9 +57,14 @@ export default function MainHeader() {
 								<li><Spinner /> </li>
 							</>)}
 
-							{!session && status != 'loading' && (<li>
-								<Link href="/login" className={classes['btn-link']}>	<Button variant="filled" className="filled hover:-translate-y-1" >{`Get started`}</Button></Link>
-							</li>)}
+							{!session && status != 'loading' && (<>
+								<li>
+									<Link href="/login" >	<Button variant="filled" className="filled hover:-translate-y-1" >{`Get started`}</Button></Link>
+								</li>
+								<li>
+									<DemoLogin type="outlined" classes="!text-xs hover:-translate-y-1" />
+								</li>
+							</>)}
 
 							{session && status === 'authenticated' && (<>
 								<li>

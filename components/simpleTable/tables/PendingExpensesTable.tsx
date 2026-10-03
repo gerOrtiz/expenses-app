@@ -77,7 +77,7 @@ export default function PendingExpensesTable({ pendingArray }: PendingExpensesTa
 	return (<>
 		<Card className="mb-1 w-full overflow-y-auto overflow-x-hidden shadow-sm lg:shadow-md shadow-blue-100 border border-blue-gray-100">
 			<CardBody >
-				<div className="relative flex flex-col">
+				<div className="flex flex-col items-center">
 					<div className="w-full flex justify-between items-center mb-3">
 						<Text variant="h3">{`Pending expenses`}</Text>
 						<Button aria-haspopup={true} aria-label={`Add pending expense`} variant="outlined"

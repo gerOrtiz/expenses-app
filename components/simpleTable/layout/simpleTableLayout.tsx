@@ -12,18 +12,20 @@ import { useState } from "react";
 import { useActiveTable } from "@/hooks/useActiveTable";
 import SimpleTableDashboard from "./simpleTableDashboard";
 import { Text } from "@/components/ui/Text";
+import { useSession } from "next-auth/react";
 
 
 export default function SimpleTableLayoutComponent() {
 	const { data, isFetching } = useActiveTable();
 	const [openExpensesDialog, setOpenExpensesDialog] = useState(false);
+	const { data: session } = useSession();
 
 	const handleOpenExpensesDialog = () => setOpenExpensesDialog((isOpen) => !isOpen);
 
 	// if (isFetching) return <ExpensesPageSkeleton />
 
 	return (<>
-		<div className="w-full grid grid-flow-row grid-cols-2 px-6 mx-auto mt-0 lg:mt-4">
+		<div className="w-full grid grid-flow-row grid-cols-2 lg:px-8 px-4 mt-0 lg:mt-4">
 			{/* <div className="flex w-full justify-start col-span-3 lg:col-span-1 py-1 lg:py-4">
 				<Link aria-label={`Return to your dashboard`} href="/dashboard" className="text-blue-800 font-bold flex gap-2 items-center py-1.5">
 					<FontAwesomeIcon icon={faArrowLeft} size="lg" />
@@ -40,7 +42,7 @@ export default function SimpleTableLayoutComponent() {
 						<span className="hidden lg:block text-[13px]">{`Add expense`}</span>
 						<span className=" block lg:hidden text-[12px]">{`Add`}</span>
 					</Button>
-					<CloseActiveTableButton />
+					{session && session.user?.email === process.env.NEXT_PUBLIC_DEMO_USER ? null : <CloseActiveTableButton />}
 				</div>
 			)}
 		</div>
