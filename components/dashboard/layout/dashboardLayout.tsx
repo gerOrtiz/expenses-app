@@ -18,7 +18,7 @@ export default function DashboardlayoutComponent({ username }: DashboardLayoutPr
 
 
 	return (<>
-		<section className="w-full flex flex-col gap-6 lg:gap-8 mt-0 lg:mt-4 p-4 lg:p-8">
+		<section className="w-full flex flex-col gap-6 lg:gap-8 mt-0  p-4 lg:p-8">
 			<Text variant="h2" className="self-start">{`Welcome, `}<span className="text-blue-gray-700">{username}</span>!</Text>
 
 			{status === 'success' && data && data.data === null && (
