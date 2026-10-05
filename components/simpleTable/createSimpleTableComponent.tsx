@@ -42,9 +42,9 @@ export default function CreateSimpleTableComponent() {
 
 	return (<>
 
-		<div className="flex flex-col w-full items-center gap-8 py-8 lg:py-16 px-6 h-fit ">
-			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={200} />
-			<div className="flex flex-col gap-3 items-center ">
+		<div className="flex flex-col w-full items-center gap-4 lg:gap-8 py-4 lg:py-16 px-6 h-fit ">
+			<Image src={emptyClipboard} alt="Empty clipboard" aria-label="Empty clipboard" width={180} />
+			<div className="flex flex-col gap-2 lg:gap-3 items-center ">
 				<Text variant="h2" >{`Take control of your personal expenses`}</Text>
 				{/* <Typography variant="h3" className="text-blue-800">{`Take control of your personal expenses`}</Typography> */}
 				<Text variant="body">{`Record your daily expenses and keep track of your budget`}</Text>
@@ -56,7 +56,7 @@ export default function CreateSimpleTableComponent() {
 				</Button>
 			</div>
 
-			<div className="w-full flex justify-center mt-10 lg:mt-20">
+			<div className="w-full flex justify-center mt-8 lg:mt-20">
 				<Image src={logoImg} alt="Expenses app logo" width={400} className="opacity-30" />
 			</div>
 		</div>
