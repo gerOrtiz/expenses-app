@@ -4,11 +4,14 @@ A full-stack personal finance tracker built with Next.js 14, focused on budget c
 
 **Live demo:** https://expenses-app-2.vercel.app
 
-> Demo credentials available on request, or sign in with Google.
+> Demo login available, or sign in with Google (upon request).
 
 ---
 
 ## Screenshots
+
+### Landing Page
+![Landing Page](screenshots/landing-desktop.png)
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
@@ -18,9 +21,6 @@ A full-stack personal finance tracker built with Next.js 14, focused on budget c
 
 ### Expenses Table — Mobile
 ![Expenses Table Mobile](screenshots/expenses-mobile1.png)
-
-### Empty State
-![Empty State](screenshots/empty-state.png)
 
 ### Reports
 ![Reports](screenshots/reports.png)
@@ -110,18 +110,51 @@ npm run test
 
 ## Running locally
 
+### Prerequisites
+
+- Node.js 22
+- MongoDB 8.x running locally, or a MongoDB Atlas cluster
+
+### Setup
+
 ```bash
-# Install dependencies
-npm install
-
-# Set up environment variables
+git clone <repo-url>
+cd <repo-folder>
+npm ci
 cp .env.example .env.local
-# Fill in: MONGODB_URI, NEXTAUTH_SECRET, NEXTAUTH_URL,
-#          GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXT_PUBLIC_HCAPTCHA_SITE_KEY,
-#          HCAPTCHA_SECRET_KEY, NEXT_PUBLIC_DEMO_USER, NEXT_PUBLIC_DEMO_PASSWORD
+```
 
-# Run development server
+### Environment variables
+
+Edit `.env.local`. This file is git-ignored; never commit it.
+
+| Variable | Required | Notes |
+|---|---|---|
+| `MONGODB_URI` | Yes* | Local example: `mongodb://127.0.0.1:27017/expensesApp`. Use `127.0.0.1` rather than `localhost` to avoid IPv6 resolution issues. |
+| `MONGODB_USER`, `MONGODB_PASS` | Alternative* | Only used when `MONGODB_URI` is empty. They build an Atlas connection string. Leave empty for a local database. |
+| `NEXTAUTH_SECRET` | Yes | Any non-empty string works locally. In any real deployment, use a strong random value (`openssl rand -base64 32`). |
+| `NEXT_PUBLIC_HCAPTCHA_SITE_KEY`, `HCAPTCHA_SECRET_KEY` | For sign-up | Use hCaptcha's official test keys for development (see their developer docs). |
+| `NEXT_PUBLIC_DEMO_USER`, `NEXT_PUBLIC_DEMO_PASSWORD` | For demo login | Credentials used by the "Try demo" button. `NEXT_PUBLIC_` values are exposed to the browser, so use throwaway values. |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Optional | Only needed for Google sign-in. The app runs without them, but the Google button won't work. |
+
+\* Provide either `MONGODB_URI`, or both `MONGODB_USER` and `MONGODB_PASS`. With neither, the app refuses to connect.
+
+`NEXTAUTH_URL` isn't needed for local development.
+
+### Run
+
+```bash
+# If using a local MongoDB on Ubuntu/WSL
+sudo systemctl start mongod
+
 npm run dev
+```
+
+Open http://localhost:3000.
+
+### Demo account
+
+The "Try demo" button signs in as the user defined by `NEXT_PUBLIC_DEMO_USER` and `NEXT_PUBLIC_DEMO_PASSWORD`. That user must exist in your database, so sign up once with those exact credentials first. There is no seed data: create an expenses table and add a few expenses to see the dashboard and reports.
 ```
 
 ---
