@@ -31,3 +31,11 @@
 		transform: translateY(0);
 	}
 }
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: reduce) {
+		.bounce {
+			animation: none;
+		}
+	}
+}
